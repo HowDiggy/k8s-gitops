@@ -1,0 +1,37 @@
+# This defines the root ArgoCD Application that manages all other applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of this root application
+  name: root-application
+  # The application lives in the argocd namespace
+  namespace: argocd
+spec:
+  # The ArgoCD project this application belongs to
+  project: default
+  
+  # Source configuration - points to your Git repository
+  source:
+    # Your Git repository URL that contains all application definitions
+    # IMPORTANT: Replace this with your actual repository URL
+    repoURL: https://github.com/HowDiggy/k8s-gitops
+    # The branch or tag to use
+    targetRevision: HEAD
+    # The path within the repository that contains application definitions
+    path: apps
+  
+  # Destination defines where this application will run
+  destination:
+    # The Kubernetes API server URL - this refers to the current cluster
+    server: https://kubernetes.default.svc
+    # The namespace where the application controller runs
+    namespace: argocd
+  
+  # SyncPolicy defines how ArgoCD should keep applications in sync
+  syncPolicy:
+    # Automated sync configuration
+    automated:
+      # Remove resources that are no longer defined in Git
+      prune: true
+      # Automatically fix any drift detected between Git and the cluster
+      selfHeal: true
