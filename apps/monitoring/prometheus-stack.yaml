@@ -29,6 +29,30 @@ spec:
           # Configure the Kubernetes service type
           service:
             type: ClusterIP  # Only accessible within the cluster (use Ingress for external access)
+        # Disable CRD installation to avoid conflicts with existing CRDs
+        prometheusOperator:
+          manageCrds: false
+
+        # Use ephemeral storage to avoid volume provisioning issues. Simplify while troubleshooting
+        prometheus:
+          prometheusSpec:
+            storageSpec:
+              emptyDir: {}
+
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              emptyDir: {}
+
+        # Disable Grafana persistence for simpler depl
+        grafana:
+          persistence:
+            enabled: false
+
+        # Add tolerations to ensure node-exporter can run on all nodes, including control plane
+        prometheus-node-exporter:
+          tolerations:
+            - operator: "Exists"
         
         # Prometheus configuration section
         prometheus:
