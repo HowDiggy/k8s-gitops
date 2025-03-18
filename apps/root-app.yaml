@@ -1,37 +1,43 @@
-# This defines the root ArgoCD Application that manages all other applications
+# Define an ArgoCD Application resource for managing all other applications
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  # Name of this root application
+  # This is the name of our root application
   name: root-application
-  # The application lives in the argocd namespace
+  # It's created in the argocd namespace where the ArgoCD controller runs
   namespace: argocd
 spec:
-  # The ArgoCD project this application belongs to
+  # The ArgoCD project to use (default is fine for most cases)
   project: default
   
-  # Source configuration - points to your Git repository
+  # Source defines where ArgoCD should look for application definitions
   source:
-    # Your Git repository URL that contains all application definitions
-    # IMPORTANT: Replace this with your actual repository URL
-    repoURL: https://github.com/HowDiggy/k8s-gitops
-    # The branch or tag to use
-    targetRevision: HEAD
-    # The path within the repository that contains application definitions
+    # This must be your actual GitHub repository URL - using the same one from your demo-app
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    # Using the main branch, just like your demo-app
+    targetRevision: main
+    # This path should contain all your application definitions
     path: apps
+    
+    # The directory configuration should be nested under source, not under spec
+    directory:
+      jsonnet:
+        tlas:
+        - name: ""
+          value: ""
   
   # Destination defines where this application will run
   destination:
-    # The Kubernetes API server URL - this refers to the current cluster
+    # This points to your current Kubernetes cluster
     server: https://kubernetes.default.svc
-    # The namespace where the application controller runs
+    # The argocd namespace is where the application controller runs
     namespace: argocd
   
-  # SyncPolicy defines how ArgoCD should keep applications in sync
+  # SyncPolicy controls how ArgoCD keeps your applications in sync
   syncPolicy:
-    # Automated sync configuration
+    # Automated sync makes ArgoCD automatically apply changes when it detects them
     automated:
-      # Remove resources that are no longer defined in Git
+      # Enabling prune will remove resources that are no longer defined in Git
       prune: true
-      # Automatically fix any drift detected between Git and the cluster
+      # Self-healing automatically fixes drift between desired and actual state
       selfHeal: true
