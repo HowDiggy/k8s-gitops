@@ -1,91 +1,59 @@
-# This defines an ArgoCD Application resource
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  # Name of the application as it will appear in ArgoCD
   name: prometheus-stack
-  # The application is deployed into the argocd namespace
   namespace: argocd
 spec:
-  # The ArgoCD project this application belongs to (default is the default project)
   project: default
-  
-  # Source configuration defines where ArgoCD should get the application from
   source:
-    # The Helm repository URL containing the chart
     repoURL: https://prometheus-community.github.io/helm-charts
-    # The specific Helm chart to use (kube-prometheus-stack includes Prometheus, Grafana, AlertManager)
     chart: kube-prometheus-stack
-    # The version of the chart to use - pinning this ensures reproducible deployments
     targetRevision: 45.27.2
-    
-    # Helm-specific configuration values that override the chart's defaults
     helm:
       values: |
-        # Grafana configuration section
-        grafana:
-          # Set the admin password for Grafana
-          adminPassword: strongpassword  # In production, use a Kubernetes secret instead
-          # Configure the Kubernetes service type
-          service:
-            type: ClusterIP  # Only accessible within the cluster (use Ingress for external access)
-        # Disable CRD installation to avoid conflicts with existing CRDs
+        # Enable CRD management to get a fresh installation
         prometheusOperator:
-          manageCrds: false
-
-        # Use ephemeral storage to avoid volume provisioning issues. Simplify while troubleshooting
+          manageCrds: true
+        
+        # Use unique names to avoid any potential conflicts
+        nameOverride: "monitor"
+        fullnameOverride: "monitor"
+        
+        # Use ephemeral storage for simplicity
         prometheus:
           prometheusSpec:
             storageSpec:
               emptyDir: {}
-
+            retention: 15d
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+                
         alertmanager:
           alertmanagerSpec:
             storage:
               emptyDir: {}
-
-        # Disable Grafana persistence for simpler depl
+        
+        # Simplify Grafana configuration
         grafana:
           persistence:
             enabled: false
-
-        # Add tolerations to ensure node-exporter can run on all nodes, including control plane
+          adminPassword: prom-operator
+        
+        # Ensure node-exporter can run on all nodes
         prometheus-node-exporter:
           tolerations:
-            - operator: "Exists"
-        
-        # Prometheus configuration section
-        prometheus:
-          prometheusSpec:
-            # How long to retain metrics data (15 days)
-            retention: 15d
-            # Resource allocation for the Prometheus server
-            resources:
-              # Minimum resources guaranteed to Prometheus
-              requests:
-                cpu: 200m      # 0.2 CPU cores
-                memory: 1Gi    # 1 Gigabyte of memory
-              # Maximum resources Prometheus can use
-              limits:
-                cpu: 1000m     # 1 CPU core
-                memory: 2Gi    # 2 Gigabytes of memory
-  
-  # Destination defines where in the cluster this application will be deployed
+          - operator: "Exists"
   destination:
-    # The Kubernetes API server URL - this refers to the current cluster
     server: https://kubernetes.default.svc
-    # The namespace where all the monitoring components will be installed
     namespace: monitoring
-  
-  # SyncPolicy defines how ArgoCD should keep the application in sync with the source
   syncPolicy:
-    # Automated sync configuration
     automated:
-      # Remove resources that no longer exist in the source
       prune: true
-      # Automatically fix any drift detected between the desired state and actual state
       selfHeal: true
-    # Additional sync options
     syncOptions:
-    # Automatically create the destination namespace if it doesn't exist
     - CreateNamespace=true
