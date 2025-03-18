@@ -21,6 +21,7 @@ spec:
     
     # The directory configuration should be nested under source, not under spec
     directory:
+      recurse: true
       jsonnet:
         tlas:
         - name: ""
