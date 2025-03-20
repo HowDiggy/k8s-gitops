@@ -25,11 +25,11 @@ elasticsearch:
 
   # Define the different node roles
   roles:
-    master: "true"
-    ingest: "false"
-    data: "false"
-    remote_cluster_client: "false"
-    ml: "false"
+    master: true
+    ingest: false
+    data: false
+    remote_cluster_client: false
+    ml: false
   
   # Master node specific settings
   replicas: 3
@@ -65,8 +65,8 @@ elasticsearch:
           - key: kubernetes.io/hostname
             operator: In
             values:
-            - k3s-worker0
-            - k3s-worker1
+            - worker-1
+            - worker-2
     podAnnotations:
       cluster.k8s.elastic.co/config: |-
         {"node.attr.temperature": "hot"}
@@ -79,11 +79,11 @@ elasticsearch:
         cpu: "4"
         memory: "16Gi"
     roles:
-      master: "false"
-      ingest: "true"
-      data: "true"
-      remote_cluster_client: "false"
-      ml: "false"
+      master: false
+      ingest: true
+      data: true
+      remote_cluster_client: false
+      ml: false
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: "elasticsearch-data-storage-hot"
@@ -102,7 +102,7 @@ elasticsearch:
           - key: kubernetes.io/hostname
             operator: In
             values:
-            - k3s-worker2
+            - worker-3
     podAnnotations:
       cluster.k8s.elastic.co/config: |-
         {"node.attr.temperature": "warm"}
@@ -115,11 +115,11 @@ elasticsearch:
         cpu: "2"
         memory: "12Gi"
     roles:
-      master: "false"
-      ingest: "false"
-      data: "true"
-      remote_cluster_client: "false"
-      ml: "false"
+      master: false
+      ingest: false
+      data: true
+      remote_cluster_client: false
+      ml: false
     volumeClaimTemplate:
       accessModes: ["ReadWriteOnce"]
       storageClassName: "elasticsearch-data-storage-warm"
@@ -140,11 +140,11 @@ elasticsearch:
         cpu: "1"
         memory: "6Gi"
     roles:
-      master: "false"
-      ingest: "true"
-      data: "false"
-      remote_cluster_client: "true"
-      ml: "false"
+      master: false
+      ingest: true
+      data: false
+      remote_cluster_client: true
+      ml: false
     
   # Configure index lifecycle management
   extraEnvs:
