@@ -1,0 +1,10 @@
+apiVersion: v2
+name: filebeat
+description: Filebeat for log collection from Kubernetes pods
+type: application
+version: 0.1.0
+appVersion: "8.11.1"
+dependencies:
+  - name: filebeat
+    version: ~8.5.1
+    repository: https://helm.elastic.co

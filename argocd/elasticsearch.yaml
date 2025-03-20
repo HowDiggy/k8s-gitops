@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/HowDiggy/k8s-gitops.git'
+    path: apps/elasticsearch
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: elk
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+  - group: ""
+    kind: Secret
+    name: elastic-credentials
+    jsonPointers:
+    - /data/password

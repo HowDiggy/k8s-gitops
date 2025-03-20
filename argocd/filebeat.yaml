@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: filebeat
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/HowDiggy/k8s-gitops.git'
+    path: apps/filebeat
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: elk
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  # Ensure Logstash is synced first
+  dependencies:
+    - name: logstash

@@ -1,0 +1,162 @@
+---
+# Master Node PVs (on Control Plane nodes)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-master-pv-cp0
+  labels:
+    app: elasticsearch
+    role: master
+    node: control-plane-0
+spec:
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-master-storage
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-cp0  # Replace with your actual node name
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-master-pv-cp1
+  labels:
+    app: elasticsearch
+    role: master
+    node: control-plane-1
+spec:
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-master-storage
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-cp1  # Replace with your actual node name
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-master-pv-cp2
+  labels:
+    app: elasticsearch
+    role: master
+    node: control-plane-2
+spec:
+  capacity:
+    storage: 40Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-master-storage
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-cp2  # Replace with your actual node name
+---
+# Data Node PVs (Hot Tier on Worker Nodes)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-pv-hot-1
+  labels:
+    app: elasticsearch
+    role: data
+    temperature: hot
+    node: worker-0
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-data-storage-hot
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-worker0  # Replace with your actual node name
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-pv-hot-2
+  labels:
+    app: elasticsearch
+    role: data
+    temperature: hot
+    node: worker-1
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-data-storage-hot
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-worker1  # Replace with your actual node name
+---
+# Data Node PV (Warm Tier on Worker Node)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-pv-warm-1
+  labels:
+    app: elasticsearch
+    role: data
+    temperature: warm
+    node: worker-2
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: elasticsearch-data-storage-warm
+  local:
+    path: /mnt/data/elasticsearch
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s-worker2  # Replace with your actual node name

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: kibana
+description: Kibana deployment for visualization
+type: application
+version: 0.1.0
+appVersion: "8.11.1"
+dependencies:
+  - name: kibana
+    version: ~8.5.1
+    repository: https://helm.elastic.co

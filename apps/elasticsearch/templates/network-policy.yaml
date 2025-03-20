@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: elasticsearch-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: elasticsearch
+  ingress:
+  # Allow Kibana to access Elasticsearch
+  - from:
+    - podSelector:
+        matchLabels:
+          app: kibana
+    ports:
+    - protocol: TCP
+      port: 9200
+  # Allow Logstash to access Elasticsearch
+  - from:
+    - podSelector:
+        matchLabels:
+          app: logstash
+    ports:
+    - protocol: TCP
+      port: 9200
+  # Allow Elasticsearch pods to communicate with each other
+  - from:
+    - podSelector:
+        matchLabels:
+          app: elasticsearch
+  egress:
+  # Allow all outbound traffic
+  - {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: logstash-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: logstash
+  ingress:
+  # Allow Filebeat to access Logstash
+  - from:
+    - podSelector:
+        matchLabels:
+          app: filebeat
+    ports:
+    - protocol: TCP
+      port: 5044
+  egress:
+  # Allow communication to Elasticsearch
+  - to:
+    - podSelector:
+        matchLabels:
+          app: elasticsearch
+    ports:
+    - protocol: TCP
+      port: 9200

@@ -1,0 +1,34 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: elasticsearch-master-storage
+  labels:
+    app: elasticsearch
+    role: master
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: elasticsearch-data-storage-hot
+  labels:
+    app: elasticsearch
+    role: data
+    temperature: hot
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: elasticsearch-data-storage-warm
+  labels:
+    app: elasticsearch
+    role: data
+    temperature: warm
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain

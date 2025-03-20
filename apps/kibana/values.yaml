@@ -1,0 +1,67 @@
+kibana:
+  elasticsearchHosts: "https://elasticsearch-coordinating:9200"
+  
+  # Security settings
+  kibanaConfig:
+    kibana.yml: |
+      server.publicBaseUrl: "/kibana"
+      xpack.security.enabled: true
+      elasticsearch.ssl.certificateAuthorities: ["/usr/share/kibana/config/certs/elastic-certificate.pem"]
+      elasticsearch.ssl.verificationMode: certificate
+  
+  # Resources allocation
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  
+  # Deployment configuration
+  replicas: 1
+  
+  # Pod affinity/anti-affinity
+  antiAffinity: "soft"
+  
+  # Service configuration
+  service:
+    type: ClusterIP
+    port: 5601
+    
+  # Health checks
+  healthCheckPath: "/app/kibana"
+  
+  # Elasticsearch authentication
+  extraEnvs:
+    - name: ELASTICSEARCH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: username
+    - name: ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: password
+          
+  # Mount Elasticsearch certificates
+  secretMounts:
+    - name: elastic-certs
+      secretName: elastic-certificate-pem
+      path: /usr/share/kibana/config/certs
+  
+  # Use pod security context
+  podSecurityContext:
+    fsGroup: 1000
+  
+  # Ingress configuration
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik
+      traefik.ingress.kubernetes.io/router.middlewares: elk-stripprefix@kubernetescrd
+    path: /kibana
+    hosts:
+      - elk.cluster.local  # Change to your preferred domain
+    tls: []

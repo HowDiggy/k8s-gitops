@@ -1,0 +1,172 @@
+elasticsearch:
+  # Global Elasticsearch cluster settings
+  clusterName: "elk-cluster"
+  nodeGroup: "master"
+  
+  # Security settings
+  createCert: true
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: true
+      xpack.security.transport.ssl.enabled: true
+      xpack.security.transport.ssl.verification_mode: certificate
+      xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+      
+  # Common node settings
+  esJavaOpts: "-Xmx1g -Xms1g"
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "2Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+
+  # Define the different node roles
+  roles:
+    master: "true"
+    ingest: "false"
+    data: "false"
+    remote_cluster_client: "false"
+    ml: "false"
+  
+  # Master node specific settings
+  replicas: 3
+  minimumMasterNodes: 2
+  
+  # Anti-affinity to ensure high availability
+  antiAffinity: "hard"
+  
+  # Node affinity to ensure master nodes run on control plane nodes
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+
+  # Storage configuration for master nodes
+  volumeClaimTemplate:
+    accessModes: ["ReadWriteOnce"]
+    storageClassName: "elasticsearch-master-storage"
+    resources:
+      requests:
+        storage: 40Gi
+
+  # Data nodes configuration (hot tier)
+  data:
+    name: data-hot
+    replicas: 2
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - k3s-worker0
+            - k3s-worker1
+    podAnnotations:
+      cluster.k8s.elastic.co/config: |-
+        {"node.attr.temperature": "hot"}
+    esJavaOpts: "-Xmx4g -Xms4g"
+    resources:
+      requests:
+        cpu: "2"
+        memory: "8Gi"
+      limits:
+        cpu: "4"
+        memory: "16Gi"
+    roles:
+      master: "false"
+      ingest: "true"
+      data: "true"
+      remote_cluster_client: "false"
+      ml: "false"
+    volumeClaimTemplate:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "elasticsearch-data-storage-hot"
+      resources:
+        requests:
+          storage: 100Gi
+
+  # Data nodes configuration (warm tier)
+  dataWarm:
+    name: data-warm
+    replicas: 1
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - k3s-worker2
+    podAnnotations:
+      cluster.k8s.elastic.co/config: |-
+        {"node.attr.temperature": "warm"}
+    esJavaOpts: "-Xmx4g -Xms4g"
+    resources:
+      requests:
+        cpu: "1"
+        memory: "6Gi"
+      limits:
+        cpu: "2"
+        memory: "12Gi"
+    roles:
+      master: "false"
+      ingest: "false"
+      data: "true"
+      remote_cluster_client: "false"
+      ml: "false"
+    volumeClaimTemplate:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "elasticsearch-data-storage-warm"
+      resources:
+        requests:
+          storage: 100Gi
+
+  # Coordinating-only nodes
+  coordinating:
+    name: coordinating
+    replicas: 2
+    esJavaOpts: "-Xmx2g -Xms2g"
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "4Gi"
+      limits:
+        cpu: "1"
+        memory: "6Gi"
+    roles:
+      master: "false"
+      ingest: "true"
+      data: "false"
+      remote_cluster_client: "true"
+      ml: "false"
+    
+  # Configure index lifecycle management
+  extraEnvs:
+    - name: ILM_POLICY_HOT_MAX_SIZE
+      value: "50gb"
+    - name: ILM_POLICY_HOT_MAX_AGE
+      value: "1d"
+    - name: ILM_POLICY_WARM_MAX_AGE
+      value: "7d"
+    - name: ILM_POLICY_DELETE_MIN_AGE
+      value: "30d"
+
+  # Initial master password setup
+  secretMounts:
+    - name: elastic-credentials
+      secretName: elastic-credentials
+      path: /usr/share/elasticsearch/config/credentials
+  
+  # Elasticsearch services
+  service:
+    type: ClusterIP
+    
+  # Do not install Kibana from this chart
+  kibana:
+    enabled: false

@@ -1,0 +1,117 @@
+logstash:
+  # Replica count for Logstash
+  replicas: 2
+  
+  # Resource allocation
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+      
+  # Pod anti-affinity for high availability
+  antiAffinity: "soft"
+  
+  # Java options
+  logstashJavaOpts: "-Xmx1g -Xms1g"
+  
+  # Logstash configuration
+  logstashConfig:
+    logstash.yml: |
+      http.host: 0.0.0.0
+      xpack.monitoring.enabled: true
+      xpack.monitoring.elasticsearch.hosts: ["https://elasticsearch-coordinating:9200"]
+      xpack.monitoring.elasticsearch.username: "${ELASTICSEARCH_USERNAME}"
+      xpack.monitoring.elasticsearch.password: "${ELASTICSEARCH_PASSWORD}"
+      xpack.monitoring.elasticsearch.ssl.verification_mode: certificate
+      xpack.monitoring.elasticsearch.ssl.certificate_authority: "/usr/share/logstash/config/certs/elastic-certificate.pem"
+      
+  # Logstash pipeline configurations
+  logstashPipeline:
+    logstash.conf: |
+      input {
+        beats {
+          port => 5044
+          ssl => false
+        }
+        http {
+          port => 8080
+          codec => json
+        }
+      }
+      
+      filter {
+        if [kubernetes] {
+          # Add Kubernetes metadata
+          mutate {
+            add_field => {
+              "cluster_name" => "k3s-cluster"
+            }
+          }
+          
+          # Parse JSON if needed
+          if [message] =~ /^\{.*\}$/ {
+            json {
+              source => "message"
+              target => "parsed_json"
+            }
+          }
+        }
+        
+        # Add timestamp
+        date {
+          match => [ "timestamp", "ISO8601" ]
+          target => "@timestamp"
+        }
+      }
+      
+      output {
+        elasticsearch {
+          hosts => ["https://elasticsearch-coordinating:9200"]
+          user => "${ELASTICSEARCH_USERNAME}"
+          password => "${ELASTICSEARCH_PASSWORD}"
+          ssl => true
+          ssl_certificate_verification => true
+          cacert => "/usr/share/logstash/config/certs/elastic-certificate.pem"
+          index => "logstash-%{+YYYY.MM.dd}"
+          ilm_enabled => true
+          ilm_rollover_alias => "logstash"
+          ilm_pattern => "{now/d}-000001"
+          ilm_policy => "logstash-policy"
+        }
+      }
+      
+  # Expose Logstash service
+  service:
+    annotations: {}
+    type: ClusterIP
+    ports:
+      - name: beats
+        port: 5044
+        protocol: TCP
+        targetPort: 5044
+      - name: http
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+        
+  # Elasticsearch authentication
+  extraEnvs:
+    - name: ELASTICSEARCH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: username
+    - name: ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: elastic-credentials
+          key: password
+          
+  # Mount Elasticsearch certificates
+  secretMounts:
+    - name: elastic-certs
+      secretName: elastic-certificate-pem
+      path: /usr/share/logstash/config/certs
