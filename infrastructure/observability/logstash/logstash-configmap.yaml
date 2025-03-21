@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+  namespace: observability
+data:
+  logstash.yml: |-
+    http.host: "0.0.0.0"
+    xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+    path.queue: /usr/share/logstash/data
+    queue.type: persisted
+    queue.max_bytes: 1gb
+  
+  logstash.conf: |-
+    input {
+      beats {
+        port => 5044
+      }
+    }
+
+    filter {
+      if [kubernetes] {
+        mutate {
+          add_field => {
+            "application" => "%{[kubernetes][container][name]}"
+            "namespace" => "%{[kubernetes][namespace]}"
+            "pod" => "%{[kubernetes][pod][name]}"
+          }
+        }
+      }
+      
+      # Parse JSON logs if they exist
+      if [message] =~ /^{.*}$/ {
+        json {
+          source => "message"
+        }
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["elasticsearch:9200"]
+        index => "k8s-logs-%{+YYYY.MM.dd}"
+        manage_template => false
+      }
+    }
