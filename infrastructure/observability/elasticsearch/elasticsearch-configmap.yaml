@@ -14,8 +14,6 @@ data:
     xpack.security.enabled: false
     xpack.monitoring.collection.enabled: true
 
-    # Set default number of replicas for indices for better resilience
-    cluster.index.number_of_replicas: 2
     
     # Enable snapshot repository
     path.repo: ["/usr/share/elasticsearch/backup"]
