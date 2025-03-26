@@ -19,7 +19,7 @@ metadata:
   name: kibana
   namespace: observability
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: observability-stripprefix@kubernetescrd
+    #  traefik.ingress.kubernetes.io/router.middlewares: observability-stripprefix@kubernetescrd
 spec:
   rules:
   - http:
