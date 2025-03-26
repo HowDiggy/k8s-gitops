@@ -40,7 +40,7 @@ data:
     output {
       elasticsearch {
         hosts => ["elasticsearch:9200"]
-        index => "k8s-logs-%{+YYYY.MM.dd}"
+        index => "k8s-logs"
         manage_template => false
       }
     }
