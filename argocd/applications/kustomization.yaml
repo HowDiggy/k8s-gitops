@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
   - argocd-app-storage.yaml
   - elk-stack.yaml
+  - cloudflare-tunnel.yaml
+  - paulojauregui-com.yaml

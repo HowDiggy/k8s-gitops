@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paulojauregui-com
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: main
+    path: websites/paulojauregui-com
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: websites
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflare-tunnel-config
+  namespace: cloudflare
+data:
+  config.yaml: |
+    tunnel: 8166962a-3728-4a5e-b999-61a9cfac7493
+    credentials-file: /etc/cloudflared/credentials.json
+    ingress:
+      - hostname: paulojauregui.com
+        service: http://paulojauregui-com.websites.svc.cluster.local:80
+      - hostname: www.paulojauregui.com
+        service: http://paulojauregui-com.websites.svc.cluster.local:80
+      - service: http_status:404
