@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd # This is the namespace where this Application CRD itself lives
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default # Or your specific ArgoCD project
+  source:
+    repoURL: 'https://charts.jetstack.io'
+    chart: cert-manager
+    targetRevision: 'v1.17.2' # Or latest in v1.17.x series you confirmed
+    helm:
+      values: |
+        installCRDs: true
+
+        # Setting nodeSelector for all key components to ensure arm64 affinity
+        controller:
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+
+        webhook:
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+
+        cainjector:
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+
+        startupapicheck:
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+  destination:
+    server: 'https://kubernetes.default.svc' # This targets the cluster ArgoCD is running in
+    namespace: cert-manager # Cert-Manager will be installed into this namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true # ArgoCD will create the 'cert-manager' namespace
