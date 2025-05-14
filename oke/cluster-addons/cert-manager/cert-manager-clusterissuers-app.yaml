@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-clusterissuers
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    path: oke/cluster-addons/cert-manager # Path to the DIRECTORY containing the clusterissuer file
+    targetRevision: main # Or your main branch
+    # You could also point directly to the file if this app ONLY manages this one file:
+    # path: oke/cluster-addons/cert-manager/letsencrypt-clusterissuer.yaml
+    # However, pointing to the directory is more flexible if you add other related CRs there later.
+  destination:
+    server: https://kubernetes.default.svc
+    # Namespace for ClusterIssuers is not applicable as they are cluster-scoped.
+    # Argo CD still needs a namespace for its own bookkeeping of where it *thinks* it's deploying.
+    # 'default' or 'cert-manager' is fine here for Argo's own metadata.
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    # Since you already kubectl apply'd them, Argo CD will detect they exist.
+    # If the content in Git matches exactly what you applied, it will just mark them as Synced.
