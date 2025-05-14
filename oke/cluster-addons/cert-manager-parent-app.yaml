@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-all # Name for this parent/grouping app
+  name: cert-manager-all-components # Name for this parent/grouping app
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
