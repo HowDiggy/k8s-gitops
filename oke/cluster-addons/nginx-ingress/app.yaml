@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-ingress # This is the ArgoCD app that deploys the Helm chart
+  namespace: argocd # Where this Application CRD itself lives
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default # Or your specific ArgoCD project
+  source:
+    repoURL: 'https://kubernetes.github.io/ingress-nginx' # Official Helm chart repo
+    chart: ingress-nginx
+    targetRevision: '4.12.2' # Latest stable chart version we found
+    helm:
+      values: |
+        controller:
+          # Replicas for HA, good for your 2-node cluster
+          replicaCount: 2
+          # Node selector for arm64
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+          # Tolerations: Not needed as your nodes have no taints currently
+          # tolerations:
+          # - key: "oci.oraclecloud.com/oke-is-arm"
+          #   operator: "Exists"
+          #   effect: "NoSchedule"
+
+          # Service configuration for OCI Load Balancer
+          service:
+            type: LoadBalancer
+            annotations:
+              # OCI specific annotations for a flexible 10Mbps Load Balancer
+              oci.oraclecloud.com/load-balancer-type: "lb"
+              service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+              service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+              service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+              # Optional: Health check path, defaults usually work
+              # service.beta.kubernetes.io/oci-load-balancer-health-check-path: "/healthz"
+
+          # Admission webhooks also need to run on arm64
+          # The chart often has specific sections for admission webhook pods
+          admissionWebhooks:
+            patch:
+              nodeSelector:
+                kubernetes.io/arch: "arm64"
+              # tolerations:
+              # - key: "oci.oraclecloud.com/oke-is-arm"
+              #   operator: "Exists"
+              #   effect: "NoSchedule"
+
+        # Default backend service also needs to be on arm64 if it runs a pod
+        # Some charts have a separate defaultBackend section, some use controller image
+        # For ingress-nginx, the default backend is often served by the controller itself,
+        # but if a separate default backend pod is enabled, it would also need nodeSelector.
+        # We'll rely on the controller's nodeSelector to cover the default backend initially.
+
+  destination:
+    server: 'https://kubernetes.default.svc' # Target your OKE cluster
+    namespace: ingress-nginx # Recommended namespace for Nginx Ingress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true # ArgoCD will create the 'ingress-nginx' namespace

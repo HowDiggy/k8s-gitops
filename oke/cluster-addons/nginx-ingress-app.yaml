@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-ingress-addons # This is the ArgoCD app that manages Nginx Ingress components
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git # YOUR GitOps repo SSH URL
+    path: oke/cluster-addons/nginx-ingress # Path to the Nginx Ingress manifests
+    targetRevision: main # Or your specific branch
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd # Default ns; child app specifies its own install namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
