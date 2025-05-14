@@ -1,0 +1,43 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: jauregui.paulo@icloud.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    # Enable the DNS-01 challenge provider
+    solvers:
+    - dns01:
+        cloudflare:
+          email: jauregui.paulo@icloud.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token # This is the Kubernetes secret you created
+            key: api-token            # The key within that secret holding the token
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # The ACME server URL for Let's Encrypt's staging environment
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: jauregui.paulo@icloud.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    # Enable the DNS-01 challenge provider
+    solvers:
+    - dns01:
+        cloudflare:
+          email: jauregui.paulo@icloud.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token # This is the Kubernetes secret you created
+            key: api-token            # The key within that secret holding the token
