@@ -14,25 +14,6 @@ spec:
     helm:
       values: |
         installCRDs: true
-
-        controller:
-          nodeSelector:
-            kubernetes.io/arch: "arm64"
-
-        webhook:
-          nodeSelector:
-            kubernetes.io/arch: "arm64"
-
-        cainjector:
-          nodeSelector:
-            kubernetes.io/arch: "arm64"
-
-        # The startupapicheck is a Job that runs. It also needs to be scheduled on arm64.
-        # Its values path might be slightly different, but this is a common way.
-        # If it errors, we might need to check the chart's values.yaml for 'startupapicheck' specifically.
-        startupapicheck:
-          nodeSelector:
-            kubernetes.io/arch: "arm64"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: cert-manager
