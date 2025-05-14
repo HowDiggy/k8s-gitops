@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paulojauregui-com-deployment # Changed from paulo-website-deployment
+  namespace: paulojauregui-com      # Deploy in the namespace we created
+  labels:
+    app: paulojauregui-com          # Changed from paulo-website
+spec:
+  replicas: 2 # Two replicas for availability
+  selector:
+    matchLabels:
+      app: paulojauregui-com # This selector needs to match the labels of the Pods
+  template: # This is the Pod template
+    metadata:
+      labels:
+        app: paulojauregui-com # Labels applied to Pods created by this Deployment
+    spec:
+      containers:
+      - name: paulojauregui-com-container # Changed from paulo-website-container
+        image: ghcr.io/howdiggy/paulojauregui-com:latest # Your public Docker image
+        ports:
+        - containerPort: 80 # Your Hugo site serves on port 80 inside the container
+        resources: # Recommended: Define resource requests and limits
+          requests:
+            memory: "64Mi" # Request 64 Megabytes of RAM
+            cpu: "100m"    # Request 0.1 CPU core (100 millicores)
+          limits:
+            memory: "256Mi" # Limit RAM usage to 256 Megabytes
+            cpu: "450m"     # Limit CPU usage to 0.45 CPU core
+      nodeSelector:
+        kubernetes.io/arch: "arm64" # Ensure pods run on your arm64 nodes

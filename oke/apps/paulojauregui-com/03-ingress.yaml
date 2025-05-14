@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paulojauregui-com-ingress # Changed from paulo-website-ingress
+  namespace: paulojauregui-com   # In the paulojauregui-com namespace
+  annotations:
+    kubernetes.io/ingress.class: "nginx" # Specifies to use the Nginx Ingress Controller
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Tells Cert-Manager to use your production issuer
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true" # Enforces HTTPS
+    # Optional: If you want to enable access logs for this specific ingress (they are often enabled globally on the controller)
+    # nginx.ingress.kubernetes.io/enable-access-log: "true"
+spec:
+  tls: # TLS configuration for HTTPS
+  - hosts:
+    - paulojauregui.com # Your domain
+    secretName: paulojauregui-com-tls # Cert-Manager will create/use a secret with this name to store the certificate
+  rules:
+  - host: paulojauregui.com # Your domain
+    http:
+      paths:
+      - path: / # Route all traffic for this host
+        pathType: Prefix # Matches based on URL prefix
+        backend:
+          service:
+            name: paulojauregui-com-service # The Service we created in 02-service.yaml
+            port:
+              number: 80 # The port on the Service to forward traffic to

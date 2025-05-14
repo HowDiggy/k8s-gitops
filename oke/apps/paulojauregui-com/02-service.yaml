@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paulojauregui-com-service # Changed from paulo-website-service
+  namespace: paulojauregui-com   # In the paulojauregui-com namespace
+  labels:
+    app: paulojauregui-com       # Changed from paulo-website
+spec:
+  type: ClusterIP # Exposes the service on a cluster-internal IP.
+  selector:
+    app: paulojauregui-com # Selects Pods with this label (matching our Deployment's Pods)
+  ports:
+  - protocol: TCP
+    port: 80       # The port the Service will listen on within the cluster.
+    targetPort: 80 # The port on the Pods to forward traffic to (must match containerPort in Deployment).
