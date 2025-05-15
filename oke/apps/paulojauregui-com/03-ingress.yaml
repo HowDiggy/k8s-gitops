@@ -13,6 +13,7 @@ spec:
   tls: # TLS configuration for HTTPS
   - hosts:
     - paulojauregui.com # Your domain
+    - www.paulojauregui.com
     secretName: paulojauregui-com-tls # Cert-Manager will create/use a secret with this name to store the certificate
   rules:
   - host: paulojauregui.com # Your domain
@@ -25,3 +26,14 @@ spec:
             name: paulojauregui-com-service # The Service we created in 02-service.yaml
             port:
               number: 80 # The port on the Service to forward traffic to
+
+  - host: www.paulojauregui.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: paulojauregui-com-service
+            port:
+              number: 80
