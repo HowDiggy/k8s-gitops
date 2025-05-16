@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: paulojauregui-com
-        image: ghcr.io/howdiggy/paulojauregui-com:917aa9e635e600c8efbcbcef93c75c655a7fede3
+        image: ghcr.io/howdiggy/paulojauregui-com:5cf950de1925bdc5bf04f5ddc2a63ffa04c53f92
         imagePullPolicy: Always
         ports:
         - containerPort: 80
