@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: HEAD
     path: apps/overlays/production
   destination:
