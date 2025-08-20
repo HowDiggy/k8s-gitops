@@ -1,0 +1,3 @@
+# Ignore local secrets and bootstrap manifests
+repo-config.yaml
+root-app-dev.yaml
