@@ -3,31 +3,14 @@ kind: Application
 metadata:
   name: app-paulojauregui-com
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/kustomize-version: v5.7.1
 spec:
   project: default
   source:
-    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    repoURL: git@github.com:HowDiggy/kustomize-version
     targetRevision: HEAD
-    path: apps/base/paulojauregui-com # <-- Point directly to the base
-    kustomize:
-      patches:
-        # Patch 1: Set the replica count to 1 for development
-        - patch: |
-            - op: replace
-              path: /spec/replicas
-              value: 1
-          target:
-            kind: Deployment
-            name: paulojauregui-com-deployment
-        # Patch 2: Set the nodeSelector to amd64 for development
-        - patch: |
-            - op: replace
-              path: /spec/template/spec/nodeSelector
-              value:
-                kubernetes.io/arch: "amd6d4"
-          target:
-            kind: Deployment
-            name: paulojauregui-com-deployment
+    path: apps/overlays/development
   destination:
     server: https://kubernetes.default.svc
     namespace: paulojauregui-com
