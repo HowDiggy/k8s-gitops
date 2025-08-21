@@ -1,8 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-resources:
-  - argocd-app-storage.yaml
-  - elk-stack.yaml
-  - cloudflare-tunnel.yaml
-  - paulojauregui-com.yaml
