@@ -1,0 +1,78 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: oci-prod-infrastructure
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+        - name: cert-manager
+          repoURL: https://charts.jetstack.io
+          chart: cert-manager
+          targetRevision: v1.17.2
+          namespace: cert-manager
+          helmValues: |
+            installCRDs: true
+        - name: ingress-nginx
+          repoURL: https://kubernetes.github.io/ingress-nginx
+          chart: ingress-nginx
+          targetRevision: 4.12.2
+          namespace: ingress-nginx
+          helmValues: |
+            controller:
+              replicaCount: 2
+              nodeSelector:
+                kubernetes.io/arch: "arm64"
+              service:
+                type: LoadBalancer
+                annotations:
+                  oci.oraclecloud.com/load-balancer-type: "lb"
+                  service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+              admissionWebhooks:
+                patch:
+                  nodeSelector:
+                    kubernetes.io/arch: "arm64"
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        targetRevision: '{{targetRevision}}'
+        helm:
+          values: '{{helmValues}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infra-cluster-issuers
+  namespace: argoproj
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: main
+    path: infrastructure/base/cert-manager
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
