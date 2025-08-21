@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: HEAD
+    targetRevision: multi-cluster-refactor
     path: apps/overlays/development
   destination:
     server: https://kubernetes.default.svc
