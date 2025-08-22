@@ -55,7 +55,6 @@ spec:
           selfHeal: true
         syncOptions:
         - CreateNamespace=true
-        - ServerSideApply=true # This will fix the "Too long" error
 ---
 # This Application creates the self-signed issuer for the dev cluster
 apiVersion: argoproj.io/v1alpha1
