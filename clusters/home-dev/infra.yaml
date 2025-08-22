@@ -33,7 +33,7 @@ spec:
           targetRevision: 0.23.2
           namespace: actions-runner-system
           helmValues: |
-            installCRDs: true
+            installCRDs: false
   template:
     metadata:
       name: '{{name}}'

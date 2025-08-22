@@ -1,0 +1,30 @@
+# infrastructure/base/actions-runner-controller/02-arc-crds-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: arc-crds
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://actions-runner-controller.github.io/actions-runner-controller
+    chart: actions-runner-controller
+    targetRevision: 0.23.2
+    helm:
+      # This value tells Helm to ONLY install the CRD chart templates
+      values: |
+        crds:
+          install: true
+        controller:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    # It's important to install CRDs at the cluster scope,
+    # so we target the kube-system namespace.
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
