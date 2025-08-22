@@ -27,13 +27,6 @@ spec:
                 kubernetes.io/arch: "amd64"
               service:
                 type: NodePort
-        - name: actions-runner-controller # This is the new entry
-          repoURL: https://actions-runner-controller.github.io/actions-runner-controller
-          chart: actions-runner-controller
-          targetRevision: 0.23.2
-          namespace: actions-runner-system
-          helmValues: |
-            installCRDs: false
   template:
     metadata:
       name: '{{name}}'
