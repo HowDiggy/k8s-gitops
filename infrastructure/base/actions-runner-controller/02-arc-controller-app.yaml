@@ -7,18 +7,19 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "2" # <-- Installs second
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
-    # This points to the official GitHub OCI Helm chart repository
     repoURL: oci://ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set-controller
     targetRevision: 0.9.3
     helm:
       values: |
-        # This is the key: tells the chart to NOT install CRDs
         installCRDs: false
+        authSecret:
+          create: false
+          name: controller-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: actions-runner-system
@@ -28,3 +29,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
