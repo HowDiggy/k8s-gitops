@@ -18,8 +18,7 @@ spec:
     helm:
       values: |
         # This is the key: tells the chart to NOT install CRDs
-        crds:
-          install: false
+        installCRDs: false
   destination:
     server: https://kubernetes.default.svc
     namespace: actions-runner-system
