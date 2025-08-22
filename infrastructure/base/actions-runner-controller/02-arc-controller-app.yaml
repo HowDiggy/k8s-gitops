@@ -1,0 +1,31 @@
+# infrastructure/base/actions-runner-controller/02-arc-controller-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: actions-runner-controller
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # <-- Installs second
+spec:
+  project: default
+  source:
+    # This points to the official GitHub OCI Helm chart repository
+    repoURL: oci://ghcr.io/actions/actions-runner-controller-charts
+    chart: gha-runner-scale-set-controller
+    targetRevision: 0.9.3
+    helm:
+      values: |
+        # This is the key: tells the chart to NOT install CRDs
+        crds:
+          install: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: actions-runner-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
