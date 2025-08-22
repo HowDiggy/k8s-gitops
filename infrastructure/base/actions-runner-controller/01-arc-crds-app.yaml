@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     # This points to your own git repo and the path with the raw CRD files
-    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: main
     path: infrastructure/base/actions-runner-controller/crds
   destination:
@@ -24,4 +24,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - replace: true
+      - ServerSideApply=true
