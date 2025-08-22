@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:HowDiggy/k8s-gitops.git # Your git repo
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git # Your git repo
     targetRevision: main
     path: infrastructure/base # <--- Points to your base infrastructure directory
     directory:
