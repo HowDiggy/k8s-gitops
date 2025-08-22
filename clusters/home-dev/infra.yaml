@@ -27,7 +27,7 @@ spec:
                 kubernetes.io/arch: "amd64"
               service:
                 type: NodePort
-        - name: actions-runner-controller
+        - name: actions-runner-controller # This is the new entry
           repoURL: https://actions-runner-controller.github.io/actions-runner-controller
           chart: actions-runner-controller
           targetRevision: 0.23.2
@@ -55,6 +55,7 @@ spec:
           selfHeal: true
         syncOptions:
         - CreateNamespace=true
+        - ServerSideApply=true # This will fix the "Too long" error
 ---
 # This Application creates the self-signed issuer for the dev cluster
 apiVersion: argoproj.io/v1alpha1
