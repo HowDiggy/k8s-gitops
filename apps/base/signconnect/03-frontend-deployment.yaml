@@ -1,0 +1,22 @@
+# apps/base/signconnect/03-frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: signconnect
+spec:
+  replicas: 2 # Default for production
+  selector:
+    matchLabels:
+      app: signconnect-frontend
+  template:
+    metadata:
+      labels:
+        app: signconnect-frontend
+    spec:
+      containers:
+      - name: frontend
+        # The image will be patched by Skaffold/Argo CD
+        image: ghcr.io/howdiggy/signconnect-frontend:latest
+        ports:
+        - containerPort: 5173

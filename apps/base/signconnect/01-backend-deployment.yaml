@@ -1,0 +1,26 @@
+# apps/base/signconnect/01-backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: signconnect
+spec:
+  replicas: 2 # Default for production
+  selector:
+    matchLabels:
+      app: signconnect-backend
+  template:
+    metadata:
+      labels:
+        app: signconnect-backend
+    spec:
+      containers:
+      - name: backend
+        # The image will be patched by Skaffold/Argo CD
+        image: ghcr.io/howdiggy/signconnect-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        # Note: We will need to create a secret for the database URL later
+        - name: DATABASE_URL
+          value: "postgresql://user:password@postgres-service:5432/db"

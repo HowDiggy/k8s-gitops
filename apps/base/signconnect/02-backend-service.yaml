@@ -1,0 +1,13 @@
+# apps/base/signconnect/02-backend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: signconnect
+spec:
+  selector:
+    app: signconnect-backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000

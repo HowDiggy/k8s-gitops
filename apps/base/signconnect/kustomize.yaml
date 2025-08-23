@@ -1,0 +1,9 @@
+# apps/base/signconnect/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - 00-namespace.yaml
+  - 01-backend-deployment.yaml
+  - 02-backend-service.yaml
+  - 03-frontend-deployment.yaml
+  - 04-frontend-service.yaml

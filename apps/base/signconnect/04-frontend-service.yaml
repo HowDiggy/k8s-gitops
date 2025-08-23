@@ -1,0 +1,14 @@
+# apps/base/signconnect/04-frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: signconnect
+spec:
+  type: ClusterIP
+  selector:
+    app: signconnect-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5173
