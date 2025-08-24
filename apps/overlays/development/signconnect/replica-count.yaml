@@ -1,0 +1,9 @@
+# apps/overlays/development/signconnect/replica-count.yaml
+# This patch reduces the replica count for both deployments to 1 for local development
+- op: replace
+  path: /spec/replicas
+  value: 1
+---
+- op: replace
+  path: /spec/replicas
+  value: 1
