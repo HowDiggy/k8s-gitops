@@ -1,12 +1,16 @@
 # apps/overlays/development/signconnect/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# This points to the base manifests we created in the last step
+
+# 1. Include the base resources AND the new ingress resource
 resources:
   - ../../../base/signconnect
+  - ingress.yaml
 
-# These are the patches we will apply to the base
+# 2. Enforce a namespace on all resources
+namespace: signconnect
+
+# 3. Apply patches to modify the base resources
 patches:
   - path: replica-count.yaml
-  - path: ingress.yaml
   

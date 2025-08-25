@@ -1,9 +1,18 @@
 # apps/overlays/development/signconnect/replica-count.yaml
-# This patch reduces the replica count for both deployments to 1 for local development
-- op: replace
-  path: /spec/replicas
-  value: 1
+# This patch targets the backend deployment specifically
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: signconnect # Added namespace
+spec:
+  replicas: 1
 ---
-- op: replace
-  path: /spec/replicas
-  value: 1
+# This patch targets the frontend deployment specifically
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: signconnect # Added namespace
+spec:
+  replicas: 1

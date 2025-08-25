@@ -1,0 +1,14 @@
+# apps/base/signconnect/08-postgres-service.yaml
+# This is a new file that creates the network service for the database.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service # This name MUST match the POSTGRES_SERVER value in your secret
+  namespace: signconnect
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
