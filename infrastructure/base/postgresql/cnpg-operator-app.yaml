@@ -5,14 +5,13 @@ metadata:
   name: cnpg-operator
   namespace: argocd
   annotations:
-    # This ensures the operator is installed before anything that depends on it
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
   source:
     repoURL: https://cloudnative-pg.github.io/charts
     chart: cloudnative-pg
-    targetRevision: "2024.4" # This is the latest version of the chart
+    targetRevision: "2024.4" 
   destination:
     server: https://kubernetes.default.svc
     namespace: cnpg-system
@@ -21,4 +20,6 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      # We removed "CreateNamespace=true" to resolve the conflict.
+      # ServerSideApply is a good practice for operators.
+      - ServerSideApply=true
