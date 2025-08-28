@@ -3,7 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: signconnect-db-cluster
-  namespace: signconnect # It will live alongside your app
+  namespace: signconnect # Deploys the cluster in your app's namespace
 spec:
   instances: 2
   storage:
@@ -15,7 +15,6 @@ spec:
       shared_preload_libraries: 'pg_vector'
   bootstrap:
     initdb:
-      # Create the extension in the 'postgres' database
       database: postgres
       postInitApplicationSQL:
-        - CREATE EXTENSION IF NOT EXISTS vector; # Note: pg_vector >= 0.5.0 uses 'vector'
+        - CREATE EXTENSION IF NOT EXISTS vector;
