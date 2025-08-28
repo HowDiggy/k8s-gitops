@@ -8,6 +8,4 @@ resources:
   - 03-frontend-deployment.yaml
   - 04-frontend-service.yaml
   - 05-backend-secret.yaml
-  - 06-postgres-pvc.yaml
-  - 07-postgres-deployment.yaml
-  - 08-postgres-service.yaml
+  - 09-postgres-cluster.yaml
