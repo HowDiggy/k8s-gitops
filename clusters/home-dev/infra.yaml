@@ -59,7 +59,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: main
+    targetRevision: dev
     path: infrastructure/overlays/development # We will create this path next
   destination:
     server: https://kubernetes.default.svc

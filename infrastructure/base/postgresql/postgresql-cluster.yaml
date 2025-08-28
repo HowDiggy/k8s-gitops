@@ -1,0 +1,25 @@
+# infrastructure/base/postgresql/postgresql-cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: signconnect-db-cluster
+  namespace: databases # Deploying into our new namespace
+spec:
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+  superuserSecret:
+    name: postgres-superuser-secret
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      # This is required to load the pg_vector extension library
+      shared_preload_libraries: 'pg_stat_statements,pgaudit,pg_vector'
+
+  # This bootstrap block runs SQL commands after the database is first initialized.
+  # We use it here to automatically create the pg_vector extension.
+  bootstrap:
+    initdb:
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS pg_vector;

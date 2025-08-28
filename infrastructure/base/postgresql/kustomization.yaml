@@ -1,0 +1,12 @@
+# infrastructure/base/postgresql/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # 1. Use the latest stable version of the CNPG operator manifest
+  - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.26/releases/cnpg-1.26.1.yaml
+  
+  # 2. Include our local namespace manifest
+  - 00-namespace.yaml
+  
+  # 3. Include our local PostgreSQL cluster manifest
+  - postgresql-cluster.yaml
