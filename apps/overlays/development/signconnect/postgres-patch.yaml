@@ -1,0 +1,11 @@
+# apps/overlays/development/signconnect/postgres-patch.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: signconnect-db-cluster
+spec:
+  # Scale down to a single instance for local development
+  instances: 1
+  storage:
+    # Reduce storage size for the local environment
+    size: 5Gi

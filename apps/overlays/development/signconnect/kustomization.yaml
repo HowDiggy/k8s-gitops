@@ -13,4 +13,5 @@ namespace: signconnect
 # 3. Apply patches to modify the base resources
 patches:
   - path: replica-count.yaml
+  - patch: postgres-patch.yaml
   
