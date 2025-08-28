@@ -1,0 +1,23 @@
+# clusters/home-dev/app-signconnect-dev.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-signconnect-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: dev
+    path: apps/overlays/development/signconnect
+  destination:
+    server: https://kubernetes.default.svc
+    # The application's resources will be deployed into the 'signconnect' namespace
+    namespace: signconnect
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # This will create the 'signconnect' namespace if it doesn't exist
+      - CreateNamespace=true
