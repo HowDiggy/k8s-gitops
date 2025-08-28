@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://cloudnative-pg.github.io/charts
     chart: cloudnative-pg
-    targetRevision: "2024.4" # Using the latest chart version
+    targetRevision: "0.26.0" # Using the latest chart version
   destination:
     server: https://kubernetes.default.svc
     namespace: cnpg-system # The operator's dedicated namespace
