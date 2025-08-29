@@ -27,9 +27,9 @@ spec:
         automated:
           prune: true
           selfHeal: true
-        # Add this 'ignoreDifferences' block
-        ignoreDifferences:
-        - group: argoproj.io
-          kind: Application
-          jsonPointers:
-          - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
+      # Correct placement for 'ignoreDifferences' - directly under spec
+      ignoreDifferences:
+      - group: argoproj.io
+        kind: Application
+        jsonPointers:
+        - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
