@@ -15,6 +15,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: signconnect
-  syncPolicy: {}
+  syncPolicy:
     syncOptions:
       - CreateNamespace=true
