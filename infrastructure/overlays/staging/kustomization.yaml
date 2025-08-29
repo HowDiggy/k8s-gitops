@@ -1,0 +1,12 @@
+# infrastructure/overlays/staging/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Include the base ingress-nginx application
+  - ../../base/ingress-nginx
+patches:
+  # Apply the staging-specific patch
+  - path: ingress-nginx-patch.yaml
+    target:
+      kind: Application
+      name: ingress-nginx

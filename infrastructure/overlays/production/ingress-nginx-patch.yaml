@@ -1,0 +1,23 @@
+# infrastructure/overlays/production/ingress-nginx-patch.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+spec:
+  source:
+    helm:
+      values: |
+        controller:
+          replicaCount: 2
+          nodeSelector:
+            kubernetes.io/arch: "arm64"
+          service:
+            annotations:
+              oci.oraclecloud.com/load-balancer-type: "lb"
+              service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+              service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+              service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+          admissionWebhooks:
+            patch:
+              nodeSelector:
+                kubernetes.io/arch: "arm64"
