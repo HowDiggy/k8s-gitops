@@ -1,0 +1,10 @@
+# apps/overlays/production/signconnect/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# 1. Inherit all the resources from the signconnect base
+resources:
+  - ../../../base/signconnect
+
+# 2. Ensure all resources are deployed to the 'signconnect' namespace
+namespace: signconnect
