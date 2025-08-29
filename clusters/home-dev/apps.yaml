@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-paulojauregui-com
+  name: dev-app-paulojauregui-com
   namespace: argocd
   annotations:
     argocd.argoproj.io/kustomize-version: v5.7.1

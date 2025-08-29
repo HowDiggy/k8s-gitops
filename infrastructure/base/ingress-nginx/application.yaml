@@ -1,0 +1,26 @@
+# infrastructure/base/ingress-nginx/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # This name will be used by all environments
+  name: ingress-nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.12.2 # The version you are using
+    helm:
+      # These are default values. Overlays will patch them.
+      values: |
+        controller:
+          replicaCount: 1
+          service:
+            type: LoadBalancer
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-nginx # It will be deployed here
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

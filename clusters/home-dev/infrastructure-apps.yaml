@@ -2,31 +2,40 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infrastructure-apps
+  name: dev-infrastructure-apps
   namespace: argocd
 spec:
+  # We will explicitly list the infrastructure applications to create
   generators:
-  - git:
-      repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      revision: dev
-      directories:
-      # This tells the generator to look for subdirectories in infrastructure/base
-      - path: infrastructure/base/*
+  - list:
+      elements:
+      - name: sealed-secrets
+        repoURL: https://sealed-secrets.github.io/sealed-secrets
+        chart: sealed-secrets
+        version: "2.17.4"
+        namespace: kube-system
+      - name: cnpg-operator
+        repoURL: https://cloudnative-pg.github.io/charts
+        chart: cloudnative-pg
+        version: "0.26.0"
+        namespace: cnpg-system
   template:
     metadata:
-      # The name of the app will be the subdirectory name (e.g., 'postgresql')
-      name: '{{path.basename}}'
+      name: '{{name}}'
       namespace: argocd
     spec:
       project: default
       source:
-        repoURL: https://github.com/HowDiggy/k8s-gitops.git
-        targetRevision: dev
-        path: '{{path}}' # The path comes from the generator
+        repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        targetRevision: '{{version}}'
       destination:
         server: https://kubernetes.default.svc
-        # Namespace is managed by the application's own manifests
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

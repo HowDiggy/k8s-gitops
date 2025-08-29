@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: home-dev-infrastructure
+  name: dev-infrastructure
   namespace: argocd
 spec:
   generators:
@@ -53,7 +53,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infra-cluster-issuers-dev
+  name: dev-infra-cluster-issuers
   namespace: argocd
 spec:
   project: default
