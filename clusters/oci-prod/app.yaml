@@ -13,5 +13,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: paulojauregui-com
   syncPolicy: {}
-  syncOptions:
-    - CreateNamespace=true
+    syncOptions:
+      - CreateNamespace=true
