@@ -10,11 +10,9 @@ spec:
       repoURL: https://github.com/HowDiggy/k8s-gitops.git
       revision: dev
       directories:
-      # This tells the generator to look for subdirectories in infrastructure/base
       - path: infrastructure/base/*
   template:
     metadata:
-      # The name of the app will be the subdirectory name (e.g., 'postgresql')
       name: '{{path.basename}}'
       namespace: argocd
     spec:
@@ -22,11 +20,16 @@ spec:
       source:
         repoURL: https://github.com/HowDiggy/k8s-gitops.git
         targetRevision: dev
-        path: '{{path}}' # The path comes from the generator
+        path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        # Namespace is managed by the application's own manifests
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        # Add this 'ignoreDifferences' block
+        ignoreDifferences:
+        - group: argoproj.io
+          kind: Application
+          jsonPointers:
+          - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
