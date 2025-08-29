@@ -1,5 +1,0 @@
-# infrastructure/base/actions-runner-controller/00-namespace.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: actions-runner-system

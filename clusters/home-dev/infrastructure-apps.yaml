@@ -1,23 +1,32 @@
 # clusters/home-dev/infrastructure-apps.yaml
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
   name: infrastructure-apps
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git # Your git repo
-    targetRevision: dev
-    path: infrastructure/base # <--- Points to your base infrastructure directory
-    directory:
-      recurse: true # <--- The magic! Finds all apps in subdirectories
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd # This app creates other apps in the argocd namespace
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  generators:
+  - git:
+      repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      revision: dev
+      directories:
+      # This tells the generator to look for subdirectories in infrastructure/base
+      - path: infrastructure/base/*
+  template:
+    metadata:
+      # The name of the app will be the subdirectory name (e.g., 'postgresql')
+      name: '{{path.basename}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/HowDiggy/k8s-gitops.git
+        targetRevision: dev
+        path: '{{path}}' # The path comes from the generator
+      destination:
+        server: https://kubernetes.default.svc
+        # Namespace is managed by the application's own manifests
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

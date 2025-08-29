@@ -1,0 +1,20 @@
+# apps/base/signconnect/09-postgres-cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: signconnect-db-cluster
+  namespace: signconnect # Deploys the cluster in your app's namespace
+spec:
+  instances: 2
+  storage:
+    size: 10Gi
+  superuserSecret:
+    name: postgres-superuser-secret
+  postgresql:
+    parameters:
+      shared_preload_libraries: 'pg_vector'
+  bootstrap:
+    initdb:
+      database: postgres
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector;

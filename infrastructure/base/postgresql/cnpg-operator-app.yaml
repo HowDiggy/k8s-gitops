@@ -1,0 +1,26 @@
+# infrastructure/base/postgresql/cnpg-operator-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # This name is important and will be used by the ApplicationSet
+  name: cnpg-operator
+  namespace: argocd # The namespace where ArgoCD lives
+  annotations:
+    # Using a negative sync wave ensures the operator is installed first
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    repoURL: https://cloudnative-pg.github.io/charts
+    chart: cloudnative-pg
+    targetRevision: "0.26.0" # Using the latest chart version
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cnpg-system # The operator's dedicated namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
