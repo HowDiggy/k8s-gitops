@@ -17,19 +17,26 @@ spec:
       namespace: argocd
     spec:
       project: default
+      # --- THIS IS THE CRITICAL CHANGE ---
       source:
         repoURL: https://github.com/HowDiggy/k8s-gitops.git
         targetRevision: dev
         path: '{{path}}'
+        # By adding this 'kustomize' block, we tell the generated Application
+        # to run 'kustomize build' on the path. This correctly processes
+        # the kustomization.yaml in the subdirectory (e.g., /sealed-secrets),
+        # which in turn includes the real Application manifest with the Helm source.
+        kustomize: {}
+      # ------------------------------------
       destination:
         server: https://kubernetes.default.svc
+        namespace: default # This is a placeholder, the actual namespace is set by the child app
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
-      # Correct placement for 'ignoreDifferences' - directly under spec
-      ignoreDifferences:
-      - group: argoproj.io
-        kind: Application
-        jsonPointers:
-        - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
+        ignoreDifferences:
+        - group: argoproj.io
+          kind: Application
+          jsonPointers:
+          - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
