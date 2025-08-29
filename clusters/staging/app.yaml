@@ -1,20 +1,17 @@
-# clusters/oci-prod/app-signconnect-prod.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-app-signconnect
+  name: staging-app-paulojauregui-com
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    # Production should always track the 'main' branch
     targetRevision: main
-    # Point to the new production overlay we just created
-    path: apps/overlays/production/signconnect
+    path: apps/overlays/staging
   destination:
     server: https://kubernetes.default.svc
-    namespace: signconnect
+    namespace: paulojauregui-com
   syncPolicy:
     automated:
       prune: true

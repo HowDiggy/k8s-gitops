@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infrastructure-apps
+  name: dev-infrastructure-apps
   namespace: argocd
 spec:
   # We will explicitly list the infrastructure applications to create

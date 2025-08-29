@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: oci-prod-infrastructure
+  name: prod-infrastructure
   namespace: argocd
 spec:
   generators:
@@ -61,7 +61,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infra-cluster-issuers
+  name: prod-infra-cluster-issuers
   namespace: argocd
 spec:
   project: default

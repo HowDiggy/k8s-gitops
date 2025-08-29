@@ -1,32 +1,40 @@
-# This ApplicationSet creates the Helm-based infrastructure apps for the dev cluster
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: dev-infrastructure
+  name: staging-infrastructure
   namespace: argocd
 spec:
   generators:
   - list:
       elements:
-        - name: cert-manager-dev
+        - name: cert-manager
           repoURL: https://charts.jetstack.io
           chart: cert-manager
           targetRevision: v1.17.2
           namespace: cert-manager
           helmValues: |
             installCRDs: true
-        - name: ingress-nginx-dev
+        - name: ingress-nginx
           repoURL: https://kubernetes.github.io/ingress-nginx
           chart: ingress-nginx
           targetRevision: 4.12.2
           namespace: ingress-nginx
           helmValues: |
             controller:
-              replicaCount: 1
+              replicaCount: 2
               nodeSelector:
-                kubernetes.io/arch: "amd64"
+                kubernetes.io/arch: "arm64"
               service:
-                type: NodePort
+                type: LoadBalancer
+                annotations:
+                  oci.oraclecloud.com/load-balancer-type: "lb"
+                  service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+              admissionWebhooks:
+                patch:
+                  nodeSelector:
+                    kubernetes.io/arch: "arm64"
   template:
     metadata:
       name: '{{name}}'
@@ -48,19 +56,19 @@ spec:
           selfHeal: true
         syncOptions:
         - CreateNamespace=true
+
 ---
-# This Application creates the self-signed issuer for the dev cluster
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dev-infra-cluster-issuers
+  name: staging-infra-cluster-issuers
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: dev
-    path: infrastructure/overlays/development # We will create this path next
+    targetRevision: main
+    path: infrastructure/base/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
