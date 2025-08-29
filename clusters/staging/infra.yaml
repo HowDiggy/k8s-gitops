@@ -1,3 +1,4 @@
+# clusters/staging/infra.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -21,20 +22,15 @@ spec:
           namespace: ingress-nginx
           helmValues: |
             controller:
-              replicaCount: 2
+              replicaCount: 1
               nodeSelector:
-                kubernetes.io/arch: "arm64"
+                kubernetes.io/arch: "amd64"
               service:
                 type: LoadBalancer
-                annotations:
-                  oci.oraclecloud.com/load-balancer-type: "lb"
-                  service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
-                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
-                  service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
               admissionWebhooks:
                 patch:
                   nodeSelector:
-                    kubernetes.io/arch: "arm64"
+                    kubernetes.io/arch: "amd64"
   template:
     metadata:
       name: '{{name}}'
