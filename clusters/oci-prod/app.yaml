@@ -12,9 +12,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: paulojauregui-com
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  syncPolicy: {}
+  syncOptions:
+    - CreateNamespace=true
