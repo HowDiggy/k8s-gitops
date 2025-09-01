@@ -20,16 +20,17 @@ spec:
           chart: ingress-nginx
           targetRevision: 4.12.2
           namespace: ingress-nginx
-          helmValues: |
-            controller:
-              replicaCount: 1
-              nodeSelector:
-                kubernetes.io/arch: "arm64"
-              service:
-                type: NodePort
-                NodePorts:
-                  http: 80
-                  https: 443
+          helm:
+            values: |
+              controller:
+                replicaCount: 1
+                nodeSelector:
+                  kubernetes.io/arch: "arm64"
+                service:
+                  type: NodePort
+                  NodePorts:
+                    http: 80
+                    https: 443
   template:
     metadata:
       name: '{{name}}'
