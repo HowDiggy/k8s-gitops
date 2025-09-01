@@ -27,6 +27,9 @@ spec:
                 kubernetes.io/arch: "arm64"
               service:
                 type: NodePort
+                NodePorts:
+                  http: 80
+                  https: 443
   template:
     metadata:
       name: '{{name}}'
