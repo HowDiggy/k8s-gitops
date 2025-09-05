@@ -17,12 +17,10 @@ spec:
     spec:
       containers:
         - name: backend
-          # Use the image you just pushed
           image: ghcr.io/howdiggy/signconnect-backend:latest
-          imagePullPolicy: Always # Ensures the latest image is always pulled
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
-          # Liveness and Readiness probes are crucial for reliability
           livenessProbe:
             httpGet:
               path: /health
@@ -57,14 +55,19 @@ spec:
                 secretKeyRef:
                   name: signconnect-db-credentials
                   key: dbname
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-credentials
+                  key: password
+            # Set non-secret config
+            - name: SENTRY_ENVIRONMENT
+              value: "development"
           envFrom:
-            # This loads the database connection details from the secret
-            # that CloudNativePG automatically creates for your cluster.
-            - secretRef:
-                name: signconnect-db-credentials
-            # This will load your application-specific secrets
+            # This loads the rest of your secrets (API keys, etc.)
             - secretRef:
                 name: signconnect-backend-secret
+          
           resources:
             requests:
               cpu: "100m"
