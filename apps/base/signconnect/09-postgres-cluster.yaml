@@ -2,19 +2,34 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: signconnect-db-cluster
-  namespace: signconnect # Deploys the cluster in your app's namespace
+  name: signconnect-db
+  namespace: signconnect
 spec:
-  instances: 2
+  instances: 1
+  primaryUpdateStrategy: unsupervised
   storage:
-    size: 10Gi
-  superuserSecret:
-    name: postgres-superuser-secret
+    size: 2Gi # For development, can increase for prod
   postgresql:
     parameters:
       shared_preload_libraries: 'pg_vector'
+  # --- User and Database Configuration ---
   bootstrap:
     initdb:
-      database: postgres
+      database: signconnectdb
+      owner: signconnect_user
       postInitApplicationSQL:
         - CREATE EXTENSION IF NOT EXISTS vector;
+      # We do not specify a password, so CNPG will generate one
+  # --- Backup Configuration (Optional but Recommended) ---
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: "s3://your-s3-bucket/path/to/backups/"
+  #     endpointURL: "https://your-s3-endpoint"
+  #     # Add credentials for your S3 bucket here
+  #     # s3Credentials:
+  #     #   accessKeyId:
+  #     #     name: aws-credentials
+  #     #     key: AWS_ACCESS_KEY_ID
+  #     #   secretAccessKey:
+  #     #     name: aws-credentials
+  #     #     key: AWS_SECRET_ACCESS_KEY

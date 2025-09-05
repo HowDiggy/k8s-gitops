@@ -1,21 +1,32 @@
 # apps/overlays/development/signconnect/ingress.yaml
-# This patch adds an Ingress to expose the frontend service on your local cluster
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: signconnect-ingress
-  namespace: signconnect
   annotations:
+    # This annotation is important for your ingress-nginx controller
     kubernetes.io/ingress.class: "nginx"
+    # This annotation allows the websocket connection to stay open longer
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   rules:
-  - host: signconnect.local
+  - host: signconnect.local # Hostname for your dev environment
     http:
       paths:
+      # Route traffic to the backend API
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: signconnect-backend-svc
+            port:
+              number: 8000
+      # Route all other traffic to the frontend
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: frontend-service
+            name: signconnect-frontend-svc
             port:
               number: 80

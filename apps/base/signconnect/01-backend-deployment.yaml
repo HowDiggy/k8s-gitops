@@ -1,12 +1,12 @@
 # apps/base/signconnect/01-backend-deployment.yaml
-# This is an updated version of your existing file.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
-  namespace: signconnect
+  name: signconnect-backend
+  labels:
+    app: signconnect-backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: signconnect-backend
@@ -16,12 +16,59 @@ spec:
         app: signconnect-backend
     spec:
       containers:
-      - name: backend
-        image: ghcr.io/howdiggy/signconnect-backend:latest
-        ports:
-        - containerPort: 8000
-        # This new 'envFrom' block tells the container to load all key-value
-        # pairs from the 'backend-secret' as environment variables.
-        envFrom:
-        - secretRef:
-            name: backend-secret
+        - name: backend
+          # Use the image you just pushed
+          image: ghcr.io/howdiggy/signconnect-backend:latest
+          imagePullPolicy: Always # Ensures the latest image is always pulled
+          ports:
+            - containerPort: 8000
+          # Liveness and Readiness probes are crucial for reliability
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            # Map keys from the CNPG secret to the variable names your app expects
+            - name: POSTGRES_SERVER
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-credentials
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-credentials
+                  key: port
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-credentials
+                  key: user
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-credentials
+                  key: dbname
+          envFrom:
+            # This loads the database connection details from the secret
+            # that CloudNativePG automatically creates for your cluster.
+            - secretRef:
+                name: signconnect-db-credentials
+            # This will load your application-specific secrets
+            - secretRef:
+                name: signconnect-backend-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

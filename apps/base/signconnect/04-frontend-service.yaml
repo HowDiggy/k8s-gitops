@@ -2,13 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
-  namespace: signconnect
+  name: signconnect-frontend-svc
 spec:
-  type: ClusterIP
   selector:
     app: signconnect-frontend
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5173
+    - protocol: TCP
+      port: 80
+      targetPort: 80

@@ -2,12 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
-  namespace: signconnect
+  name: signconnect-backend-svc
 spec:
   selector:
     app: signconnect-backend
   ports:
-  - protocol: TCP
-    port: 8000
-    targetPort: 8000
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

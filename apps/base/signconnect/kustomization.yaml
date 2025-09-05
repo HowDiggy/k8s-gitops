@@ -7,5 +7,5 @@ resources:
   - 02-backend-service.yaml
   - 03-frontend-deployment.yaml
   - 04-frontend-service.yaml
-  - 05-backend-secret.yaml
+  - 05-backend-sealed-secret.yaml
   - 09-postgres-cluster.yaml

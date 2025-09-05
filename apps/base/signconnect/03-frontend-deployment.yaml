@@ -2,10 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
-  namespace: signconnect
+  name: signconnect-frontend
+  labels:
+    app: signconnect-frontend
 spec:
-  replicas: 2 # Default for production
+  replicas: 1
   selector:
     matchLabels:
       app: signconnect-frontend
@@ -15,8 +16,47 @@ spec:
         app: signconnect-frontend
     spec:
       containers:
-      - name: frontend
-        # The image will be patched by Skaffold/Argo CD
-        image: ghcr.io/howdiggy/signconnect-frontend:latest
-        ports:
-        - containerPort: 5173
+        - name: frontend
+          # Use the frontend image you pushed
+          image: ghcr.io/howdiggy/signconnect-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          # Probes for Nginx are straightforward, checking the root page
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            env:
+        # This tells the frontend how to reach the backend API
+        - name: VITE_API_BASE_URL
+          value: "http://signconnect-backend-svc:8000"
+        # These are the public Firebase keys for the client
+        - name: VITE_FIREBASE_API_KEY
+          value: "YOUR_PUBLIC_FIREBASE_API_KEY"
+        - name: VITE_FIREBASE_AUTH_DOMAIN
+          value: "YOUR_FIREBASE_AUTH_DOMAIN"
+        - name: VITE_FIREBASE_PROJECT_ID
+          value: "YOUR_FIREBASE_PROJECT_ID"
+        - name: VITE_FIREBASE_STORAGE_BUCKET
+          value: "YOUR_FIREBASE_STORAGE_BUCKET"
+        - name: VITE_FIREBASE_MESSAGING_SENDER_ID
+          value: "YOUR_FIREBASE_MESSAGING_SENDER_ID"
+        - name: VITE_FIREBASE_APP_ID
+          value: "YOUR_FIREBASE_APP_ID"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
