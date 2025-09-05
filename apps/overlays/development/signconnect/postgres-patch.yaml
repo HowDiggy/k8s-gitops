@@ -1,8 +1,9 @@
 # apps/overlays/development/signconnect/postgres-patch.yaml
+# Change 'signconnect-db-cluster' to 'signconnect-db'
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: signconnect-db-cluster
+  name: signconnect-db # This name now matches the base manifest
 spec:
   # Scale down to a single instance for local development
   instances: 1
