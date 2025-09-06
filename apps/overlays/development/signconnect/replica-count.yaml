@@ -4,7 +4,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: signconnect-backend # This name now matches the base manifest
-  namespace: signconnect
 spec:
   replicas: 1
 ---
@@ -13,6 +12,5 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: signconnect-frontend # This name now matches the base manifest
-  namespace: signconnect
 spec:
   replicas: 1
