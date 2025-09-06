@@ -3,7 +3,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: signconnect-db
-  namespace: signconnect
 spec:
   instances: 1
   primaryUpdateStrategy: unsupervised
