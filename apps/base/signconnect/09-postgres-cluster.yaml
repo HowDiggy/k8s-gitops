@@ -8,15 +8,14 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 2Gi # For development, can increase for prod
-  postgresql:
-    parameters:
-      shared_preload_libraries: 'pg_vector'
+  
   # --- User and Database Configuration ---
   bootstrap:
     initdb:
       database: signconnectdb
       owner: signconnect_user
       postInitApplicationSQL:
+        # This is the correct way to enable the extension
         - CREATE EXTENSION IF NOT EXISTS vector;
       # We do not specify a password, so CNPG will generate one
   # --- Backup Configuration (Optional but Recommended) ---
