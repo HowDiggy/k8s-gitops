@@ -67,6 +67,8 @@ spec:
             # This loads the rest of your secrets (API keys, etc.)
             - secretRef:
                 name: signconnect-backend-secret
+            - secretRef:
+                name: signconnect-db-app
           
           resources:
             requests:
