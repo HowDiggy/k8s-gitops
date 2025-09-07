@@ -33,43 +33,18 @@ spec:
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
+          # This 'env' block now only contains non-secret values
           env:
-            # Map keys from the CNPG secret to the variable names your app expects
-            - name: POSTGRES_SERVER
-              valueFrom:
-                secretKeyRef:
-                  name: signconnect-db-credentials
-                  key: host
-            - name: POSTGRES_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: signconnect-db-credentials
-                  key: port
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: signconnect-db-credentials
-                  key: user
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: signconnect-db-credentials
-                  key: dbname
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: signconnect-db-credentials
-                  key: password
-            # Set non-secret config
             - name: SENTRY_ENVIRONMENT
               value: "development"
+          # This 'envFrom' block loads all secrets correctly
           envFrom:
-            # This loads the rest of your secrets (API keys, etc.)
+            # Loads API keys from the sealed secret
             - secretRef:
                 name: signconnect-backend-secret
+            # Loads all DB credentials from the CNPG-generated secret
             - secretRef:
                 name: signconnect-db-app
-          
           resources:
             requests:
               cpu: "100m"
