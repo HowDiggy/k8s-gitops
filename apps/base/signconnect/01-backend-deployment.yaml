@@ -49,8 +49,8 @@ spec:
                 name: signconnect-db-app
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "500m"
+              cpu: "250m"
               memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "4Gi"
