@@ -52,14 +52,37 @@ spec:
               value: "/app/src"
             - name: SENTRY_ENVIRONMENT
               value: "development"
+            # Map keys from the CNPG secret to the variable names Pydantic expects
+            - name: POSTGRES_SERVER
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-app # Correct secret name
+                  key: host               # Correct key for the server hostname
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-app # Correct secret name
+                  key: port
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-app # Correct secret name
+                  key: user
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-app # Correct secret name
+                  key: dbname
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: signconnect-db-app # Correct secret name
+                  key: password
           # This 'envFrom' block loads all secrets correctly
           envFrom:
             # Loads API keys from the sealed secret
             - secretRef:
                 name: signconnect-backend-secret
-            # Loads all DB credentials from the CNPG-generated secret
-            - secretRef:
-                name: signconnect-db-app
           resources:
             requests:
               cpu: "250m"
