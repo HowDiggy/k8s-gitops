@@ -17,8 +17,7 @@ spec:
     spec:
       initContainers:
         - name: check-db-secret
-          image: busybox:1.36 # A tiny, minimal image
-          # This command checks for the secret every 2 seconds until it exists
+          image: busybox:1.36
           command:
             - sh
             - -c
@@ -46,45 +45,42 @@ spec:
               port: 8000
             initialDelaySeconds: 15
             periodSeconds: 10
-          # This 'env' block now only contains non-secret values
           env:
             - name: PYTHONPATH
               value: "/app/src"
             - name: SENTRY_ENVIRONMENT
               value: "development"
-            # Map keys from the CNPG secret to the variable names Pydantic expects
             - name: POSTGRES_SERVER
               valueFrom:
                 secretKeyRef:
-                  name: signconnect-db-app # Correct secret name
-                  key: host               # Correct key for the server hostname
+                  name: signconnect-db-app
+                  key: host
             - name: POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
-                  name: signconnect-db-app # Correct secret name
+                  name: signconnect-db-app
                   key: port
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: signconnect-db-app # Correct secret name
+                  name: signconnect-db-app
                   key: user
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: signconnect-db-app # Correct secret name
+                  name: signconnect-db-app
                   key: dbname
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: signconnect-db-app # Correct secret name
+                  name: signconnect-db-app
                   key: password
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/gcp/firebase-service-account.json
-          # This 'envFrom' block loads all secrets correctly
           envFrom:
-            # Loads API keys from the sealed secret
             - secretRef:
                 name: signconnect-backend-secret
+          # --- MOVED volumeMounts to be inside the container spec ---
           volumeMounts:
             - name: gcp-creds
               mountPath: /etc/gcp
@@ -96,9 +92,10 @@ spec:
             limits:
               cpu: "1000m"
               memory: "4Gi"
+      # --- MOVED volumes to be inside the pod spec ---
       volumes:
         - name: gcp-creds
-          secrets:
+          secret:
             secretName: signconnect-backend-secret
             items:
               - key: FIREBASE_SERVICE_ACCOUNT_JSON
