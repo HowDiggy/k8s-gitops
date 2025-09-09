@@ -78,11 +78,17 @@ spec:
                 secretKeyRef:
                   name: signconnect-db-app # Correct secret name
                   key: password
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/gcp/firebase-service-account.json
           # This 'envFrom' block loads all secrets correctly
           envFrom:
             # Loads API keys from the sealed secret
             - secretRef:
                 name: signconnect-backend-secret
+          volumeMounts:
+            - name: gcp-creds
+              mountPath: /etc/gcp
+              readOnly: true
           resources:
             requests:
               cpu: "250m"
@@ -90,3 +96,10 @@ spec:
             limits:
               cpu: "1000m"
               memory: "4Gi"
+      volumes:
+        - name: gcp-creds
+          secrets:
+            secretName: signconnect-backend-secret
+            items:
+              - key: FIREBASE_SERVICE_ACCOUNT_JSON
+                path: firebase-service-account.json
