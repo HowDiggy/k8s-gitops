@@ -17,12 +17,10 @@ spec:
     spec:
       containers:
         - name: frontend
-          # Use the frontend image you pushed
           image: ghcr.io/howdiggy/signconnect-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-          # Probes for Nginx are straightforward, checking the root page
           livenessProbe:
             httpGet:
               path: /
@@ -36,17 +34,11 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
-          - name: VITE_FIREBASE_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: signconnect-backend-secret
-                key: FIREBASE_CLIENT_API_KEY
-          # This tells the frontend how to reach the backend API
-          - name: VITE_API_BASE_URL
-            value: "/api"
-          envFrom:
-            - secretRef:
-                name: signconnect-backend-secret
+            # This is not a secret and is only used by the Nginx proxy config if needed.
+            # It's safe to keep, but is not part of the current problem.
+            - name: VITE_API_BASE_URL
+              value: "/api"
+          # --- REMOVED `envFrom` and the specific `valueFrom` for the API key ---
           resources:
             requests:
               cpu: "50m"
