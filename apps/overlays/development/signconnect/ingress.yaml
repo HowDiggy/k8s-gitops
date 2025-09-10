@@ -9,7 +9,12 @@ metadata:
     # This annotation allows the websocket connection to stay open longer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    cert-manager.io/cluster-issuer: self-signed-issuer
 spec:
+  tls:                                                    # <-- ADD THIS BLOCK
+    - hosts:
+        - signconnect.local
+      secretName: signconnect-local-tls
   rules:
   - host: signconnect.local # Hostname for your dev environment
     http:
