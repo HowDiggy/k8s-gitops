@@ -36,6 +36,11 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
+          - name: VITE_FIREBASE_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: signconnect-backend-secret
+                key: FIREBASE_CLIENT_API_KEY
           # This tells the frontend how to reach the backend API
           - name: VITE_API_BASE_URL
             value: "/api"
