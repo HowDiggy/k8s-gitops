@@ -14,3 +14,4 @@ namespace: signconnect
 patches:
   - path: replica-count.yaml
   - path: postgres-patch.yaml
+  - path: google-cred-env.yaml

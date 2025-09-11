@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signconnect-backend
+spec:
+  template:
+    spec:
+      containers:
+      - name: backend
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcp/firebase-service-account.json
