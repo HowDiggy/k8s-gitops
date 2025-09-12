@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: neon-dev-clutover
+    targetRevision: neon-dev-cutover
     path: apps/overlays/development/signconnect
   destination:
     server: https://kubernetes.default.svc
