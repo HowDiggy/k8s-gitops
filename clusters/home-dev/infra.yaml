@@ -24,9 +24,9 @@ spec:
             controller:
               replicaCount: 1
               nodeSelector:
-                kubernetes.io/arch: "amd64"
+                kubernetes.io/arch: "arm64"
               service:
-                type: NodePort
+                type: LoadBalancer
   template:
     metadata:
       name: '{{name}}'

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # This is the name for the Argo CD application itself
+  name: sample-app-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: dev
+    # This points to the directory where you created the app's manifests
+    path: apps/base/sample-app
+  destination:
+    server: https://kubernetes.default.svc
+    # This is the namespace where the app will be deployed
+    namespace: sample-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # This tells Argo CD to create the 'sample-app' namespace if it doesn't exist
+      - CreateNamespace=true

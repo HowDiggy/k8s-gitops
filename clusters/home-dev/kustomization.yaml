@@ -1,0 +1,9 @@
+# clusters/home-dev/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - app-signconnect-dev.yaml
+  - apps.yaml
+  - infra.yaml
+  - infrastructure-apps.yaml
+  - sample-app-dev.yaml

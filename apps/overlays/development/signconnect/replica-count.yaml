@@ -1,18 +1,16 @@
 # apps/overlays/development/signconnect/replica-count.yaml
-# This patch targets the backend deployment specifically
+# Change 'backend-deployment' to 'signconnect-backend'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
-  namespace: signconnect # Added namespace
+  name: signconnect-backend # This name now matches the base manifest
 spec:
   replicas: 1
 ---
-# This patch targets the frontend deployment specifically
+# Change 'frontend-deployment' to 'signconnect-frontend'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
-  namespace: signconnect # Added namespace
+  name: signconnect-frontend # This name now matches the base manifest
 spec:
   replicas: 1
