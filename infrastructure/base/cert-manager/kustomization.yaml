@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - letsencrypt-issuers.yaml
   - sealed-cloudflare-token.yaml
+  - application.yaml
