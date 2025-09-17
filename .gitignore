@@ -4,3 +4,4 @@ root-app-dev.yaml
 root-app-prod.yaml
 test-app.yaml
 root-app-staging.yaml
+.secrets/*
