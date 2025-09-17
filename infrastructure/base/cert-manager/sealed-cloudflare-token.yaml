@@ -1,21 +1,15 @@
-{
-  "kind": "SealedSecret",
-  "apiVersion": "bitnami.com/v1alpha1",
-  "metadata": {
-    "name": "cloudflare-api-token-secret",
-    "namespace": "cert-manager",
-    "creationTimestamp": null
-  },
-  "spec": {
-    "template": {
-      "metadata": {
-        "name": "cloudflare-api-token-secret",
-        "namespace": "cert-manager",
-        "creationTimestamp": null
-      }
-    },
-    "encryptedData": {
-      "api-token": "AgCZNMvDQyxykqEaf2yfc0ZGFlg6mo94QQVId0usppFgmOBbAUK2ZIYPCDQF1oqzm71Tff2UeXXn+Eidx/PpQsWVAqZo9qRvyxnVrHY1vRG53mh1wLkeuT98AFoOEIOAhiqKAE6/Wbs8EgMVvW9o05exJVkd9mGtFLC/soSIcDLlShwQpLHjZfTmT/taW/pfKuTuE2C3bArHbJjLLyaSj220TkJTOs0KRxDpJIiO8iH/82DvUTSQ2zaRdCOKybKxH5Bvkq+/wVEp33geooeT8xFSqU/O65p5nDyXJfJfHbbs4nCjGnW6UZfxOzpzL10UJniG5mjXWpwWxWRh7ri0Ved4P920VBUVv9tsjX/D2SDkExb2FoG5KDSfvaPtdZanxA710DIQbqDh+niVkYDtnJFH1ahc4AWuHdoBd12Dy7Y84eohXu9Cn4VWG98FmeZ1LXix/zdqDHBbJDLwlFa5Oi+RGI2iNDqGZogcIS3vXvi2kB/vPrwW0te3PyKHeQcx0N+WhfTMSPwwO8OtnqmBSd37JVNZlX0e6FgCclW2A5jHbBBgsMnchnuMm8/KobZ3j9wVdmAklYywGIOsw6Boy6mCwDCVepkKkh+fu3BNtumm791OEVUd5M6VGQwikOS6fQyZO6KQ63sZiW9XJf38ggZA6WzwgzY2aQByvnPDEmLIFZnODaaf4f7MaVChMkDc53xnbBnZP6a6HgVSdzrkqecjaEHGCQEOuNQGJe69Bzlgjf7J/8yV1aQ6"
-    }
-  }
-}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: cloudflare-api-token-secret
+  namespace: cert-manager
+spec:
+  encryptedData:
+    api-token: AgB9D67DfgX6X7ijPgtqpBv5TUEpbscW6S502w7TNQ3MnvaHPi5HAp/mlaSBGD+FzBy2LJtTSAPGrfpddqtXpyJVwUnAY1vJHJrsJRm1b+UKMlc6VzH5aM6oAjFz6MbieNV7kxAvjcoQXHviNukF1CvU48tV8Fazp5BURyZxReWKiRa+e93KCqxRruoIUIB+ewCxHsibgJVjC7xBKYY41QvuUkX9I+evRL9ZLzykNVmkbrJSbLzxTQIT4/r7r12lgDAfezlHFCzrpVZcpx8zUngNXHf7xtpZlpSCVkMLQLz1q+RrucG/P43ywpt1XJKhsGifEU9fPlic1jAfMbrUbzso7F9r7j1fzzJbcRfoTHkY20orfQPlsvBCc8SuMZKFQ/SAkB41Vh7lZRgQtHGgMi6CKnBru5M3wSS/dyDdNUGLKri/JuAdSl2CNqlIYAltznAspYhij2+KJ1Iq8JfEeWEGn1/cTb/tIdqvj/DOrDywzxC+BTmvZpdPtNfKuVKdUW5VY6soH/bWwjk6zLa9AE/X8Aok5pW9NngLOn1P8FE0dXaUGsLtUCRQb/meAVUew8hRkbslyf/aRuM2f2YZFkgR5QlliEb5bseHAjT5KHI+5qp5G/MUNRv6jhMA7XSUmDKru4k0EjvFJPPJUN9TuDfrzDovoKc06HuQcPb5uR57ZTfNQP+hnyfRhuOiRiPmynWYJPsENAiMa/DI0bdAXZal0aiLucZN4j0YLfRrED2m0kXZyPCuXO5c
+  template:
+    metadata:
+      creationTimestamp: null
+      name: cloudflare-api-token-secret
+      namespace: cert-manager
