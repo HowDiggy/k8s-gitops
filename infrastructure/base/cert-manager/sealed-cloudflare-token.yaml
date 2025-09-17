@@ -10,7 +10,7 @@
     "template": {
       "metadata": {
         "name": "cloudflare-api-token-secret",
-        "namespace": "default",
+        "namespace": "cert-manager",
         "creationTimestamp": null
       }
     },
