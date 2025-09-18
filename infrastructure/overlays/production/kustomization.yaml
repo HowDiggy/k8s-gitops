@@ -13,3 +13,7 @@ patches:
     target:
       kind: Application
       name: ingress-nginx
+  - path: argocd-agent-principal-image.yaml
+    target:
+      kind: Deployment
+      name: argocd-agent-principal
