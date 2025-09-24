@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
     targetRevision: main
     # Point to the Kustomize overlay for production infrastructure
     path: infrastructure/overlays/production
