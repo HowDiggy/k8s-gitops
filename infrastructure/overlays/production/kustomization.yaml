@@ -6,6 +6,7 @@ resources:
   - ../../base/ingress-nginx
   - ../../base/cert-manager
   - ../../base/argocd
+  - private-repo-secret.yaml
 
 patches:
   # Apply the production-specific patch for ingress-nginx
