@@ -1,0 +1,31 @@
+# infrastructure/base/argocd/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argocd
+  annotations:
+    # Use the production Let's Encrypt issuer you already have
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # Assuming you use nginx
+    kubernetes.io/ingress.class: "nginx"
+    # Enforce HTTPS
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:
+  - hosts:
+    - argo.paulojauregui.com
+    secretName: argocd-server-tls # cert-manager will create this
+  rules:
+  - host: argo.paulojauregui.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              # The service port is named 'https'
+              name: https
