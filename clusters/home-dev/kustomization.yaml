@@ -6,4 +6,3 @@ resources:
   - apps.yaml
   - infra.yaml
   - infrastructure-apps.yaml
-  - sample-app-dev.yaml
