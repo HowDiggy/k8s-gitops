@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
     targetRevision: neon-dev-cutover
     path: apps/overlays/development/signconnect
   destination:

@@ -58,7 +58,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
     targetRevision: dev
     path: infrastructure/overlays/development # We will create this path next
   destination:
