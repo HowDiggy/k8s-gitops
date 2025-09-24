@@ -6,6 +6,7 @@ kind: Kustomization
 resources:
   - ../../../base/signconnect
   - ingress.yaml # Include the new ingress
+  - signconnect-db-app.sealedsecret.yaml
 
 # Apply a namespace to all resources
 namespace: signconnect
