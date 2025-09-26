@@ -1,15 +1,21 @@
----
-apiVersion: bitnami.com/v1alpha1
-kind: SealedSecret
-metadata:
-  creationTimestamp: null
-  name: cloudflare-api-token-secret
-  namespace: cert-manager
-spec:
-  encryptedData:
-    api-token: AgB9D67DfgX6X7ijPgtqpBv5TUEpbscW6S502w7TNQ3MnvaHPi5HAp/mlaSBGD+FzBy2LJtTSAPGrfpddqtXpyJVwUnAY1vJHJrsJRm1b+UKMlc6VzH5aM6oAjFz6MbieNV7kxAvjcoQXHviNukF1CvU48tV8Fazp5BURyZxReWKiRa+e93KCqxRruoIUIB+ewCxHsibgJVjC7xBKYY41QvuUkX9I+evRL9ZLzykNVmkbrJSbLzxTQIT4/r7r12lgDAfezlHFCzrpVZcpx8zUngNXHf7xtpZlpSCVkMLQLz1q+RrucG/P43ywpt1XJKhsGifEU9fPlic1jAfMbrUbzso7F9r7j1fzzJbcRfoTHkY20orfQPlsvBCc8SuMZKFQ/SAkB41Vh7lZRgQtHGgMi6CKnBru5M3wSS/dyDdNUGLKri/JuAdSl2CNqlIYAltznAspYhij2+KJ1Iq8JfEeWEGn1/cTb/tIdqvj/DOrDywzxC+BTmvZpdPtNfKuVKdUW5VY6soH/bWwjk6zLa9AE/X8Aok5pW9NngLOn1P8FE0dXaUGsLtUCRQb/meAVUew8hRkbslyf/aRuM2f2YZFkgR5QlliEb5bseHAjT5KHI+5qp5G/MUNRv6jhMA7XSUmDKru4k0EjvFJPPJUN9TuDfrzDovoKc06HuQcPb5uR57ZTfNQP+hnyfRhuOiRiPmynWYJPsENAiMa/DI0bdAXZal0aiLucZN4j0YLfRrED2m0kXZyPCuXO5c
-  template:
-    metadata:
-      creationTimestamp: null
-      name: cloudflare-api-token-secret
-      namespace: cert-manager
+{
+  "kind": "SealedSecret",
+  "apiVersion": "bitnami.com/v1alpha1",
+  "metadata": {
+    "name": "cloudflare-api-token-secret",
+    "namespace": "cert-manager",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "name": "cloudflare-api-token-secret",
+        "namespace": "cert-manager",
+        "creationTimestamp": null
+      }
+    },
+    "encryptedData": {
+      "api-token": "AgA4S1lbh/FBktfGY3houDN8LaVFO8W1m0H9Zs5iC9k2wBl8Sqd77PqKbMrwKqql/WsHKVB2NKEeGC4UubKS9DvqQBGhhNhI2UswRa5oLukyFkXGzekjJPCQy584tdYojOYj+72aYR48SAgI52m1Fma1WPaDrvz9Kgijr/UvjBp3+nOZ+RptW7ohVlpkkgzHFyHVgyZdxqIScuaOfozJWBVSgg35piG9WhXyQJ3VqKuyLJulIeCIfvs2PkzdXBLt18JgeTtOdHSbp0QGyVeY/DfwgolDGFey1X6H16tLB097CPk+IWPKjbh2kUbQov2JzKrr6ariLOf0dVVA5M7ye9rIxFvz3mluJ4hp0L9bkobCAQB7MV507h9bMoExh416tv5ag4Va5cqPVALM4j9BzWZpvHw5B4QxhZ8X0b8ENVsvDOC5tkK/Lam3VY5E94Su9NNLOyF4uIIDpOVLJEkE/8mIf6Vf1TLkPi27x6XaRh6PAh+txpu4Ol0gOidDtGwEblqGTaHPeIYQdgyjHOiS+C2jVW7LA/089yimZL1/ouXnqNQkQ6d5152q44XtyPKL5Lgct0P/Ip4lnAAgU3fV4OgidRFEXk89YleXUthQDyDMU6aTjUdQxQr935LOTzvLPSQarzrzshpGRLqWf+0QATxBiA2AU+yld+KC6hS4obPpVBfWLLxWpxMW4bfJR1kqkLDdYihtOjYtlWGqppUvI/CxXHBQvPNJNie+L+xBXLMowcyYM7hLiJVp"
+    }
+  }
+}
