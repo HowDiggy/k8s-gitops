@@ -1,0 +1,14 @@
+# apps/overlays/production/signconnect/replica-count.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signconnect-backend
+spec:
+  replicas: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signconnect-frontend
+spec:
+  replicas: 2
