@@ -11,5 +11,5 @@ spec:
   template:
     metadata:
       creationTimestamp: null
-      name: cloudflare-api-token-secret
+      name: cloudflare-api-token
       namespace: cert-manager
