@@ -9,3 +9,8 @@ resources:
 
 # 2. Ensure all resources are deployed to the 'signconnect' namespace
 namespace: signconnect
+
+# 3. Apply production-specific patches
+patches:
+  - path: replica-count.yaml
+  - path: postgres-patch.yaml
