@@ -1,22 +1,41 @@
-# clusters/oci-prod/infrastructure-apps.yaml
+# clusters/home-dev/infrastructure-apps.yaml
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: prod-sealed-secrets
+  name: dev-infrastructure-apps
   namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: https://bitnami-labs.github.io/sealed-secrets
-    chart: sealed-secrets
-    targetRevision: 2.17.4
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: cert-manager
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+  # We will explicitly list the infrastructure applications to create
+  generators:
+  - list:
+      elements:
+      - name: sealed-secrets
+        repoURL: https://bitnami-labs.github.io/sealed-secrets
+        chart: sealed-secrets
+        version: "2.17.4"
+        namespace: kube-system
+      - name: cnpg-operator
+        repoURL: https://cloudnative-pg.github.io/charts
+        chart: cloudnative-pg
+        version: "0.26.0"
+        namespace: cnpg-system
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        targetRevision: '{{version}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
