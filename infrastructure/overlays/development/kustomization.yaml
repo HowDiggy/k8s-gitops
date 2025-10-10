@@ -4,5 +4,6 @@ resources:
   - self-signed-issuer.yaml
   - private-repo-secret.yaml
   - sealed-grafana-secret.yaml
-  
+  - grafana-values.yaml
+
   
