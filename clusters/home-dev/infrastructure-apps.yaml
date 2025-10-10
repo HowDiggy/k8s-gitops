@@ -29,8 +29,10 @@ spec:
         chart: grafana
         version: "10.0.0"
         namespace: monitoring
-        valueFiles:
-          - "infrastructure/overlays/development/grafana-values.yaml"
+        # This 'helm' block tells ArgoCD where to find the values file
+        helm:
+          valueFiles:
+            - "infrastructure/overlays/development/grafana-values.yaml"
   template:
     metadata:
       name: '{{name}}'
@@ -41,11 +43,7 @@ spec:
         repoURL: '{{repoURL}}'
         chart: '{{chart}}'
         targetRevision: '{{version}}'
-        {{- if .valueFiles }}
-        helm:
-          valueFiles:
-          - '{{ index .valueFiles 0 }}'
-        {{- end }}
+        helm: {}
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
