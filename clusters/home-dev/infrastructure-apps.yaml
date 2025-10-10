@@ -27,14 +27,15 @@ spec:
             chart: kube-prometheus-stack
             version: "77.14.0"
             namespace: monitoring
-            valueFiles:
-              - infrastructure/overlays/development/kps-values.yaml
             syncWave: "1"
+            kpsValuesFile: infrastructure/overlays/development/kps-values.yaml
 
   template:
     metadata:
       name: '{{ .name }}'
       namespace: argocd
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{ .syncWave | default "0" }}'
     spec:
       project: default
       destination:
@@ -44,13 +45,16 @@ spec:
         repoURL: '{{ .repoURL }}'
         chart: '{{ .chart }}'
         targetRevision: '{{ .version }}'
-        helm:
-          {{- if .valueFiles }}
-          valueFiles:
-          {{- range .valueFiles }}
-            - {{ . }}
-          {{- end }}
-          {{- end }}
       syncPolicy:
         automated: { prune: true, selfHeal: true }
         syncOptions: [ "CreateNamespace=true", "ServerSideApply=true" ]
+
+  # Patch in helm.valueFiles ONLY for kube-prometheus-stack
+  templatePatch: |
+    {{- if eq .name "kube-prometheus-stack" }}
+    spec:
+      source:
+        helm:
+          valueFiles:
+            - {{ .kpsValuesFile }}
+    {{- end }}
