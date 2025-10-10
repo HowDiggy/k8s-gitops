@@ -1,0 +1,27 @@
+# k8s-gitops/infrastructure/overlays/development/grafana-values.yaml
+persistence:
+  enabled: false # Disabling persistence until a StorageClass is ready
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - grafana.sprout.localdomain # <-- Make sure this is your local dev domain
+  # tls:
+  #   - secretName: grafana-tls
+  #     hosts:
+  #       - grafana.yourdomain.com
+
+# This section tells Grafana to get its password from our SealedSecret
+admin:
+  existingSecret: "grafana-admin-credentials"
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+      access: proxy
+      isDefault: true

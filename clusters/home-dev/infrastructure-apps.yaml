@@ -24,6 +24,15 @@ spec:
         chart: kube-prometheus-stack
         version: "77.14.0"
         namespace: monitoring
+      - name: grafana
+        repoURL: https://grafana.github.io/helm-charts
+        chart: grafana
+        version: "10.0.0"
+        namespace: monitoring
+        # This 'helm' block tells ArgoCD where to find the values file
+        helm:
+          valueFiles:
+            - "infrastructure/overlays/development/grafana-values.yaml"
   template:
     metadata:
       name: '{{name}}'
