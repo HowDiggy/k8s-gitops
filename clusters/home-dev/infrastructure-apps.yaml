@@ -1,56 +1,53 @@
-# clusters/home-dev/infrastructure-apps.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: dev-infrastructure-apps
   namespace: argocd
 spec:
-  # We will explicitly list the infrastructure applications to create
+  goTemplate: true
   generators:
-  - list:
-      elements:
-      - name: sealed-secrets
-        repoURL: https://bitnami-labs.github.io/sealed-secrets
-        chart: sealed-secrets
-        version: "2.17.4"
-        namespace: kube-system
-      - name: cnpg-operator
-        repoURL: https://cloudnative-pg.github.io/charts
-        chart: cloudnative-pg
-        version: "0.26.0"
-        namespace: cnpg-system
-      - name: kube-prometheus-stack
-        repoURL: https://prometheus-community.github.io/helm-charts
-        chart: kube-prometheus-stack
-        version: "77.14.0"
-        namespace: monitoring
-      - name: grafana
-        repoURL: https://grafana.github.io/helm-charts
-        chart: grafana
-        version: "10.0.0"
-        namespace: monitoring
-        # This 'helm' block tells ArgoCD where to find the values file
-        helm:
-          valueFiles:
-            - "infrastructure/overlays/development/grafana-values.yaml"
+    - list:
+        elements:
+          - name: sealed-secrets
+            repoURL: https://bitnami-labs.github.io/sealed-secrets
+            chart: sealed-secrets
+            version: "2.17.4"
+            namespace: kube-system
+
+          - name: cnpg-operator
+            repoURL: https://cloudnative-pg.github.io/charts
+            chart: cloudnative-pg
+            version: "0.26.0"
+            namespace: cnpg-system
+
+          - name: kube-prometheus-stack
+            repoURL: https://prometheus-community.github.io/helm-charts
+            chart: kube-prometheus-stack
+            version: "77.14.0"
+            namespace: monitoring
+            valueFiles:
+              - infrastructure/overlays/development/kps-values.yaml
+
   template:
     metadata:
-      name: '{{name}}'
+      name: '{{ .name }}'
       namespace: argocd
     spec:
       project: default
-      source:
-        repoURL: '{{repoURL}}'
-        chart: '{{chart}}'
-        targetRevision: '{{version}}'
-        helm: {}
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: '{{ .namespace }}'
+      source:
+        repoURL: '{{ .repoURL }}'
+        chart: '{{ .chart }}'
+        targetRevision: '{{ .version }}'
+        helm:
+          {{- if .valueFiles }}
+          valueFiles:
+          {{- range .valueFiles }}
+            - {{ . }}
+          {{- end }}
+          {{- end }}
       syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
-          - ServerSideApply=true
+        automated: { prune: true, selfHeal: true }
+        syncOptions: [ "CreateNamespace=true", "ServerSideApply=true" ]
