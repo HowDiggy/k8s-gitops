@@ -19,6 +19,11 @@ spec:
         chart: cloudnative-pg
         version: "0.26.0"
         namespace: cnpg-system
+      - name: kube-prometheus-stack
+        repoURL: https://prometheus-community.github.io/helm-charts
+        chart: kube-prometheus-stack
+        version: "77.14.0"
+        namespace: monitoring
   template:
     metadata:
       name: '{{name}}'
