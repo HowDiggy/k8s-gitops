@@ -43,6 +43,7 @@ spec:
         repoURL: '{{repoURL}}'
         chart: '{{chart}}'
         targetRevision: '{{version}}'
+        helm: {}
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
