@@ -85,7 +85,7 @@ spec:
                   - alertmanager.sprout.localdomain
 
             # disable node-exporter on Docker Desktop
-            prometheus-node-exporter:
+            nodeExplorer:
               enabled: false
 
             # avoid node alerts when node-exporter is off
