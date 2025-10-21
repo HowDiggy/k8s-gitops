@@ -86,11 +86,11 @@ spec:
 
             # disable node-exporter on Docker Desktop
             nodeExporter:
-              enabled: false
+              enabled: true
 
             # avoid node alerts when node-exporter is off
             defaultRules:
               rules:
-                node: false
+                node: true
     {{- end }}
 
