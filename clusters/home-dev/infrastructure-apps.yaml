@@ -35,6 +35,15 @@ spec:
             chart: nvidia-device-plugin
             version: "0.18.2"
             namespace: kube-system
+            helmValues: |
+              nodeSelector:
+                kubernetes.io/hostname: happy
+              tolerations:
+              - key: "dedicated"
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+                
 
   template:
     metadata:
