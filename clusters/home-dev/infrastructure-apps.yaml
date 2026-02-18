@@ -30,6 +30,12 @@ spec:
             syncWave: "1"
             kpsValuesFile: infrastructure/overlays/development/kps-values.yaml
 
+          - name: nvidia-device-plugin
+            repoURL: https://nvidia.github.io/k8s-device-plugin
+            chart: nvidia-device-plugin
+            version: "0.18.2"
+            namespace: kube-system
+
   template:
     metadata:
       name: '{{ .name }}'
