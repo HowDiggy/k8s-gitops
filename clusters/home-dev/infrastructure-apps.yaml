@@ -52,6 +52,9 @@ spec:
               # 3. Explicitly set the path (Safe practice)
               devicePlugin:
                 kubeletPath: /var/lib/kubelet/device-plugins
+
+              runtimeclass:
+                nvidia
                 
 
   template:

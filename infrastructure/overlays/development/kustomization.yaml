@@ -4,6 +4,7 @@ resources:
   - self-signed-issuer.yaml
   - sealed-grafana-secret.yaml
   - pve-dev-private-repo-secret.yaml
+  - nvidia-runtimeclass.yaml
 
 
   
