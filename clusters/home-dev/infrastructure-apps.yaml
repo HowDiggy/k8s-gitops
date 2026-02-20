@@ -53,8 +53,7 @@ spec:
               devicePlugin:
                 kubeletPath: /var/lib/kubelet/device-plugins
 
-              runtimeclass:
-                nvidia
+              runtimeclassName: nvidia
                 
 
   template:
