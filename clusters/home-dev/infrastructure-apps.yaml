@@ -54,7 +54,13 @@ spec:
                 kubeletPath: /var/lib/kubelet/device-plugins
 
               runtimeclassName: nvidia
-                
+
+              env:
+                - name: NVIDIA_VISIBLE_DEVICES
+                  value: all
+                - name: NVIDIA_DRIVER_CAPABILITIES
+                  value: all
+                  
 
   template:
     metadata:
