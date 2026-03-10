@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-secrets
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.external-secrets.io
+    targetRevision: 0.9.11
+    chart: external-secrets
+    helm:
+      values: |
+        installCRDs: true
+        serviceAccount:
+          name: eso-azure-auth
+          annotations:
+            azure.workload.identity/client-id: "<YOUR_UAMI_CLIENT_ID>"
+        podLabels:
+          azure.workload.identity/use: "true"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-secrets
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true

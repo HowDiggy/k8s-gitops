@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nvidia-device-plugin
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: nvidia-device-plugin
+    app.kubernetes.io/part-of: infrastructure
+  annotations:
+    # GPU plugin can come up after core infra
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  source:
+    repoURL: https://nvidia.github.io/k8s-device-plugin
+    chart: nvidia-device-plugin
+    targetRevision: "0.18.2"
+    helm:
+      values: |
+        # 0. NUKE the default affinity (This is the fix!)
+        affinity: null
+
+        # 1. Lock to your DGX node
+        nodeSelector:
+          kubernetes.io/hostname: happy
+
+        # 2. Bypass the 'dedicated=gpu' taint so the pod can schedule
+        tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "gpu"
+          effect: "NoSchedule"
+
+        # 3. Explicitly set the path (Safe practice)
+        devicePlugin:
+          kubeletPath: /var/lib/kubelet/device-plugins
+
+        runtimeclassName: nvidia
+
+        env:
+          - name: NVIDIA_VISIBLE_DEVICES
+            value: all
+          - name: NVIDIA_DRIVER_CAPABILITIES
+            value: all
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
