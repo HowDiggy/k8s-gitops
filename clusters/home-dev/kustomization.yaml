@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - app-signconnect-dev.yaml
   - apps-root.yaml
-  - infra.yaml
   - infra-root.yaml

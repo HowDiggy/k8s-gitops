@@ -1,7 +1,0 @@
----
-# Legacy dev-infrastructure ApplicationSet has been superseded by:
-# - infrastructure/apps/* individual Application manifests
-# - infrastructure/overlays/home-dev kustomization
-# - clusters/home-dev/infra-root.yaml App-of-Apps
-#
-# This file is intentionally left as a no-op placeholder to document the migration.
