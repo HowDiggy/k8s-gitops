@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: dev
+    targetRevision: feature/refactor-app-of-apps
     path: apps/overlays/development
   destination:
     server: https://kubernetes.default.svc

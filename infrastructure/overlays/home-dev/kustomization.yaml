@@ -1,11 +1,13 @@
+# Self-contained overlay: all resources live in this dir so Kustomize
+# (run with build root infrastructure/overlays/home-dev) does not reference paths outside it.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../apps/sealed-secrets.yaml
-  - ../../apps/cnpg-operator.yaml
-  - ../../apps/kube-prometheus-stack.yaml
-  - ../../apps/nvidia-device-plugin.yaml
+  - sealed-secrets.yaml
+  - cnpg-operator.yaml
+  - kube-prometheus-stack.yaml
+  - nvidia-device-plugin.yaml
 
 patches:
   - path: kps-values-patch.yaml
