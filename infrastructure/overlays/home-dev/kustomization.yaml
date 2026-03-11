@@ -5,6 +5,7 @@ kind: Kustomization
 
 resources:
   - sealed-secrets.yaml
+  - sealed-grafana-secret.yaml 
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
   - nvidia-device-plugin.yaml
