@@ -6,6 +6,39 @@ metadata:
 spec:
   source:
     helm:
-      valueFiles:
-        - infrastructure/overlays/home-dev/kps-values.yaml
+      values: |
+        crds:
+          enabled: true
+
+        grafana:
+          persistence:
+            enabled: false
+          admin:
+            existingSecret: grafana-admin-credentials
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - grafana.sprout.localdomain
+
+        prometheus:
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - prometheus.sprout.localdomain
+
+        alertmanager:
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - alertmanager.sprout.localdomain
+
+        nodeExporter:
+          enabled: true
+
+        defaultRules:
+          rules:
+            node: true
 
