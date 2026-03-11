@@ -16,24 +16,15 @@ spec:
           admin:
             existingSecret: grafana-admin-credentials
           ingress:
-            enabled: true
-            ingressClassName: nginx
-            hosts:
-              - grafana.sprout.localdomain
+            enabled: false
 
         prometheus:
           ingress:
-            enabled: true
-            ingressClassName: nginx
-            hosts:
-              - prometheus.sprout.localdomain
+            enabled: false
 
         alertmanager:
           ingress:
-            enabled: true
-            ingressClassName: nginx
-            hosts:
-              - alertmanager.sprout.localdomain
+            enabled: false
 
         nodeExporter:
           enabled: true
