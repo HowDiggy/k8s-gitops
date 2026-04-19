@@ -1,7 +1,4 @@
 installCRDs: true
 serviceAccount:
-  name: eso-azure-auth
-  annotations:
-    azure.workload.identity/client-id: "<YOUR_UAMI_CLIENT_ID>"
-podLabels:
-  azure.workload.identity/use: "true"
+  create: true
+  name: external-secrets

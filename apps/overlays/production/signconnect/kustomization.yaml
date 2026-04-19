@@ -5,7 +5,7 @@ kind: Kustomization
 # 1. Inherit all the resources from the signconnect base
 resources:
   - ../../../base/signconnect
-  - sealed-secret.yaml
+  - external-secret.yaml
   - ingress.yaml
 
 # 2. Ensure all resources are deployed to the 'signconnect' namespace
