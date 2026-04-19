@@ -6,5 +6,4 @@ resources:
   - ingress-nginx
   - monitoring
   - postgresql
-  - sealed-secrets
   - cloudflare
