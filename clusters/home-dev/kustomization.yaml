@@ -5,3 +5,4 @@ resources:
   - app-signconnect-dev.yaml
   - apps-root.yaml
   - infra-root.yaml
+  - cloudflare-app.yaml
