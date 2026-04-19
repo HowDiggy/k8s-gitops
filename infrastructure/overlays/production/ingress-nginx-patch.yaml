@@ -4,20 +4,13 @@ kind: Application
 metadata:
   name: ingress-nginx
 spec:
-  source:
-    helm:
-      values: |
-        controller:
-          replicaCount: 2
-          nodeSelector:
-            kubernetes.io/arch: "arm64"
-          service:
-            annotations:
-              oci.oraclecloud.com/load-balancer-type: "lb"
-              service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
-              service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
-              service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
-          admissionWebhooks:
-            patch:
-              nodeSelector:
-                kubernetes.io/arch: "arm64"
+  sources:
+    - repoURL: https://kubernetes.github.io/ingress-nginx
+      chart: ingress-nginx
+      targetRevision: 4.12.2
+      helm:
+        valueFiles:
+          - $values/infrastructure/overlays/production/ingress-nginx-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      ref: values

@@ -10,10 +10,3 @@ resources:
   - kube-prometheus-stack.yaml
   - nvidia-device-plugin.yaml
 
-patches:
-  - path: kps-values-patch.yaml
-    target:
-      kind: Application
-      name: kube-prometheus-stack
-      namespace: argocd
-

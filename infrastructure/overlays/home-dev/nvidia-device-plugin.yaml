@@ -10,28 +10,16 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
-  source:
-    repoURL: https://nvidia.github.io/k8s-device-plugin
-    chart: nvidia-device-plugin
-    targetRevision: "0.18.2"
-    helm:
-      values: |
-        affinity: null
-        nodeSelector:
-          kubernetes.io/hostname: happy
-        tolerations:
-        - key: "dedicated"
-          operator: "Equal"
-          value: "gpu"
-          effect: "NoSchedule"
-        devicePlugin:
-          kubeletPath: /var/lib/kubelet/device-plugins
-        runtimeclassName: nvidia
-        env:
-          - name: NVIDIA_VISIBLE_DEVICES
-            value: all
-          - name: NVIDIA_DRIVER_CAPABILITIES
-            value: all
+  sources:
+    - repoURL: https://nvidia.github.io/k8s-device-plugin
+      chart: nvidia-device-plugin
+      targetRevision: "0.18.2"
+      helm:
+        valueFiles:
+          - $values/infrastructure/apps/nvidia-device-plugin-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
