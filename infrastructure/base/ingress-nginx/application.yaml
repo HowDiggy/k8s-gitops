@@ -7,17 +7,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://kubernetes.github.io/ingress-nginx
-    chart: ingress-nginx
-    targetRevision: 4.12.2 # The version you are using
-    helm:
-      # These are default values. Overlays will patch them.
-      values: |
-        controller:
-          replicaCount: 1
-          service:
-            type: LoadBalancer
+  sources:
+    - repoURL: https://kubernetes.github.io/ingress-nginx
+      chart: ingress-nginx
+      targetRevision: 4.12.2
+      helm:
+        valueFiles:
+          - $values/infrastructure/base/ingress-nginx/values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx # It will be deployed here

@@ -1,0 +1,51 @@
+# kps-values.yaml (for kube-prometheus-stack)
+grafana:
+  persistence:
+    enabled: false
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.sprout.localdomain
+    # tls:
+    #   - secretName: grafana-tls
+    #     hosts:
+    #       - grafana.sprout.localdomain
+
+  # Use your existing sealed secret for admin creds
+  admin:
+    existingSecret: grafana-admin-credentials
+
+# -- Prometheus UI ingress
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.sprout.localdomain
+    # annotations:
+    #   nginx.ingress.kubernetes.io/auth-type: basic
+    #   nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+    #   nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+    #   nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,192.168.0.0/16"
+    # tls:
+    #   - secretName: prometheus-tls
+    #     hosts: [prometheus.sprout.localdomain]
+
+# -- Alertmanager UI ingress
+alertmanager:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - alertmanager.sprout.localdomain
+    # annotations:
+    #   nginx.ingress.kubernetes.io/auth-type: basic
+    #   nginx.ingress.kubernetes.io/auth-secret: alertmanager-basic-auth
+    #   nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+    #   nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,192.168.0.0/16"
+    # tls:
+    #   - secretName: alertmanager-tls
+    #     hosts: [alertmanager.sprout.localdomain]
+

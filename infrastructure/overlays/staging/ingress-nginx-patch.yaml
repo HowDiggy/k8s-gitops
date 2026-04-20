@@ -4,14 +4,13 @@ kind: Application
 metadata:
   name: ingress-nginx
 spec:
-  source:
-    helm:
-      values: |
-        controller:
-          replicaCount: 1
-          nodeSelector:
-            kubernetes.io/arch: "amd64"
-          admissionWebhooks:
-            patch:
-              nodeSelector:
-                kubernetes.io/arch: "amd64"
+  sources:
+    - repoURL: https://kubernetes.github.io/ingress-nginx
+      chart: ingress-nginx
+      targetRevision: 4.12.2
+      helm:
+        valueFiles:
+          - $values/infrastructure/overlays/staging/ingress-nginx-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      ref: values

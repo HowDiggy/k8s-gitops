@@ -7,3 +7,9 @@ root-app-staging.yaml
 
 # Ignore the directory for temporary unencrypted secrets
 /.secrets/
+
+# Ignore the bootstrap directory and any sensitive administrative files
+/bootstrap/
+*.crt
+*secret*.yaml
+*backup*.yaml

@@ -39,3 +39,16 @@ The final step is to apply the same Kustomize overlay pattern we use for applica
     * Create a `production` overlay in `infrastructure/overlays/production` that deploys the `letsencrypt-prod` `ClusterIssuer`.
     * Create a `development` overlay in `infrastructure/overlays/development` that deploys the `self-signed-issuer`.
 * **Outcome**: This will allow Argo CD to manage the entire lifecycle of `cert-manager` and its configuration across both clusters from a single, DRY source, completing our GitOps setup.
+
+---
+
+## Phase 4: GitOps Architecture Refactoring
+This phase focuses on improving maintainability, reducing boilerplate, and adhering closer to GitOps and security best practices.
+
+* **Goal**: Clean up the repository structure, standardize secret management, and improve ArgoCD Application patterns.
+* **Implementation**:
+    * **Refactor Helm Values**: Migrate away from multiline inline string patches in Kustomize. Use ArgoCD "Multiple Sources" to reference standalone `values.yaml` files.
+    * **Standardize Secret Management**: Transition completely from Sealed Secrets to External Secrets Operator (ESO) backed by a central vault (e.g., Azure Key Vault).
+    * **Cleanup Root Directory**: Relocate administrative and one-off bootstrap scripts/manifests (and sensitive files) into a dedicated ignored `bootstrap/` directory to prevent cluttering the GitOps source of truth.
+    * **Consolidate Definitions**: Remove duplicate or orphaned App-of-Apps manifests within cluster overlays.
+* **Outcome**: A cleaner, more secure Git repository with strongly-typed Helm configurations and a solid foundation for eventually migrating to ArgoCD ApplicationSets.

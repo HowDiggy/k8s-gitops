@@ -1,27 +1,25 @@
-# infrastructure/base/cert-manager/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: external-secrets
   namespace: argocd
 spec:
   project: default
   sources:
-    - repoURL: https://charts.jetstack.io
-      chart: cert-manager
-      targetRevision: v1.17.2 # Use a specific, stable version
+    - repoURL: https://charts.external-secrets.io
+      targetRevision: 0.9.11
+      chart: external-secrets
       helm:
         valueFiles:
-          - $values/infrastructure/base/cert-manager/values.yaml
+          - $values/infrastructure/external-secrets/eso-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
       targetRevision: HEAD
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: external-secrets
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+    createNamespace: true

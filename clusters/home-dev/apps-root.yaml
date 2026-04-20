@@ -3,13 +3,16 @@ kind: Application
 metadata:
   name: dev-app-paulojauregui-com
   namespace: argocd
+  labels:
+    app.kubernetes.io/name: home-dev-apps-root
+    app.kubernetes.io/part-of: applications
   annotations:
     argocd.argoproj.io/kustomize-version: v5.7.1
 spec:
   project: default
   source:
-    repoURL: git@github.com:HowDiggy/k8s-gitops.git
-    targetRevision: dev
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: feature/refactor-app-of-apps
     path: apps/overlays/development
   destination:
     server: https://kubernetes.default.svc
@@ -20,3 +23,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
