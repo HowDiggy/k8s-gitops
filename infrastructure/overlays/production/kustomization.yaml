@@ -6,6 +6,7 @@ resources:
   - ../../base/ingress-nginx
   - ../../base/cert-manager
   - ../../base/argocd
+  - ../../base/monitoring
   - private-repo-secret.yaml
   - external-grafana-secret.yaml
   - cnpg-operator.yaml
