@@ -12,5 +12,6 @@ root-app-staging.yaml
 /bootstrap/
 *.crt
 *secret*.yaml
+!*external-*secret*.yaml
 !*external-secret*.yaml
 *backup*.yaml
