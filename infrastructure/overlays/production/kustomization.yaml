@@ -7,6 +7,9 @@ resources:
   - ../../base/cert-manager
   - ../../base/argocd
   - private-repo-secret.yaml
+  - external-grafana-secret.yaml
+  - cnpg-operator.yaml
+  - kube-prometheus-stack.yaml
 
 patches:
   # Apply the production-specific patch for ingress-nginx
