@@ -1,37 +1,17 @@
-# Production values for High Availability
+# Production values for Single Node / Low Resource availability
 crds:
   enabled: true
 
 grafana:
-  replicas: 2
-  # Make sure we don't put both Grafana pods on the same node
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: grafana
-          topologyKey: kubernetes.io/hostname
+  replicas: 1
   # Need to use the secret we created via ESO for the admin user
   admin:
     existingSecret: grafana-admin-credentials
-  
-  # A Pod Disruption Budget to ensure at least 1 pod is always available during maintenance
-  podDisruptionBudget:
-    minAvailable: 1
 
 prometheus:
   prometheusSpec:
-    replicas: 2
-    podAntiAffinity: "hard"
-    podDisruptionBudget:
-      enabled: true
-      minAvailable: 1
+    replicas: 1
     
 alertmanager:
   alertmanagerSpec:
-    replicas: 2
-    podAntiAffinity: "hard"
-    podDisruptionBudget:
-      enabled: true
-      minAvailable: 1
+    replicas: 1
