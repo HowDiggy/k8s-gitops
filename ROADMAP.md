@@ -48,7 +48,20 @@ This phase focuses on improving maintainability, reducing boilerplate, and adher
 * **Goal**: Clean up the repository structure, standardize secret management, and improve ArgoCD Application patterns.
 * **Implementation**:
     * **Refactor Helm Values**: Migrate away from multiline inline string patches in Kustomize. Use ArgoCD "Multiple Sources" to reference standalone `values.yaml` files.
-    * **Standardize Secret Management**: Transition completely from Sealed Secrets to External Secrets Operator (ESO) backed by a central vault (e.g., Azure Key Vault).
+    * **Standardize Secret Management**: Transition completely from Sealed Secrets to External Secrets Operator (ESO) backed by a central vault (e.g., Doppler).
     * **Cleanup Root Directory**: Relocate administrative and one-off bootstrap scripts/manifests (and sensitive files) into a dedicated ignored `bootstrap/` directory to prevent cluttering the GitOps source of truth.
     * **Consolidate Definitions**: Remove duplicate or orphaned App-of-Apps manifests within cluster overlays.
-* **Outcome**: A cleaner, more secure Git repository with strongly-typed Helm configurations and a solid foundation for eventually migrating to ArgoCD ApplicationSets.
+* **Outcome**: A cleaner, more secure Git repository with strongly-typed Helm configurations and a solid foundation for migrating to a distributed architecture.
+
+---
+
+## Phase 5: Hybrid Cloud Architecture Migration
+This phase shifts the infrastructure from a single cloud focus to a distributed, workload-specific hybrid cloud model utilizing both OCI and local hardware.
+
+* **Goal**: Decommission heavy and legacy workloads from the resource-constrained OCI Edge cluster and deploy new, dedicated local clusters (Talos, DGX) to handle data engineering and ML.
+* **Implementation**:
+    * **Decommission SignConnect**: Remove the `signconnect` application and `cnpg-operator` databases from OCI production to free up Pod and CPU capacity.
+    * **Establish Secure Connectivity**: Implement Tailscale or Cloudflare Tunnels to allow the OCI ArgoCD Control Plane to securely manage the private Home Lab clusters without opening local router ports.
+    * **Provision Talos Lab**: Build and register the 3x Laptop Talos cluster (`clusters/talos-lab`) as the primary Data Engineering Hub (Airflow, PySpark).
+    * **Provision AI Accelerators**: Build and register the DGX/P620 cluster (`clusters/dgx-ai`) dedicated to MLOps, Kubeflow, and model training.
+* **Outcome**: A professional, multi-tier hybrid architecture capable of running heavy data and ML workloads locally for free, orchestrated by a highly available public cloud control plane.
