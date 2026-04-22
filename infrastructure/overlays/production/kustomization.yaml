@@ -7,6 +7,8 @@ resources:
   - ../../base/cert-manager
   - ../../base/argocd
   - ../../base/monitoring
+  - ../../base/tailscale
+  - ../../external-secrets
   - private-repo-secret.yaml
   - external-grafana-secret.yaml
   - kube-prometheus-stack.yaml
