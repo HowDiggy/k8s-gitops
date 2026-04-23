@@ -8,4 +8,3 @@ resources:
   - postgresql
   - cloudflare
   - ../external-secrets
-  - tailscale
