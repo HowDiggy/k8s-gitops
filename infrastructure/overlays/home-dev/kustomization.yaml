@@ -8,4 +8,5 @@ resources:
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
   - nvidia-device-plugin.yaml
+  - cloudflare-talos.yaml
 

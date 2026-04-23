@@ -15,7 +15,7 @@ spec:
     targetRevision: feature/refactor-app-of-apps
     path: apps/overlays/development
   destination:
-    server: https://kubernetes.default.svc
+    server: https://talos-api.paulojauregui.com
     namespace: paulojauregui-com
   syncPolicy:
     automated:

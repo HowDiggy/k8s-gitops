@@ -1,0 +1,33 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: talos-lab-cluster-secret
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: doppler-backend
+  target:
+    name: talos-lab-cluster-secret
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: cluster
+      data:
+        name: "talos-lab"
+        server: "https://talos-api.paulojauregui.com"
+        config: |
+          {
+            "bearerToken": "{{ .bearerToken }}",
+            "tlsClientConfig": {
+              "insecure": true
+            }
+          }
+  data:
+  - secretKey: bearerToken
+    remoteRef:
+      key: TALOS_BEARER_TOKEN
