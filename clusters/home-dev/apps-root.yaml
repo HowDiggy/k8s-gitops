@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: feature/refactor-app-of-apps
+    targetRevision: HEAD
     path: apps/overlays/development
   destination:
     server: https://talos-api.paulojauregui.com
