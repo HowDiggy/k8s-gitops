@@ -1,0 +1,24 @@
+# infrastructure/overlays/home-dev/mongodb-cluster-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mongodb-cluster
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: mongodb-cluster
+    app.kubernetes.io/part-of: infrastructure
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: HEAD
+    path: infrastructure/overlays/home-dev/mongodb-cluster
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

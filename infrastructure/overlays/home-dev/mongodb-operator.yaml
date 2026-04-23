@@ -1,0 +1,24 @@
+# infrastructure/overlays/home-dev/mongodb-operator.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mongodb-operator
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: mongodb-operator
+    app.kubernetes.io/part-of: infrastructure
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: HEAD
+    path: infrastructure/base/mongodb
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

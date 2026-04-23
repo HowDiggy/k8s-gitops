@@ -1,0 +1,9 @@
+# infrastructure/overlays/home-dev/mongodb-cluster/replica-patch.yaml
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: mongodb
+  namespace: mongodb
+spec:
+  members: 3
+  type: ReplicaSet

@@ -5,8 +5,8 @@ kind: Cluster
 metadata:
   name: signconnect-db # This name now matches the base manifest
 spec:
-  # Scale down to a single instance for local development
-  instances: 1
+  # Scale up to a 3-node HA cluster for local development/testing
+  instances: 3
   storage:
     # Reduce storage size for the local environment
     size: 5Gi

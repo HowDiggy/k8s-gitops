@@ -9,4 +9,6 @@ resources:
   - kube-prometheus-stack.yaml
   - nvidia-device-plugin.yaml
   - cloudflare-talos.yaml
+  - mongodb-operator.yaml
+  - mongodb-cluster-app.yaml
 
