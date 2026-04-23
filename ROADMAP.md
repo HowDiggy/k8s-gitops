@@ -1,57 +1,35 @@
-# Roadmap: Talos Cluster Stabilization and Improvements
+# Roadmap: Observability Centralization and MLflow
 
 ## 1. Project Context Summary
-- **Current State:** The Hub-and-Spoke GitOps model has been successfully established. The OCI Cluster (`context-cxgwihujioa`) is actively managing the Talos Cluster (`dalia`) via a secure Cloudflare Zero Trust Tunnel.
-- **Goal:** Stabilize the `home-dev` infrastructure on the Talos cluster. Current ArgoCD sync issues include degraded states in `kube-prometheus-stack`, unresolved `SealedSecret` dependencies for Grafana, and the need for high availability in the CloudNativePG (`cnpg`) deployment.
+- **Current State:** The Hub-and-Spoke GitOps model is fully operational. The OCI Cluster (Hub) is actively managing the Talos Cluster (Spoke) via a secure Cloudflare Zero Trust Tunnel. Talos infrastructure (HA Postgres, MongoDB, External Secrets via Doppler) has been stabilized and deployed successfully.
+- **Goal:** Optimize resources on the Talos lab hardware by centralizing dashboards on the cloud Hub, and prepare the Talos cluster for AI/ML workloads by deploying MLflow.
 
 ## 2. Implementation Roadmap
 
-### Phase 1: Secret Management Cleanup (Doppler Migration)
-**Objective:** Fully remove the legacy Bitnami Sealed Secrets dependency and transition Grafana credentials to the External Secrets Operator (ESO) and Doppler.
+### Phase 1: Centralized Observability (Hub & Spoke Monitoring)
+**Objective:** Make the OCI Grafana the primary dashboard ("Single Pane of Glass") by adding the Talos Prometheus instance as a remote data source, and scale down the redundant Grafana UI on Talos to save local resources.
 
-1.  **Doppler Configuration:**
-    - Create a new secret in the Doppler project/config for the Talos cluster containing the Grafana admin credentials (e.g., `GRAFANA_ADMIN_USER`, `GRAFANA_ADMIN_PASSWORD`).
-2.  **Manifest Updates:**
-    - Remove the `sealed-secrets` ArgoCD Application from the `home-dev` overlay (`infrastructure/overlays/home-dev/sealed-secrets.yaml` or similar references in `kustomization.yaml`).
-    - Delete any existing `SealedSecret` manifests for Grafana (e.g., `grafana-admin-credentials`).
-    - Create an `ExternalSecret` manifest for Grafana that pulls the new credentials from Doppler and provisions the standard Kubernetes `Secret` expected by the `kube-prometheus-stack` chart.
-3.  **GitOps Sync:** Push the changes and ensure the `home-dev-infra-root` application syncs cleanly without the `sealed-secrets` dependency hanging.
+1.  **Prometheus Remote Integration:**
+    - Configure Prometheus on the Talos cluster to allow remote read queries, or configure a `remote_write` to send metrics up to the OCI Prometheus/Thanos instance over the secure tunnel.
+2.  **OCI Grafana Configuration:**
+    - Update the `kube-prometheus-stack` values on the OCI (`oci-prod`) overlay to provision a new data source pointing to the Talos Prometheus instance.
+3.  **Talos Resource Optimization:**
+    - Modify `infrastructure/overlays/home-dev/kps-values.yaml` to disable the Grafana UI component (`grafana.enabled: false`). The Talos cluster will now only act as a metric collector (Prometheus + Node Exporters).
+4.  **GitOps Sync & Validation:** Apply changes via ArgoCD and verify that Talos metrics (e.g., node CPU/memory, GPU stats) are visible in the OCI Grafana dashboards.
 
-### Phase 2: Kube-Prometheus-Stack Stabilization
-**Objective:** Resolve the out-of-sync and degraded states in the `kube-prometheus-stack` deployment.
+### Phase 2: MLflow Deployment
+**Objective:** Deploy MLflow on the Talos home lab cluster to manage the machine learning lifecycle, track experiments, and store AI artifacts, leveraging the existing high-availability Postgres database.
 
-1.  **Investigation:**
-    - Examine the ArgoCD UI or use `kubectl` on the Talos cluster to identify the exact resources failing to sync or start within the monitoring namespace.
-    - Check the logs of the Prometheus operator, Grafana, and Alertmanager pods for startup failures.
-2.  **Configuration Adjustments:**
-    - Modify `infrastructure/overlays/home-dev/kps-values.yaml` (or the equivalent values file) to address any resource limits, storage class issues, or conflicting configurations.
-    - Ensure the newly created ExternalSecret for Grafana admin credentials is correctly referenced in the Helm values.
-3.  **Validation:** Ensure the entire `kube-prometheus-stack` Application reaches a `Healthy` and `Synced` state in ArgoCD.
-
-### Phase 3: High Availability for CloudNativePG (CNPG)
-**Objective:** Upgrade the PostgreSQL deployment to a highly available, multi-node cluster.
-
-1.  **Manifest Updates:**
-    - Locate the CNPG `Cluster` definition manifest for the Talos cluster.
-    - Update the `instances` count from 1 to a higher number (e.g., 3) to ensure redundancy across the Talos nodes.
-    - Configure proper pod anti-affinity rules if necessary to ensure instances run on different physical nodes.
-    - Verify that the storage configuration (e.g., `storageClass`) supports the HA setup.
-2.  **GitOps Sync & Validation:**
-    - Commit and push the changes.
-    - Monitor the CNPG operator logs and the cluster status via `kubectl get cluster -n <namespace>` to confirm the new instances spin up and replicate successfully.
-
-### Phase 4: MongoDB Deployment
-**Objective:** Deploy a highly available MongoDB cluster in the home lab for learning and development, mirroring enterprise environments.
-
-1.  **Operator Selection:** Research and select a robust Kubernetes operator for MongoDB (e.g., MongoDB Community Kubernetes Operator or Percona Server for MongoDB Operator).
-2.  **Manifest Creation:**
-    - Create the base manifests in `infrastructure/base/mongodb`.
-    - Configure an overlay for `home-dev` with a replica set configuration (e.g., 3 nodes) to ensure high availability.
-    - Set up Persistent Volume Claims (PVCs) for data storage and configure appropriate resource requests/limits.
-3.  **Secret Management:**
-    - Generate MongoDB admin credentials and store them securely in Doppler.
-    - Create an `ExternalSecret` manifest to synchronize the credentials to the MongoDB namespace.
-4.  **GitOps Sync & Validation:** Deploy via ArgoCD and verify the replica set status and connectivity.
+1.  **Database & Storage Preparation:**
+    - Create a dedicated database (`mlflow`) and user within the existing CloudNativePG (`signconnect-db`) cluster.
+    - Set up an S3-compatible object store (like MinIO) on the Talos cluster for MLflow artifact storage, or configure an external bucket.
+2.  **Secret Management:**
+    - Generate MLflow database and artifact storage credentials and store them securely in Doppler.
+    - Create an `ExternalSecret` manifest to synchronize these credentials to the namespace where MLflow will reside.
+3.  **Manifest Creation:**
+    - Create base manifests for the MLflow deployment and service in `apps/base/mlflow`.
+    - Configure an overlay for `home-dev` (`apps/overlays/development/mlflow`) to deploy the application with proper resource limits.
+4.  **GitOps Sync & Validation:** Deploy via ArgoCD, ensure the pods start successfully, and verify access to the MLflow tracking UI.
 
 ---
 
@@ -59,13 +37,13 @@
 
 Copy and paste this prompt into a new Gemini CLI session to resume immediately:
 
-> "I am resuming the Hybrid Cloud migration project. We have successfully connected the OCI Hub to the Talos Spoke via Cloudflare Tunnels.
+> "I am continuing the Hybrid Cloud GitOps project. The Talos lab cluster is connected to OCI and stable with HA Postgres and MongoDB.
 > 
 > **Current State:**
 > - OCI (Hub): `context-cxgwihujioa`
 > - Talos (Spoke): `dalia` (VIP 192.168.1.50)
-> - ArgoCD on OCI is currently attempting to sync the `home-dev` infrastructure to Talos, but it is encountering issues (e.g., waiting for SealedSecrets, kube-prometheus-stack degradation).
+> - All base infrastructure (ESO, CNPG, MongoDB) is healthy.
 > 
 > **Instructions:**
 > 1. Please read the `ROADMAP.md` in the root.
-> 2. Help me execute Phase 1: Secret Management Cleanup. We need to remove the `sealed-secrets` app, migrate Grafana credentials to Doppler, and configure an `ExternalSecret`."
+> 2. Help me execute Phase 1: Centralized Observability. We need to configure the Talos Prometheus to send data to OCI, add it as a data source in the OCI Grafana, and disable the local Grafana UI on Talos to save resources."
