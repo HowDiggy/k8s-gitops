@@ -33,7 +33,6 @@ grafana:
         httpHeaderValue2: "$CF_ACCESS_CLIENT_SECRET"
 
 prometheus:
-...
   prometheusSpec:
     replicas: 1
     
