@@ -20,6 +20,9 @@ spec:
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      path: infrastructure/base/monitoring
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: monitoring
