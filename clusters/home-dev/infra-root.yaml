@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
     path: infrastructure/overlays/home-dev
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:

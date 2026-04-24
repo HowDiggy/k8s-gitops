@@ -13,7 +13,7 @@ spec:
     targetRevision: main
     path: infrastructure/base/cloudflare-talos
   destination:
-    server: https://kubernetes.default.svc
+    server: https://talos-api.paulojauregui.com
     namespace: cloudflare
   syncPolicy:
     automated:
