@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: openebs
+    app.kubernetes.io/part-of: infrastructure
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+spec:
+  project: default
+  source:
+    repoURL: https://openebs.github.io/charts
+    chart: openebs
+    targetRevision: "3.10.0"
+    helm:
+      parameters:
+        - name: localprovisioner.hostpathClass.isDefaultClass
+          value: "true"
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: openebs
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
