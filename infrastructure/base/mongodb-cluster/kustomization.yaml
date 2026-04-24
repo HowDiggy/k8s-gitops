@@ -4,5 +4,6 @@ kind: Kustomization
 
 resources:
   - 00-namespace.yaml
+  - 01-serviceaccount.yaml
   - 01-external-secret.yaml
   - 02-mongodb-cluster.yaml
