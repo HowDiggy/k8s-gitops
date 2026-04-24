@@ -10,14 +10,17 @@ metadata:
     argocd.argoproj.io/sync-wave: "-3"
 spec:
   project: default
-  source:
-    repoURL: https://openebs.github.io/charts
-    chart: openebs
-    targetRevision: "3.10.0"
-    helm:
-      parameters:
-        - name: localprovisioner.hostpathClass.isDefaultClass
-          value: "true"
+  sources:
+    - repoURL: https://openebs.github.io/charts
+      chart: openebs
+      targetRevision: "3.10.0"
+      helm:
+        parameters:
+          - name: localprovisioner.hostpathClass.isDefaultClass
+            value: "true"
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: HEAD
+      path: infrastructure/base/openebs
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: openebs

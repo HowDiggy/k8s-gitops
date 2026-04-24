@@ -1,8 +1,7 @@
-# infrastructure/base/mongodb-cluster/00-namespace.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: mongodb
+  name: openebs
   labels:
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/enforce-version: latest
