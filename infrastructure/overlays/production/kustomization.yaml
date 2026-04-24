@@ -11,6 +11,7 @@ resources:
   - private-repo-secret.yaml
   - external-grafana-secret.yaml
   - kube-prometheus-stack.yaml
+  - talos-prom-auth-es.yaml
 
 patches:
   # Apply the production-specific patch for ingress-nginx

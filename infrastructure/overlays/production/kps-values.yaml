@@ -7,8 +7,33 @@ grafana:
   # Need to use the secret we created via ESO for the admin user
   admin:
     existingSecret: grafana-admin-credentials
+  envFromSecret: talos-prom-auth
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - grafana.paulojauregui.com
+    tls:
+      - secretName: grafana-server-tls
+        hosts:
+          - grafana.paulojauregui.com
+  additionalDataSources:
+    - name: Talos-Prometheus
+      type: prometheus
+      url: https://prom-talos.paulojauregui.com
+      access: proxy
+      jsonData:
+        httpHeaderName1: "CF-Access-Client-Id"
+        httpHeaderName2: "CF-Access-Client-Secret"
+      secureJsonData:
+        httpHeaderValue1: "$CF_ACCESS_CLIENT_ID"
+        httpHeaderValue2: "$CF_ACCESS_CLIENT_SECRET"
 
 prometheus:
+...
   prometheusSpec:
     replicas: 1
     
