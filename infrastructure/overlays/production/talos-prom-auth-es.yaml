@@ -11,6 +11,11 @@ spec:
   target:
     name: talos-prom-auth
     creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        CF_ACCESS_CLIENT_ID: "{{ .CF_ACCESS_CLIENT_ID | replace \"CF-Access-Client-Id: \" \"\" | trim }}"
+        CF_ACCESS_CLIENT_SECRET: "{{ .CF_ACCESS_CLIENT_SECRET | replace \"CF-Access-Client-Secret: \" \"\" | trim }}"
   data:
     - secretKey: CF_ACCESS_CLIENT_ID
       remoteRef:
