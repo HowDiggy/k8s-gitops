@@ -7,15 +7,17 @@ metadata:
   labels:
     app.kubernetes.io/name: mongodb-operator
     app.kubernetes.io/part-of: infrastructure
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
   source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: HEAD
-    path: infrastructure/base/mongodb
+    repoURL: https://mongodb.github.io/helm-charts
+    chart: community-operator
+    targetRevision: "0.10.1"
   destination:
     server: https://talos-api.paulojauregui.com
-    namespace: argocd
+    namespace: mongodb-system
   syncPolicy:
     automated:
       prune: true

@@ -15,7 +15,7 @@ spec:
     path: infrastructure/overlays/home-dev/mongodb-cluster
   destination:
     server: https://talos-api.paulojauregui.com
-    namespace: argocd
+    namespace: mongodb
   syncPolicy:
     automated:
       prune: true
