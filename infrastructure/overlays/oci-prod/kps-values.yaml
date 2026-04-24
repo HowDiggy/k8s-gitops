@@ -1,1 +1,16 @@
 # OCI Prod values
+
+grafana:
+  envFromSecret: talos-prom-auth
+  additionalDataSources:
+    - name: Talos-Prometheus
+      type: prometheus
+      url: https://prom-talos.paulojauregui.com
+      access: proxy
+      jsonData:
+        httpHeaderName1: "CF-Access-Client-Id"
+        httpHeaderName2: "CF-Access-Client-Secret"
+      secureJsonData:
+        httpHeaderValue1: "$CF_ACCESS_CLIENT_ID"
+        httpHeaderValue2: "$CF_ACCESS_CLIENT_SECRET"
+

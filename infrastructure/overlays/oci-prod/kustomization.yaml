@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
+  - talos-prom-auth-es.yaml
 

@@ -2,6 +2,7 @@ crds:
   enabled: true
 
 grafana:
+  enabled: false
   persistence:
     enabled: false
   admin:
