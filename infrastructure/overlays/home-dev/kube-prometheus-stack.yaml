@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: home-dev-kube-prometheus-stack
   namespace: argocd
   labels:
-    app.kubernetes.io/name: kube-prometheus-stack
+    app.kubernetes.io/name: home-dev-kube-prometheus-stack
     app.kubernetes.io/part-of: infrastructure
   annotations:
     argocd.argoproj.io/sync-wave: "1"
