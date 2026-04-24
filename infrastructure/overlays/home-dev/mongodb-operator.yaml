@@ -15,6 +15,10 @@ spec:
     repoURL: https://mongodb.github.io/helm-charts
     chart: community-operator
     targetRevision: "0.10.0"
+    helm:
+      parameters:
+        - name: operator.watchNamespace
+          value: "*"
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: mongodb-system
