@@ -9,7 +9,7 @@ spec:
     name: doppler-backend
     kind: ClusterSecretStore
   target:
-    name: cloudflare-api-token-secret
+    name: cloudflare-api-token
   data:
     - secretKey: api-token
       remoteRef:
