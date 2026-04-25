@@ -1,23 +1,17 @@
 # Roadmap: MLflow and ArgoCD Security Hardening
 
 ## 1. Project Context Summary
-- **Current State:** The Hub-and-Spoke GitOps model is optimized and stable. Centralized observability is operational: Talos metrics are queried directly from the OCI Hub's Grafana (`grafana.paulojauregui.com`), and the redundant local Grafana on Talos has been decommissioned. Cloud infrastructure costs have been reduced by consolidating all OCI services under a single load balancer (`192.9.242.180`).
-- **Goal:** Prepare the Talos cluster for AI/ML workloads by deploying MLflow and enhance ArgoCD security by disabling the default admin and managing local users via Doppler.
+- **Current State:** The Hub-and-Spoke GitOps model is optimized and stable. Centralized observability is operational: Talos metrics are queried directly from the OCI Hub's Grafana (`grafana.paulojauregui.com`). Cloud infrastructure costs have been reduced by consolidating all OCI services under a single load balancer (`192.9.242.180`). ArgoCD security has been hardened to disable the default admin and manage local users via Doppler.
+- **Goal:** Prepare the Talos cluster for AI/ML workloads by deploying MLflow.
 
 ## 2. Implementation Roadmap
 
-### Phase 1: ArgoCD Security Hardening & Local User Management
-**Objective:** Disable the built-in, default `admin` user in ArgoCD and provision a custom local user utilizing secure password hashes sourced from Doppler via External Secrets Operator.
-
-1.  **Doppler Configuration:**
-    - Generate a bcrypt hash for the new user's password using the ArgoCD CLI.
-    - Store the bcrypt hash securely in the Doppler project.
-2.  **Manifest Updates (ExternalSecret):**
-    - Create an `ExternalSecret` in the `argocd` namespace utilizing the `Merge` creation policy to safely inject the password hash into the existing `argocd-secret` without overwriting system keys.
-3.  **ConfigMap Updates (RBAC & Account Enablement):**
-    - Modify the `argocd-cm` ConfigMap to enable the new user account for UI/CLI login and set `admin.enabled: "false"`.
-    - Update the `argocd-rbac-cm` ConfigMap to grant `role:admin` privileges to the newly created user.
-4.  **GitOps Sync & Validation:** Sync the ArgoCD application on the OCI Hub and verify that the default `admin` is locked out while the new custom user can authenticate successfully.
+### [DONE] Phase 1: ArgoCD Security Hardening & Local User Management
+- Generated a bcrypt hash for the new user's password using the ArgoCD CLI.
+- Stored the bcrypt hash securely in the Doppler project.
+- Created an `ExternalSecret` in the `argocd` namespace utilizing the `Merge` creation policy to safely inject the password hash into the existing `argocd-secret` without overwriting system keys.
+- Modified the `argocd-cm` ConfigMap to enable the new user account (`jaupau`) for UI/CLI login and set `admin.enabled: "false"`.
+- Updated the `argocd-rbac-cm` ConfigMap to grant `role:admin` privileges to the newly created user.
 
 ### Phase 2: MLflow Deployment
 **Objective:** Deploy MLflow on the Talos home lab cluster to manage the machine learning lifecycle, track experiments, and store AI artifacts, leveraging the existing high-availability Postgres database.
@@ -45,7 +39,8 @@ Copy and paste this prompt into a new Gemini CLI session to resume immediately:
 > - OCI (Hub): `context-cxgwihujioa`
 > - Talos (Spoke): `dalia` (VIP 192.168.1.50)
 > - Redundant OCI Load Balancer eliminated; all traffic consolidated on `192.9.242.180`.
+> - ArgoCD security hardened (default admin disabled, `jaupau` enabled via Doppler).
 > 
 > **Instructions:**
 > 1. Please read the `ROADMAP.md` in the root.
-> 2. We have two main phases remaining: Phase 1 (ArgoCD Security Hardening) and Phase 2 (MLflow Deployment). Which one should we start with?"
+> 2. We have one main phase remaining: Phase 2 (MLflow Deployment). Please review it so we can begin the Database & Storage Preparation step."
