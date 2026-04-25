@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
   - ingress.yaml
   - service.yaml
+  - argocd-cm.yaml
+  - argocd-rbac-cm.yaml
+  - security.yaml
