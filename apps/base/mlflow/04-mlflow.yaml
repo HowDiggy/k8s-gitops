@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  namespace: mlflow
+  labels:
+    app: mlflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow
+  template:
+    metadata:
+      labels:
+        app: mlflow
+    spec:
+      initContainers:
+        - name: create-minio-bucket
+          image: minio/mc:RELEASE.2024-02-16T11-05-48Z
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MINIO_ROOT_USER
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MINIO_ROOT_PASSWORD
+          command: ["/bin/sh", "-c"]
+          args:
+            - >
+              echo "Waiting for MinIO to start..." &&
+              sleep 5 &&
+              mc alias set myminio http://minio:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY &&
+              mc mb myminio/mlflow || true &&
+              echo "Bucket 'mlflow' ensured."
+      containers:
+        - name: mlflow
+          image: ghcr.io/mlflow/mlflow:v2.10.2
+          command: ["sh", "-c"]
+          args:
+            - >
+              mlflow server 
+              --backend-store-uri postgresql://mlflow_user:${MLFLOW_DB_PASSWORD}@mlflow-db-rw:5432/mlflow 
+              --default-artifact-root s3://mlflow/ 
+              --host 0.0.0.0 
+              --port 5000
+          env:
+            - name: MLFLOW_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MLFLOW_DB_PASSWORD
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MINIO_ROOT_USER
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MINIO_ROOT_PASSWORD
+            - name: MLFLOW_S3_ENDPOINT_URL
+              value: "http://minio:9000"
+            - name: MLFLOW_S3_IGNORE_TLS
+              value: "true"
+          ports:
+            - containerPort: 5000
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow
+  namespace: mlflow
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 5000
+      name: http
+  selector:
+    app: mlflow
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mlflow-ingress
+  namespace: mlflow
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - mlflow.paulojauregui.com
+      secretName: mlflow-tls
+  rules:
+    - host: mlflow.paulojauregui.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mlflow
+                port:
+                  number: 80

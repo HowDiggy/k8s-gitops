@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dev-app-mlflow
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: dev-app-mlflow
+    app.kubernetes.io/part-of: applications
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: HEAD
+    path: apps/overlays/development/mlflow
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: mlflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

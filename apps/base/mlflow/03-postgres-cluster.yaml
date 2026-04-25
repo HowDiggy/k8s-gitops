@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: mlflow-db
+  namespace: mlflow
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 5Gi
+    storageClass: openebs-hostpath
+  bootstrap:
+    initdb:
+      database: mlflow
+      owner: mlflow_user
+      secret:
+        name: mlflow-db-credentials
