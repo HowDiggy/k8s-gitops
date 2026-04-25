@@ -43,12 +43,13 @@ spec:
           command: ["sh", "-c"]
           args:
             - >
-              pip install psycopg2-binary &&
+              pip install 'mlflow[auth]' psycopg2-binary &&
               mlflow server 
               --backend-store-uri postgresql://mlflow_user:${MLFLOW_DB_PASSWORD}@mlflow-db-rw:5432/mlflow 
               --default-artifact-root s3://mlflow/ 
               --host 0.0.0.0 
-              --port 5000
+              --port 5000 
+              --app-name basic-auth
           env:
             - name: MLFLOW_DB_PASSWORD
               valueFrom:
@@ -69,6 +70,8 @@ spec:
               value: "http://minio:9000"
             - name: MLFLOW_S3_IGNORE_TLS
               value: "true"
+            - name: MLFLOW_AUTH_CONFIG_PATH
+              value: "/etc/mlflow/auth/basic_auth.ini"
           ports:
             - containerPort: 5000
               name: http
@@ -78,6 +81,10 @@ spec:
               port: 5000
             initialDelaySeconds: 15
             periodSeconds: 20
+          volumeMounts:
+            - name: auth-config
+              mountPath: /etc/mlflow/auth
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -85,6 +92,10 @@ spec:
             limits:
               cpu: 1000m
               memory: 1Gi
+      volumes:
+        - name: auth-config
+          secret:
+            secretName: mlflow-auth-config
 ---
 apiVersion: v1
 kind: Service
