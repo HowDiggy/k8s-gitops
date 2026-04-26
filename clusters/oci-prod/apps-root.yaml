@@ -1,8 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-app-paulojauregui-com
+  name: prod-apps-root
   namespace: argocd
+  labels:
+    app.kubernetes.io/name: prod-apps-root
+    app.kubernetes.io/part-of: applications
 spec:
   project: default
   source:
@@ -11,7 +14,10 @@ spec:
     path: apps/overlays/production
   destination:
     server: https://kubernetes.default.svc
-    namespace: paulojauregui-com
+    namespace: argocd
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true

@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-app-paulojauregui-com
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: prod-app-paulojauregui-com
+    app.kubernetes.io/part-of: applications
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    targetRevision: main
+    path: apps/overlays/production/paulojauregui-com
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: paulojauregui-com
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
