@@ -15,7 +15,6 @@ Converge the "Applications" layer of the GitOps repository onto the **Explicit K
 1.  **Create Registry:** Create `apps/overlays/development/kustomization.yaml`.
 2.  **Relocate Manifests:** Move application registration manifests from `clusters/home-dev/` into the overlay:
     *   `clusters/home-dev/app-mlflow.yaml` -> `apps/overlays/development/mlflow-app.yaml`
-    *   `clusters/home-dev/app-signconnect-dev.yaml` -> `apps/overlays/development/signconnect-app.yaml`
 3.  **Explicit Registration:** Add these manifests to the `resources` list in `apps/overlays/development/kustomization.yaml`.
 4.  **Include Legacy Apps:** Ensure the `paulojauregui-com` base deployment is explicitly included by creating an `Application` manifest for it (e.g., `apps/overlays/development/paulojauregui-com-app.yaml`) and adding it to the `kustomization.yaml`.
 

@@ -17,7 +17,7 @@
 **Objective:** Deploy MLflow on the Talos home lab cluster to manage the machine learning lifecycle, track experiments, and store AI artifacts, leveraging the existing high-availability Postgres database.
 
 1.  **Database & Storage Preparation:**
-    - Create a dedicated database (`mlflow`) and user within the existing CloudNativePG (`signconnect-db`) cluster.
+    - Create a dedicated database (`mlflow`) and user within the existing high-availability Postgres cluster.
     - Set up an S3-compatible object store (like MinIO) on the Talos cluster for MLflow artifact storage, or configure an external bucket.
 2.  **Secret Management:**
     - Generate MLflow database and artifact storage credentials and store them securely in Doppler.

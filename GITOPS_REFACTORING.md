@@ -15,7 +15,7 @@ The primary goal of this refactoring was to improve maintainability, reduce boil
 - Removed all associated Kustomize patches for Helm values.
 
 ### 2. Cleanup of Root Directory & Security Verification
-**Problem:** The repository root contained various administrative scripts, sealed secret master keys, and bootstrap files (e.g., `argocd-cm.yaml`, `master-key-backup.yaml`, `signconnect.local.crt`), polluting the GitOps source of truth.
+**Problem:** The repository root contained various administrative scripts, sealed secret master keys, and bootstrap files (e.g., `argocd-cm.yaml`, `master-key-backup.yaml`), polluting the GitOps source of truth.
 **Solution:** Secured the root directory structure.
 - Created a dedicated `bootstrap/` directory for one-off administrative and cluster creation files.
 - Removed sensitive and tracked bootstrap files from the Git cache (`git rm --cached`).
@@ -33,7 +33,7 @@ The primary goal of this refactoring was to improve maintainability, reduce boil
 - Removed the Bitnami Sealed Secrets controller from all infrastructure overlays.
 - Deleted all `SealedSecret` manifests across the repository.
 - Configured a `ClusterSecretStore` to authenticate with Doppler.
-- Created declarative `ExternalSecret` manifests for all applications (`cert-manager`, `grafana`, `signconnect`) to fetch secrets directly from Doppler.
+- Created declarative `ExternalSecret` manifests for all applications (`cert-manager`, `grafana`, `mlflow`) to fetch secrets directly from Doppler.
 
 ## Final Required Action
 To finalize the Doppler integration, a Doppler Service Token must be bootstrapped into each Kubernetes cluster manually:

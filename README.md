@@ -13,8 +13,8 @@ This repository follows a multi-environment layout using Kustomize overlays to m
 k8s-gitops/
 ├── apps/
 │   ├── base/
-│   │   ├── paulojauregui-com/
-│   │   └── signconnect/
+│   │   ├── mlflow/
+│   │   └── paulojauregui-com/
 │   └── overlays/
 │       ├── development/
 │       ├── staging/
@@ -34,7 +34,7 @@ k8s-gitops/
 ```
 
   * **`clusters/`**: This is the entry point for each cluster. The Argo CD instance on a given cluster is pointed to its corresponding directory here (e.g., `oci-prod` or `home-dev`). These directories contain the "App of Apps" manifests that deploy everything else.
-  * **`apps/`**: Contains all user-facing applications, like my personal blog and the SignConnect project.
+  * **`apps/`**: Contains all user-facing applications, like my personal blog.
   * **`infrastructure/`**: Contains all platform-level services, such as the ingress controller and certificate manager, managed with Kustomize overlays.
   * **`base/`**: The `base` directories hold the common, environment-agnostic Kubernetes manifests for an application or service.
   * **`overlays/`**: The `overlays` directories contain Kustomize patches and configurations that are specific to an environment (`development`,`staging`, or `production`).
