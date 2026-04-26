@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: main
-    path: apps/overlays/staging
+    path: apps/overlays/staging/paulojauregui-com
   destination:
     server: https://kubernetes.default.svc
     namespace: paulojauregui-com

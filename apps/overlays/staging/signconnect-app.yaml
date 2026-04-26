@@ -1,4 +1,3 @@
-# clusters/oci-prod/app-signconnect-prod.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -8,9 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    # Production should always track the 'main' branch
     targetRevision: main
-    # Point to the new staging overlay
     path: apps/overlays/staging/signconnect
   destination:
     server: https://kubernetes.default.svc
