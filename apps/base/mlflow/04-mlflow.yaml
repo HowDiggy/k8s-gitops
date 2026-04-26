@@ -43,7 +43,7 @@ spec:
           args:
             - >
               pip install 'mlflow[auth]' psycopg2-binary &&
-              python -m mlflow.server.auth db upgrade --url postgresql://mlflow_user:${MLFLOW_DB_PASSWORD}@mlflow-db-rw:5432/mlflow
+              python -m mlflow.server.auth db upgrade --url postgresql://mlflow_user:${MLFLOW_DB_PASSWORD}@mlflow-db-rw:5432/mlflow_auth
           env:
             - name: MLFLOW_DB_PASSWORD
               valueFrom:
