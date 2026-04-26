@@ -37,6 +37,19 @@ spec:
               mc alias set myminio http://minio:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY &&
               mc mb myminio/mlflow || true &&
               echo "Bucket 'mlflow' ensured."
+        - name: init-auth-db
+          image: ghcr.io/mlflow/mlflow:v2.11.3
+          command: ["sh", "-c"]
+          args:
+            - >
+              pip install 'mlflow[auth]' psycopg2-binary &&
+              python -m mlflow.server.auth db upgrade --url postgresql://mlflow_user:${MLFLOW_DB_PASSWORD}@mlflow-db-rw:5432/mlflow
+          env:
+            - name: MLFLOW_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secrets
+                  key: MLFLOW_DB_PASSWORD
       containers:
         - name: mlflow
           image: ghcr.io/mlflow/mlflow:v2.11.3
