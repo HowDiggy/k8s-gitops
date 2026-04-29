@@ -12,6 +12,8 @@ spec:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: main
     path: infrastructure/base/qdrant
+    kustomize:
+      enableHelm: true
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: qdrant
