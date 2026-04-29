@@ -7,17 +7,38 @@ master:
   enabled: true
   replicas: 1
   volumePreallocate: false
+  data:
+    type: "persistentVolumeClaim"
+    size: "5Gi"
+    storageClass: "openebs-hostpath"
+  logs:
+    type: "emptyDir"
 
 volume:
   enabled: true
   replicas: 1
+  dataDirs:
+    - name: data1
+      type: "persistentVolumeClaim"
+      size: "20Gi"
+      storageClass: "openebs-hostpath"
+  logs:
+    type: "emptyDir"
 
 filer:
   enabled: true
   replicas: 1
+  data:
+    type: "persistentVolumeClaim"
+    size: "5Gi"
+    storageClass: "openebs-hostpath"
+  logs:
+    type: "emptyDir"
 
 s3:
   enabled: true
   replicas: 1
   enableAuth: true
   existingConfigSecret: "seaweedfs-s3-config"
+  logs:
+    type: "emptyDir"
