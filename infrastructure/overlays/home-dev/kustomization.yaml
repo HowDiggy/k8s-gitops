@@ -13,4 +13,5 @@ resources:
   - mongodb-cluster-app.yaml
   - qdrant.yaml
   - seaweedfs.yaml
+  - spark-operator.yaml
 

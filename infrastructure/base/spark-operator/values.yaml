@@ -1,0 +1,13 @@
+webhook:
+  enable: true
+
+certManager:
+  enable: true
+
+spark:
+  rbac:
+    create: true
+
+controller:
+  rbac:
+    create: true
