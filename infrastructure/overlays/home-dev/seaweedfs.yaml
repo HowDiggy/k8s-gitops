@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seaweedfs
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: seaweedfs
+    app.kubernetes.io/part-of: infrastructure
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: main
+    path: infrastructure/base/seaweedfs
+    kustomize:
+      enableHelm: true
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: seaweedfs
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

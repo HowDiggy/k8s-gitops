@@ -1,0 +1,23 @@
+global:
+  registry: ""
+  imagePullPolicy: IfNotPresent
+  enableSecurity: false
+
+master:
+  enabled: true
+  replicas: 1
+  volumePreallocate: false
+
+volume:
+  enabled: true
+  replicas: 1
+
+filer:
+  enabled: true
+  replicas: 1
+
+s3:
+  enabled: true
+  replicas: 1
+  enableAuth: true
+  existingConfigSecret: "seaweedfs-s3-config"

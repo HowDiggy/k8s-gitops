@@ -12,4 +12,5 @@ resources:
   - mongodb-operator.yaml
   - mongodb-cluster-app.yaml
   - qdrant.yaml
+  - seaweedfs.yaml
 
