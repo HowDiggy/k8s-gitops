@@ -12,7 +12,7 @@ This document outlines the step-by-step technical milestones required to transfo
 
 ---
 
-## Milestone 1: The Data Lake Foundation (SeaweedFS)
+## [DONE] Milestone 1: The Data Lake Foundation (SeaweedFS)
 **Goal:** Establish a high-performance, S3-compatible object storage layer to serve as the foundation for the Lakehouse.
 
 ### Technical Steps:
@@ -46,7 +46,7 @@ This document outlines the step-by-step technical milestones required to transfo
 
 ---
 
-## Milestone 2.5: The Agentic Foundation (Vector Database)
+## [DONE] Milestone 2.5: The Agentic Foundation (Vector Database)
 **Goal:** Deploy a centralized, always-on vector database (Qdrant) to serve as the shared "Enterprise Memory" for multiple LLM agents and RAG pipelines.
 
 ### Technical Steps:

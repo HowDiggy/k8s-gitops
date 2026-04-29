@@ -19,7 +19,7 @@
 - Cleaned up local secrets and documentation references across the project.
 - Pruned the `signconnect` namespace from all active clusters.
 
-### Phase 2: Open-Source Object Storage & MLflow Deployment
+### [DONE] Phase 2: Open-Source Object Storage & MLflow Deployment
 **Objective:** Deploy SeaweedFS (a lightweight, highly performant MinIO alternative) to serve as the S3-compatible Data Lake foundation, followed by MLflow for AI experiment tracking.
 
 1.  **Deploy SeaweedFS (Data Lake Foundation):**
@@ -32,7 +32,7 @@
     - Create base manifests for the MLflow deployment pointing artifact storage to SeaweedFS.
     - Deploy via ArgoCD and verify the tracking UI.
 
-### Phase 2.5: The Agentic Foundation (Vector Database)
+### [DONE] Phase 2.5: The Agentic Foundation (Vector Database)
 **Objective:** Deploy a centralized, always-on vector database to serve as the "Enterprise Memory" for your upcoming LLM agents.
 
 1.  **Deploy Qdrant:**

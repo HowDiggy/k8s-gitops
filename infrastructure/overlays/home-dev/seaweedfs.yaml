@@ -12,8 +12,6 @@ spec:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: main
     path: infrastructure/base/seaweedfs
-    kustomize:
-      enableHelm: true
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: seaweedfs
