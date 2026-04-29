@@ -95,6 +95,7 @@ data:
       - UpdateRequest
   accounts.jaupau: login
   admin.enabled: "false"
+  kustomize.buildOptions: --enable-helm
 kind: ConfigMap
 metadata:
   labels:
