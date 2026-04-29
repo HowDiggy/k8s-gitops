@@ -11,4 +11,5 @@ resources:
   - cloudflare-talos.yaml
   - mongodb-operator.yaml
   - mongodb-cluster-app.yaml
+  - qdrant.yaml
 

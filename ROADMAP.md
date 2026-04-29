@@ -1,8 +1,8 @@
-# Roadmap: MLflow and ArgoCD Security Hardening
+# Roadmap: GitOps, MLflow, and the AI-Enriched Lakehouse
 
 ## 1. Project Context Summary
 - **Current State:** The Hub-and-Spoke GitOps model is optimized and stable. Centralized observability is operational: Talos metrics are queried directly from the OCI Hub's Grafana (`grafana.paulojauregui.com`). Cloud infrastructure costs have been reduced by consolidating all OCI services under a single load balancer (`192.9.242.180`). ArgoCD security has been hardened to disable the default admin and manage local users via Doppler.
-- **Goal:** Prepare the Talos cluster for AI/ML workloads by deploying MLflow.
+- **Goal:** Transform the Talos cluster into an Enterprise-grade AI & Data Engineering platform. This involves deploying MLflow for model management and constructing an "AI-Enriched Lakehouse" pipeline mimicking a modern Databricks architecture, starting with PySpark batch processing and evolving into real-time streaming.
 
 ## 2. Implementation Roadmap
 
@@ -13,19 +13,61 @@
 - Modified the `argocd-cm` ConfigMap to enable the new user account (`jaupau`) for UI/CLI login and set `admin.enabled: "false"`.
 - Updated the `argocd-rbac-cm` ConfigMap to grant `role:admin` privileges to the newly created user.
 
-### Phase 2: MLflow Deployment
-**Objective:** Deploy MLflow on the Talos home lab cluster to manage the machine learning lifecycle, track experiments, and store AI artifacts, leveraging the existing high-availability Postgres database.
+### [DONE] Phase 1.5: SignConnect Decommissioning
+- Unregistered the `signconnect` application from all ArgoCD environment registries (development, staging, production).
+- Deleted all `signconnect` Kustomize manifests from the `apps/base` and `apps/overlays` directories.
+- Cleaned up local secrets and documentation references across the project.
+- Pruned the `signconnect` namespace from all active clusters.
 
-1.  **Database & Storage Preparation:**
-    - Create a dedicated database (`mlflow`) and user within the existing high-availability Postgres cluster.
-    - Set up an S3-compatible object store (like MinIO) on the Talos cluster for MLflow artifact storage, or configure an external bucket.
-2.  **Secret Management:**
-    - Generate MLflow database and artifact storage credentials and store them securely in Doppler.
-    - Create an `ExternalSecret` manifest to synchronize these credentials to the namespace where MLflow will reside.
-3.  **Manifest Creation:**
-    - Create base manifests for the MLflow deployment and service in `apps/base/mlflow`.
-    - Configure an overlay for `home-dev` (`apps/overlays/development/mlflow`) to deploy the application with proper resource limits.
-4.  **GitOps Sync & Validation:** Deploy via ArgoCD, ensure the pods start successfully, and verify access to the MLflow tracking UI.
+### Phase 2: Open-Source Object Storage & MLflow Deployment
+**Objective:** Deploy SeaweedFS (a lightweight, highly performant MinIO alternative) to serve as the S3-compatible Data Lake foundation, followed by MLflow for AI experiment tracking.
+
+1.  **Deploy SeaweedFS (Data Lake Foundation):**
+    - Deploy SeaweedFS via its official Helm Chart using Kustomize.
+    - Configure it with S3 API endpoints and create the necessary buckets (`mlflow-artifacts`, `bronze-logs`, `silver-enriched`).
+2.  **Database & Secret Preparation:**
+    - Create a dedicated database (`mlflow`) within the existing HA Postgres cluster.
+    - Generate SeaweedFS and Postgres credentials and store them securely in Doppler.
+3.  **MLflow Manifest Creation & Sync:**
+    - Create base manifests for the MLflow deployment pointing artifact storage to SeaweedFS.
+    - Deploy via ArgoCD and verify the tracking UI.
+
+### Phase 2.5: The Agentic Foundation (Vector Database)
+**Objective:** Deploy a centralized, always-on vector database to serve as the "Enterprise Memory" for your upcoming LLM agents.
+
+1.  **Deploy Qdrant:**
+    - Deploy the official Qdrant Kubernetes Operator (or Helm Chart) via Kustomize.
+    - *Why Qdrant:* Written in Rust, it provides memory-safe, ultra-fast vector similarity search with a minimal footprint, making it ideal for the Talos edge cluster.
+2.  **Provision and Secure:**
+    - Provision a Qdrant cluster backed by local storage.
+    - Generate API keys, store them in Doppler, and sync them to the cluster via the External Secrets Operator.
+
+### Phase 3: The Spark Foundation (Batch AI Lakehouse)
+**Objective:** Deploy Apache Spark to mimic the core Databricks batch capabilities and prove out the AI UDF logic before introducing streaming complexity.
+
+1.  **Deploy the Kubernetes Operator:**
+    - Deploy the official Spark Kubernetes Operator.
+2.  **Prototype the PySpark Batch Job:**
+    - Develop a PySpark script that reads a static Parquet file from SeaweedFS, applies a Vectorized Pandas UDF (calling the local DGX vLLM via `asyncio`), and writes the enriched dataset back as a Delta Table.
+
+### Phase 4: The Streaming Backbone (Redpanda)
+**Objective:** Deploy the infrastructure required to handle high-throughput, real-time data streams.
+
+1.  **Deploy Redpanda:**
+    - Deploy the Redpanda Operator (a lightweight, JVM-free Kafka alternative) and provision a cluster.
+2.  **Data Generator (Producer):**
+    - Write a lightweight Python script to generate synthetic "system path" logs and continuously publish them to a Redpanda topic (`raw-system-paths`).
+
+### Phase 5: Structured Streaming Upgrade
+**Objective:** Upgrade the PySpark pipeline from batch to Spark Structured Streaming to process the Redpanda data in real-time.
+
+1.  **Refactor the PySpark Job:**
+    - Modify the source from `spark.read` to `spark.readStream` subscribing to the Redpanda topic.
+2.  **Sink to Delta Lake:**
+    - Configure the streaming job to append the AI-enriched data continuously to the SeaweedFS Delta Table.
+
+### Phase 6: Flink Mastery (Future/Optional)
+**Objective:** Once the Spark Structured Streaming pipeline is flawless, deploy Apache Flink to contrast micro-batching with true event-driven streaming.
 
 ---
 
@@ -33,14 +75,13 @@
 
 Copy and paste this prompt into a new Gemini CLI session to resume immediately:
 
-> "I am continuing the Hybrid Cloud GitOps project. The Talos lab cluster is connected to OCI and stable with HA Postgres and MongoDB. Centralized observability is operational at `grafana.paulojauregui.com`.
+> "I am continuing the Hybrid Cloud GitOps project. We are pivoting to build an 'AI-Enriched Lakehouse' architecture on the Talos cluster, focusing first on a strong PySpark foundation to mimic a modern Databricks setup.
 > 
 > **Current State:**
 > - OCI (Hub): `context-cxgwihujioa`
-> - Talos (Spoke): `dalia` (VIP 192.168.1.50)
-> - Redundant OCI Load Balancer eliminated; all traffic consolidated on `192.9.242.180`.
-> - ArgoCD security hardened (default admin disabled, `jaupau` enabled via Doppler).
+> - Talos (Spoke): `dalia`
+> - ArgoCD security hardened, and legacy apps (`signconnect`) decommissioned.
 > 
 > **Instructions:**
-> 1. Please read the `ROADMAP.md` in the root.
-> 2. We have one main phase remaining: Phase 2 (MLflow Deployment). Please review it so we can begin the Database & Storage Preparation step."
+> 1. Please read the `ROADMAP.md` and `LAKEHOUSE_PLAN.md` in the root.
+> 2. We are starting on Phase 2. Please help me generate the Kustomize manifests to deploy the SeaweedFS Helm Chart to our cluster."

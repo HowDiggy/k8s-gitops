@@ -1,0 +1,13 @@
+config:
+  cluster:
+    enabled: false
+
+apiKey:
+  valueFrom:
+    secretKeyRef:
+      name: qdrant-api-key
+      key: api-key
+
+persistence:
+  size: 20Gi
+  storageClassName: openebs-hostpath
