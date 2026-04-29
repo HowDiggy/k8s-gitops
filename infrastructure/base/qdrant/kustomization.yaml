@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: qdrant
     repo: https://qdrant.to/helm
-    version: 0.12.1
+    version: 1.17.1
     releaseName: qdrant
     namespace: qdrant
     valuesFile: values.yaml
