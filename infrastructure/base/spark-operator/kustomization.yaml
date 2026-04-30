@@ -4,6 +4,9 @@ namespace: spark-operator
 
 resources:
   - 00-namespace.yaml
+  - sparkoperator.k8s.io_sparkapplications.yaml
+  - sparkoperator.k8s.io_scheduledsparkapplications.yaml
+  - sparkoperator.k8s.io_sparkconnects.yaml
 
 helmCharts:
   - name: spark-operator

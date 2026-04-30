@@ -17,3 +17,6 @@ spark:
 controller:
   rbac:
     create: true
+
+hook:
+  upgradeCrd: false
