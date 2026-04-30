@@ -3,8 +3,14 @@ webhook:
 
 certManager:
   enable: true
+  issuerRef:
+    name: self-signed-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
 
 spark:
+  jobNamespaces:
+    - spark-operator
   rbac:
     create: true
 
