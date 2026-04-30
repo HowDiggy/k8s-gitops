@@ -15,4 +15,5 @@ resources:
   - seaweedfs.yaml
   - spark-operator.yaml
   - self-signed-issuer.yaml
+  - cert-manager.yaml
 
