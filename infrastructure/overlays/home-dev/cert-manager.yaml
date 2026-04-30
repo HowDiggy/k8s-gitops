@@ -15,6 +15,7 @@ spec:
       helm:
         valueFiles:
           - $values/infrastructure/base/cert-manager/values.yaml
+          - $values/infrastructure/overlays/home-dev/cert-manager-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
       targetRevision: HEAD
       ref: values

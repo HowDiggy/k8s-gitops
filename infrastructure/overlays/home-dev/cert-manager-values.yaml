@@ -1,0 +1,11 @@
+# Override the base ARM64 nodeSelector for the local AMD64 cluster
+nodeSelector:
+  kubernetes.io/arch: "amd64"
+
+webhook:
+  nodeSelector:
+    kubernetes.io/arch: "amd64"
+
+cainjector:
+  nodeSelector:
+    kubernetes.io/arch: "amd64"
