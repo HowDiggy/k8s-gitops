@@ -78,8 +78,8 @@ Copy and paste this prompt into a new Gemini CLI session to resume immediately:
 > "I am continuing the Hybrid Cloud GitOps project. We are pivoting to build an 'AI-Enriched Lakehouse' architecture on the Talos cluster, focusing first on a strong PySpark foundation to mimic a modern Databricks setup.
 > 
 > **Current State:**
-> - OCI (Hub): `context-cxgwihujioa`
-> - Talos (Spoke): `dalia`
+> - OCI (Hub): `oci-prod`
+> - Talos (Spoke): `home-dev`
 > - ArgoCD security hardened, and legacy apps (`signconnect`) decommissioned.
 > 
 > **Instructions:**
