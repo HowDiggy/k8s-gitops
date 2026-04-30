@@ -45,7 +45,7 @@
 ### Phase 3: The Spark Foundation (Batch AI Lakehouse)
 **Objective:** Deploy Apache Spark to mimic the core Databricks batch capabilities and prove out the AI UDF logic before introducing streaming complexity.
 
-1.  **Deploy the Kubernetes Operator:**
+1.  **[DONE] Deploy the Kubernetes Operator:**
     - Deploy the official Spark Kubernetes Operator.
 2.  **Prototype the PySpark Batch Job:**
     - Develop a PySpark script that reads a static Parquet file from SeaweedFS, applies a Vectorized Pandas UDF (calling the local DGX vLLM via `asyncio`), and writes the enriched dataset back as a Delta Table.

@@ -49,6 +49,12 @@ These specialized machines are dedicated purely to compute-intensive, GPU-accele
 * **Training Jobs:** Spark or PyTorch training jobs scheduled by Airflow and constrained to these nodes.
 * **Model Serving:** Hosting and serving custom models or LLMs.
 
+## Detailed Architectural Decisions
+For in-depth explanations of specific architectural implementations and troubleshooting resolutions, refer to our Architecture Documentation:
+*   [Hub-and-Spoke GitOps Architecture (App of Apps)](docs/architecture/01-hub-and-spoke-gitops.md)
+*   [Spark Operator Webhook & Cert-Manager Integration](docs/architecture/02-cert-manager-spark-operator.md)
+*   [Multi-Architecture Node Affinity](docs/architecture/03-multi-arch-node-affinity.md)
+
 ---
 
 ## Future Networking Strategy
