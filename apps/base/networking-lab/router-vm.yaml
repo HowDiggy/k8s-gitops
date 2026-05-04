@@ -44,7 +44,7 @@ spec:
       volumes:
         - name: containerdisk
           containerDisk:
-            image: quay.io/containerdisks/ubuntu:22.04
+            image: quay.io/containerdisks/ubuntu:24.04
         - name: cloudinitdisk
           cloudInitNoCloud:
             userData: |
