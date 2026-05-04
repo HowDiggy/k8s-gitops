@@ -4,10 +4,16 @@ resources:
   - https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml
 
 patches:
-  - target:
+  - patch: |-
+      apiVersion: apps/v1
       kind: DaemonSet
-      name: kube-multus-ds
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/volumes/1/hostPath/path
-        value: /var/run/netns/
+      metadata:
+        name: kube-multus-ds
+        namespace: kube-system
+      spec:
+        template:
+          spec:
+            volumes:
+            - name: host-run-netns
+              hostPath:
+                path: /var/run/netns/
