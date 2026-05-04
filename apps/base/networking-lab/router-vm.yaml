@@ -39,7 +39,7 @@ spec:
       volumes:
         - name: containerdisk
           containerDisk:
-            image: quay.io/containerdisks/alpine:3.19
+            image: quay.io/containerdisks/alpine:latest
         - name: cloudinitdisk
           cloudInitNoCloud:
             userData: |
