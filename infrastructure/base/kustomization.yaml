@@ -7,4 +7,5 @@ resources:
   - monitoring
   - postgresql
   - cloudflare
+  - multus
   - ../external-secrets
