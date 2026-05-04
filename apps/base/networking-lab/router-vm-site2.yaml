@@ -1,0 +1,55 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: router-vm-site2
+  namespace: networking-lab
+  labels:
+    kubevirt.io/vm: router-vm-site2
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: router-vm-site2
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: containerdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          interfaces:
+            - name: default
+              masquerade: {}
+            - name: br-lab-site2-iface
+              bridge: {}
+        resources:
+          requests:
+            memory: 512M
+            cpu: 1
+      networks:
+        - name: default
+          pod: {}
+        - name: br-lab-site2-iface
+          multus:
+            networkName: br-lab-site2
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/ubuntu:22.04
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              password: password
+              chpasswd: { expire: False }
+              packages:
+                - iptables
+              runcmd:
+                - sysctl -w net.ipv4.ip_forward=1
+                - iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+                - ip addr add 192.168.200.1/24 dev eth1
+                - ip link set eth1 up

@@ -4,3 +4,4 @@ namespace: networking-lab
 resources:
   - namespace.yaml
   - br-lab-net.yaml
+  - br-lab-site2-net.yaml

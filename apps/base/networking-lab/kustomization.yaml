@@ -4,3 +4,5 @@ namespace: networking-lab
 resources:
   - router-vm.yaml
   - ubuntu-vm.yaml
+  - router-vm-site2.yaml
+  - ubuntu-vm-site2.yaml
