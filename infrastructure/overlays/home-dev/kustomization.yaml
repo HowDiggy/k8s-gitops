@@ -16,4 +16,5 @@ resources:
   - spark-operator.yaml
   - cert-manager.yaml
   - cluster-issuers-app.yaml
+  - multus.yaml
 
