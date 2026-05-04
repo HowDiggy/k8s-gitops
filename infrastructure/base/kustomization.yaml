@@ -8,4 +8,5 @@ resources:
   - postgresql
   - cloudflare
   - multus
+  - kubevirt
   - ../external-secrets

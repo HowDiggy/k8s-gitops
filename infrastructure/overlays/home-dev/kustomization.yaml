@@ -17,4 +17,5 @@ resources:
   - cert-manager.yaml
   - cluster-issuers-app.yaml
   - multus.yaml
+  - kubevirt.yaml
 
