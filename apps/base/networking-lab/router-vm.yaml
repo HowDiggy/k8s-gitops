@@ -39,7 +39,7 @@ spec:
       volumes:
         - name: containerdisk
           containerDisk:
-            image: quay.io/containerdisks/alpine:latest
+            image: quay.io/containerdisks/ubuntu:22.04
         - name: cloudinitdisk
           cloudInitNoCloud:
             userData: |
