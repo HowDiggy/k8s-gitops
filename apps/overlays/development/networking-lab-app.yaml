@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: networking-lab-workloads
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: networking-lab-workloads
+    app.kubernetes.io/part-of: applications
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: feat/networking-lab
+    path: apps/base/networking-lab
+  destination:
+    server: https://talos-api.paulojauregui.com
+    namespace: networking-lab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
