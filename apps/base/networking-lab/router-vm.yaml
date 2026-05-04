@@ -6,13 +6,16 @@ metadata:
   labels:
     kubevirt.io/vm: router-vm
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:
         kubevirt.io/vm: router-vm
     spec:
+      architecture: amd64
       domain:
+        machine:
+          type: q35
         devices:
           disks:
             - name: containerdisk
