@@ -42,6 +42,13 @@
     - Provision a Qdrant cluster backed by local storage.
     - Generate API keys, store them in Doppler, and sync them to the cluster via the External Secrets Operator.
 
+### [DONE] Phase 2.8: Network Engineering Lab (KubeVirt)
+**Objective:** Build a self-contained, GitOps-managed virtual network sandbox to practice advanced routing, firewalling, and VPN concepts directly on the Talos hardware without impacting cluster stability.
+
+1.  **Infrastructure:** Deployed Multus CNI for virtual layer-2 bridges and KubeVirt Operator for native VM orchestration.
+2.  **Two-Site Topology:** Provisioned two Ubuntu 24.04 router VMs and two Ubuntu client VMs acting as a simulated multi-site corporate network traversing the Kubernetes pod network.
+3.  **Documentation:** Detailed the [KubeVirt Networking Lab Architecture](docs/architecture/04-kubevirt-networking-lab.md) for future operational reference and LLM context.
+
 ### Phase 3: The Spark Foundation (Batch AI Lakehouse)
 **Objective:** Deploy Apache Spark to mimic the core Databricks batch capabilities and prove out the AI UDF logic before introducing streaming complexity.
 
