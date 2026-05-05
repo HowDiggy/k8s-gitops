@@ -19,4 +19,5 @@ resources:
   - multus.yaml
   - kubevirt.yaml
   - networking-lab-infra.yaml
+  - metrics-server.yaml
 
