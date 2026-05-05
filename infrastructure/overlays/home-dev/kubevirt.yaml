@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: feat/networking-lab
+    targetRevision: HEAD
     path: infrastructure/base/kubevirt
   destination:
     server: https://talos-api.paulojauregui.com

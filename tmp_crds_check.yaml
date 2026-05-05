@@ -1,0 +1,179 @@
+---
+# Source: spark-operator/crds/sparkoperator.k8s.io_scheduledsparkapplications.yaml
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    api-approved.kubernetes.io: https://github.com/kubeflow/spark-operator/pull/1298
+    controller-gen.kubebuilder.io/version: v0.17.1
+  name: scheduledsparkapplications.sparkoperator.k8s.io
+spec:
+  group: sparkoperator.k8s.io
+  names:
+    kind: ScheduledSparkApplication
+    listKind: ScheduledSparkApplicationList
+    plural: scheduledsparkapplications
+    shortNames:
+    - scheduledsparkapp
+    singular: scheduledsparkapplication
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.schedule
+      name: Schedule
+      type: string
+    - jsonPath: .spec.timeZone
+      name: TimeZone
+      type: string
+    - jsonPath: .spec.suspend
+      name: Suspend
+      type: string
+    - jsonPath: .status.lastRun
+      name: Last Run
+      type: date
+    - jsonPath: .status.lastRunName
+      name: Last Run Name
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta2
+    schema:
+      openAPIV3Schema:
+        description: ScheduledSparkApplication is the Schema for the scheduledsparkapplications
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+--
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+---
+# Source: spark-operator/crds/sparkoperator.k8s.io_sparkapplications.yaml
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    api-approved.kubernetes.io: https://github.com/kubeflow/spark-operator/pull/1298
+    controller-gen.kubebuilder.io/version: v0.17.1
+  name: sparkapplications.sparkoperator.k8s.io
+spec:
+  group: sparkoperator.k8s.io
+  names:
+    kind: SparkApplication
+    listKind: SparkApplicationList
+    plural: sparkapplications
+    shortNames:
+    - sparkapp
+    singular: sparkapplication
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.suspend
+      name: Suspend
+      type: boolean
+    - jsonPath: .status.applicationState.state
+      name: Status
+      type: string
+    - jsonPath: .status.executionAttempts
+      name: Attempts
+      type: string
+    - jsonPath: .status.lastSubmissionAttemptTime
+      name: Start
+      type: string
+    - jsonPath: .status.terminationTime
+      name: Finish
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta2
+    schema:
+      openAPIV3Schema:
+        description: SparkApplication is the Schema for the sparkapplications API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+--
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+---
+# Source: spark-operator/crds/sparkoperator.k8s.io_sparkconnects.yaml
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    api-approved.kubernetes.io: https://github.com/kubeflow/spark-operator/pull/1298
+    controller-gen.kubebuilder.io/version: v0.17.1
+  name: sparkconnects.sparkoperator.k8s.io
+spec:
+  group: sparkoperator.k8s.io
+  names:
+    kind: SparkConnect
+    listKind: SparkConnectList
+    plural: sparkconnects
+    shortNames:
+    - sparkconn
+    singular: sparkconnect
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.state
+      name: Status
+      type: string
+    - jsonPath: .status.server.podName
+      name: PodName
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SparkConnect is the Schema for the sparkconnections API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SparkConnectSpec defines the desired state of SparkConnect.
