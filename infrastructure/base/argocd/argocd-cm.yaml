@@ -123,6 +123,28 @@ data:
     hs.status = "Progressing"
     hs.message = "Waiting for VirtualMachine status"
     return hs
+  resource.customizations.health.kubevirt.io_VirtualMachineInstance: |
+    hs = {}
+    if obj.status ~= nil then
+      if obj.status.phase == "Running" then
+        hs.status = "Healthy"
+        hs.message = "VMI is running"
+        return hs
+      end
+      if obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        hs.message = "VMI failed"
+        return hs
+      end
+      if obj.status.phase == "Scheduling" or obj.status.phase == "Scheduled" then
+        hs.status = "Progressing"
+        hs.message = "VMI is " .. obj.status.phase
+        return hs
+      end
+    end
+    hs.status = "Progressing"
+    hs.message = "Waiting for VMI status"
+    return hs
 kind: ConfigMap
 metadata:
   labels:
