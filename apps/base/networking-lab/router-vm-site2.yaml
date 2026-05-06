@@ -35,6 +35,7 @@ spec:
           requests:
             memory: 512M
             cpu: "1"
+            ephemeral-storage: "40Gi"
       networks:
         - name: default
           pod: {}

@@ -33,6 +33,7 @@ spec:
           requests:
             memory: 1024M
             cpu: "1"
+            ephemeral-storage: "40Gi"
       networks:
         - name: br-lab-iface
           multus:
