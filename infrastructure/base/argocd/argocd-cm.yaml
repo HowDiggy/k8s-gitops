@@ -96,6 +96,33 @@ data:
   accounts.jaupau: login
   admin.enabled: "false"
   kustomize.buildOptions: "--enable-helm"
+  resource.customizations.health.kubevirt.io_VirtualMachine: |
+    hs = {}
+    if obj.status ~= nil then
+      if obj.status.printableStatus ~= nil then
+        if obj.status.printableStatus == "Running" then
+          hs.status = "Healthy"
+          hs.message = "VirtualMachine is running"
+          return hs
+        end
+        if obj.status.printableStatus == "Stopped" then
+          hs.status = "Suspended"
+          hs.message = "VirtualMachine is stopped"
+          return hs
+        end
+        if obj.status.printableStatus == "Starting" or obj.status.printableStatus == "Provisioning" then
+          hs.status = "Progressing"
+          hs.message = "VirtualMachine is starting"
+          return hs
+        end
+        hs.status = "Degraded"
+        hs.message = "VirtualMachine is in state " .. obj.status.printableStatus
+        return hs
+      end
+    end
+    hs.status = "Progressing"
+    hs.message = "Waiting for VirtualMachine status"
+    return hs
 kind: ConfigMap
 metadata:
   labels:
