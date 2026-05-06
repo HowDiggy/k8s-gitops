@@ -2,5 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - self-signed-issuer.yaml
-  - ../cert-manager/letsencrypt-issuers.yaml
-  - ../cert-manager/external-cloudflare-token.yaml
+  - letsencrypt-issuers.yaml
+  - external-cloudflare-token.yaml
