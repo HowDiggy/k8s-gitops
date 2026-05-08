@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - paulojauregui-com-app.yaml
   - mlflow-app.yaml
-  - networking-lab-app.yaml
