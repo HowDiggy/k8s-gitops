@@ -6,4 +6,8 @@ resources:
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
   - talos-prom-auth-es.yaml
+  - mongodb-operator.yaml
+  - mongodb-cluster-app.yaml
+  - qdrant.yaml
+  - seaweedfs.yaml
 
