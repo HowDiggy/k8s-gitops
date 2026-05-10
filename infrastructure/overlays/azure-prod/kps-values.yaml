@@ -1,0 +1,24 @@
+# Azure AKS KPS Values
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      kubernetes.azure.com/scalesetpriority: spot
+    tolerations:
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"
+
+grafana:
+  nodeSelector:
+    kubernetes.azure.com/scalesetpriority: spot
+  tolerations:
+    - key: "kubernetes.azure.com/scalesetpriority"
+      operator: "Equal"
+      value: "spot"
+      effect: "NoSchedule"
+  ingress:
+    enabled: true
+    ingressClassName: webapprouting.kubernetes.azure.com # Using AKS managed ingress if enabled, otherwise nginx
+    hosts:
+      - grafana.paulojauregui.com

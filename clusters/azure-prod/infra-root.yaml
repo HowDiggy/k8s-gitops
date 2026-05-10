@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-prod-infra-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: azure-prod-infra-root
+    app.kubernetes.io/part-of: infrastructure
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    targetRevision: HEAD
+    path: infrastructure/overlays/azure-prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

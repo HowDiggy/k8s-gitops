@@ -8,6 +8,14 @@ apiKey:
       name: qdrant-api-key
       key: api-key
 
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
 persistence:
   size: 20Gi
-  storageClassName: openebs-hostpath
+  # storageClassName: oci-bv # Uses default cluster storage class if omitted

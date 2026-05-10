@@ -7,31 +7,52 @@ master:
   enabled: true
   replicas: 1
   volumePreallocate: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
   data:
     type: "persistentVolumeClaim"
     size: "5Gi"
-    storageClass: "openebs-hostpath"
+    # storageClass: "oci-bv"
   logs:
     type: "emptyDir"
 
 volume:
   enabled: true
   replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
   dataDirs:
     - name: data1
       type: "persistentVolumeClaim"
       size: "20Gi"
-      storageClass: "openebs-hostpath"
+      # storageClass: "oci-bv"
   logs:
     type: "emptyDir"
 
 filer:
   enabled: true
   replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
   data:
     type: "persistentVolumeClaim"
     size: "5Gi"
-    storageClass: "openebs-hostpath"
+    # storageClass: "oci-bv"
   logs:
     type: "emptyDir"
 
@@ -40,5 +61,12 @@ s3:
   replicas: 1
   enableAuth: true
   existingConfigSecret: "seaweedfs-s3-config"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
   logs:
     type: "emptyDir"

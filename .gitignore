@@ -15,3 +15,6 @@ root-app-staging.yaml
 !*external-*secret*.yaml
 !*external-secret*.yaml
 *backup*.yaml
+
+# Learning and local documentation
+docs/learning/

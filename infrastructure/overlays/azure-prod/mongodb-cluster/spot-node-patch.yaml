@@ -1,0 +1,17 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: mongodb
+  namespace: mongodb
+spec:
+  statefulSet:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.azure.com/scalesetpriority: spot
+          tolerations:
+            - key: "kubernetes.azure.com/scalesetpriority"
+              operator: "Equal"
+              value: "spot"
+              effect: "NoSchedule"
