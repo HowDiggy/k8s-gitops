@@ -1,0 +1,11 @@
+# Azure AKS Production Infrastructure Overlay
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - cnpg-operator.yaml
+  - kube-prometheus-stack.yaml
+  - mongodb-operator.yaml
+  - mongodb-cluster-app.yaml
+  - qdrant.yaml
+  - seaweedfs.yaml
