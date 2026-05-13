@@ -11,21 +11,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://mongodb.github.io/helm-charts
-    chart: community-operator
-    targetRevision: "0.10.0"
-    helm:
-      parameters:
-        - name: operator.watchNamespace
-          value: "*"
-      values: |
-        nodeSelector:
-          kubernetes.azure.com/scalesetpriority: spot
-        tolerations:
-          - key: "kubernetes.azure.com/scalesetpriority"
-            operator: "Equal"
-            value: "spot"
-            effect: "NoSchedule"
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: feat/azure-migration
+    path: infrastructure/overlays/azure-prod/mongodb-operator
   destination:
     server: https://kubernetes.default.svc
     namespace: mongodb-system
