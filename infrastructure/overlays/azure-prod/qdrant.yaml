@@ -8,10 +8,18 @@ metadata:
     app.kubernetes.io/part-of: infrastructure
 spec:
   project: default
-  source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: feat/azure-migration
-    path: infrastructure/overlays/azure-prod/qdrant
+  sources:
+    - repoURL: https://qdrant.to/helm
+      chart: qdrant
+      targetRevision: "1.17.1"
+      helm:
+        valueFiles:
+          - $values/infrastructure/base/qdrant/values.yaml
+          - $values/infrastructure/overlays/azure-prod/qdrant-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: feat/azure-migration
+      path: infrastructure/overlays/azure-prod/qdrant
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: qdrant

@@ -8,10 +8,18 @@ metadata:
     app.kubernetes.io/part-of: infrastructure
 spec:
   project: default
-  source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: feat/azure-migration
-    path: infrastructure/overlays/azure-prod/seaweedfs
+  sources:
+    - repoURL: https://seaweedfs.github.io/seaweedfs/helm
+      chart: seaweedfs
+      targetRevision: "4.22.0"
+      helm:
+        valueFiles:
+          - $values/infrastructure/base/seaweedfs/values.yaml
+          - $values/infrastructure/overlays/azure-prod/seaweedfs-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: feat/azure-migration
+      path: infrastructure/overlays/azure-prod/seaweedfs
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: seaweedfs

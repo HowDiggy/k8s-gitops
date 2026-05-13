@@ -18,6 +18,3 @@ patches:
       - op: replace
         path: /spec/data/1/remoteRef/key
         value: SEAWEEDFS-S3-SECRET-KEY
-  - path: spot-patch.yaml
-    target:
-      kind: StatefulSet

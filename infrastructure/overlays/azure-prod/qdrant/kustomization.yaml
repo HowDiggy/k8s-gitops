@@ -15,6 +15,3 @@ patches:
       - op: replace
         path: /spec/data/0/remoteRef/key
         value: QDRANT-API-KEY
-  - path: spot-patch.yaml
-    target:
-      kind: StatefulSet

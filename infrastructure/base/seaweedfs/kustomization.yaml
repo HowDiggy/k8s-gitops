@@ -5,11 +5,3 @@ namespace: seaweedfs
 resources:
   - 00-namespace.yaml
   - 01-external-secret.yaml
-
-helmCharts:
-  - name: seaweedfs
-    repo: https://seaweedfs.github.io/seaweedfs/helm
-    version: 4.22.0
-    releaseName: seaweedfs
-    namespace: seaweedfs
-    valuesFile: values.yaml
