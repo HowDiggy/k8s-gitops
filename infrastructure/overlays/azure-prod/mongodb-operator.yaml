@@ -18,6 +18,15 @@ spec:
       parameters:
         - name: operator.watchNamespace
           value: "*"
+      values: |
+        operator:
+          nodeSelector:
+            kubernetes.azure.com/scalesetpriority: spot
+          tolerations:
+            - key: "kubernetes.azure.com/scalesetpriority"
+              operator: "Equal"
+              value: "spot"
+              effect: "NoSchedule"
   destination:
     server: https://kubernetes.default.svc
     namespace: mongodb-system

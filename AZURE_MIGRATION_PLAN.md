@@ -46,14 +46,14 @@ Establish secure, passwordless secret retrieval.
 ---
 
 ## 🟢 Milestone 4: Migrating GitOps Overlays to Azure (`azure-prod`)
-**Status:** In Progress
+**Status:** Completed
 
 Refactor the GitOps repository structure for the new environment.
 
 - [x] 1. Create `infrastructure/overlays/azure-prod/` and `apps/overlays/azure-prod/`.
 - [x] 2. Port base workloads (MongoDB, SeaweedFS, Qdrant) into the new overlay.
 - [x] 3. Implement Pod Disruption Budgets (PDBs) and Node Selectors/Tolerations to ensure workloads are scheduled appropriately across the Spot node pool.
-- [ ] 4. Migrate secrets from Doppler to Azure Key Vault.
+- [x] 4. Migrate secrets from Doppler to Azure Key Vault.
 
 ---
 
