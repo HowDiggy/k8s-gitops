@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: iostat-diagnostic
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: iostat-diagnostic
+  template:
+    metadata:
+      labels:
+        name: iostat-diagnostic
+    spec:
+      hostPID: true
+      hostNetwork: true
+      containers:
+      - name: iostat
+        image: alpine:latest
+        command: ["/bin/sh", "-c", "apk add --no-cache sysstat && sleep infinity"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /

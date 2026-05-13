@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: thermal-check
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: thermal-check
+  template:
+    metadata:
+      labels:
+        name: thermal-check
+    spec:
+      hostPID: true
+      hostNetwork: true
+      containers:
+      - name: checker
+        image: alpine:latest
+        command: ["/bin/sh", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
