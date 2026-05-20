@@ -1,8 +1,0 @@
-controller:
-  replicaCount: 1
-  nodeSelector:
-    kubernetes.io/arch: "amd64"
-  admissionWebhooks:
-    patch:
-      nodeSelector:
-        kubernetes.io/arch: "amd64"

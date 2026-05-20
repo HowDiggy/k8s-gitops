@@ -1,0 +1,21 @@
+# infrastructure/overlays/oci/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Include the base applications
+  - ../../base/ingress-nginx
+  - ../../base/cert-manager
+  - ../../base/argocd
+  - ../../base/monitoring
+  - ../../external-secrets
+  - private-repo-secret.yaml
+  - external-grafana-secret.yaml
+  - kube-prometheus-stack.yaml
+  - talos-prom-auth-es.yaml
+
+patches:
+  # Apply the production-specific patch for ingress-nginx
+  - path: ingress-nginx-patch.yaml
+    target:
+      kind: Application
+      name: ingress-nginx

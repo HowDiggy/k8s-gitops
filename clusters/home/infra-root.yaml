@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: home-infra-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: home-infra-root
+    app.kubernetes.io/part-of: infrastructure
+  annotations:
+    # Ensure the infra root is applied early so child Applications can sync
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HowDiggy/k8s-gitops.git
+    targetRevision: HEAD
+    path: infrastructure/overlays/home
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
