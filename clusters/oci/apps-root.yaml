@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oci-apps-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: oci-apps-root
+    app.kubernetes.io/part-of: applications
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    targetRevision: feat/azure-migration
+    path: apps/overlays/oci
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

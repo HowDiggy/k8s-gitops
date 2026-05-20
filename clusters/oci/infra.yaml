@@ -1,0 +1,17 @@
+# clusters/oci-prod/infra.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oci-infrastructure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:HowDiggy/k8s-gitops.git
+    targetRevision: feat/azure-migration
+    # Point to the Kustomize overlay for production infrastructure
+    path: infrastructure/overlays/oci
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy: {} # Keep the manual sync policy for production

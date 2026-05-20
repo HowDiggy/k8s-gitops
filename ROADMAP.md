@@ -82,13 +82,6 @@
 
 Copy and paste this prompt into a new Gemini CLI session to resume immediately:
 
-> "I am continuing the Hybrid Cloud GitOps project. We are pivoting to build an 'AI-Enriched Lakehouse' architecture on the Talos cluster, focusing first on a strong PySpark foundation to mimic a modern Databricks setup.
+> "I am returning to the k8s-gitops project. We recently executed a strategic pivot away from OCI/Talos to an Azure AKS environment leveraging Spot Instances and Azure Key Vault for enterprise-grade GitOps experience. 
 > 
-> **Current State:**
-> - OCI (Hub): `oci-prod`
-> - Talos (Spoke): `home-dev`
-> - ArgoCD security hardened, and legacy apps (`signconnect`) decommissioned.
-> 
-> **Instructions:**
-> 1. Please read the `ROADMAP.md` and `LAKEHOUSE_PLAN.md` in the root.
-> 2. We are starting on Phase 2. Please help me generate the Kustomize manifests to deploy the SeaweedFS Helm Chart to our cluster."
+> Please read the `NEXT_SESSION_PLAN.md` file in the root of the repository to understand the exact state of the cluster and the immediate next steps regarding the Spot Node Pool provisioning and Milestone 5 (Azure DevOps integration)."
