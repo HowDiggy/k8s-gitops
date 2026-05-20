@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: azure-prod-apps-root
+  name: azure-apps-root
   namespace: argocd
   labels:
-    app.kubernetes.io/name: azure-prod-apps-root
+    app.kubernetes.io/name: azure-apps-root
     app.kubernetes.io/part-of: applications
 spec:
   project: default
