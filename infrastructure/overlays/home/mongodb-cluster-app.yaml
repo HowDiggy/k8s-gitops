@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infrastructure/overlays/home/mongodb-cluster
   destination:
     server: https://talos-api.paulojauregui.com

@@ -12,5 +12,5 @@ spec:
         valueFiles:
           - $values/infrastructure/overlays/oci/ingress-nginx-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values

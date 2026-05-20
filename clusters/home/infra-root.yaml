@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infrastructure/overlays/home
   destination:
     server: https://kubernetes.default.svc

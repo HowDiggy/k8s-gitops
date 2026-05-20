@@ -19,7 +19,7 @@ spec:
           - name: localprovisioner.hostpathClass.isDefaultClass
             value: "true"
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: HEAD
+      targetRevision: main
       path: infrastructure/base/openebs
   destination:
     server: https://talos-api.paulojauregui.com

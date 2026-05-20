@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: feat/azure-migration
+    targetRevision: main
     path: infrastructure/overlays/azure/mongodb-operator
   destination:
     server: https://kubernetes.default.svc

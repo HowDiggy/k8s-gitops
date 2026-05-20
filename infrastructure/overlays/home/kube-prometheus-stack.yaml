@@ -18,10 +18,10 @@ spec:
         valueFiles:
           - $values/infrastructure/overlays/home/kps-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: HEAD
+      targetRevision: main
       path: infrastructure/base/monitoring
   destination:
     server: https://talos-api.paulojauregui.com

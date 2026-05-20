@@ -18,7 +18,7 @@ spec:
         valueFiles:
           - $values/infrastructure/overlays/azure/kps-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: feat/azure-migration
+      targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc

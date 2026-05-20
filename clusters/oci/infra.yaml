@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: git@github.com:HowDiggy/k8s-gitops.git
-    targetRevision: feat/azure-migration
+    targetRevision: main
     # Point to the Kustomize overlay for production infrastructure
     path: infrastructure/overlays/oci
   destination:

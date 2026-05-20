@@ -15,7 +15,7 @@ spec:
         valueFiles:
           - $values/infrastructure/base/ingress-nginx/values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: HEAD
+      targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc

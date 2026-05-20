@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infrastructure/base/networking-lab
   destination:
     server: https://talos-api.paulojauregui.com

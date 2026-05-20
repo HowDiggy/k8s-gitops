@@ -17,7 +17,7 @@ spec:
           - $values/infrastructure/base/seaweedfs/values.yaml
           - $values/infrastructure/overlays/azure/seaweedfs-values.yaml
     - repoURL: https://github.com/HowDiggy/k8s-gitops.git
-      targetRevision: feat/azure-migration
+      targetRevision: main
       path: infrastructure/overlays/azure/seaweedfs
       ref: values
   destination:
