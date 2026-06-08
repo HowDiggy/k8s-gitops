@@ -52,7 +52,7 @@ To create a fully functional, GitOps-managed environment for practicing networki
 *   **Task 5.2:** Configure the VM to have two interfaces:
     *   `eth0`: Default pod network (masquerade/management).
     *   `eth1`: Multus `NetworkAttachmentDefinition` network (the isolated lab network).
-*   **Task 5.3:** Deploy via ArgoCD (`apps/overlays/development` or `home-dev`).
+*   **Task 5.3:** Deploy via ArgoCD (`apps/overlays/home` or `home-dev`).
 *   **Task 5.4:** Verify the VM boots and connect to its console to perform initial configurations.
 
 ---

@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/HowDiggy/k8s-gitops.git
     targetRevision: main
-    path: apps/overlays/development/paulojauregui-com
+    path: apps/overlays/home/paulojauregui-com
   destination:
     server: https://talos-api.paulojauregui.com
     namespace: paulojauregui-com

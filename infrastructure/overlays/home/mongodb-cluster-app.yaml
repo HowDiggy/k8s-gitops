@@ -1,4 +1,4 @@
-# infrastructure/overlays/home-dev/mongodb-cluster-app.yaml
+# infrastructure/overlays/home/mongodb-cluster-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

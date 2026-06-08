@@ -20,7 +20,7 @@ This document outlines the technical plan for deploying the Apache Spark Kuberne
 
 ## Step 2: Environment Overlay & ArgoCD Registration
 1.  **ArgoCD App Manifest:** Create the `spark-operator` Application manifest in the `home-dev` overlay.
-2.  **Overlay Kustomization:** Append the new application to the `infrastructure/overlays/home-dev/kustomization.yaml` registry.
+2.  **Overlay Kustomization:** Append the new application to the `infrastructure/overlays/home/kustomization.yaml` registry.
 3.  **Deploy:** Commit, push, and sync via ArgoCD.
 
 ## Step 3: Base Image & AI UDF Preparation (Next Phase)

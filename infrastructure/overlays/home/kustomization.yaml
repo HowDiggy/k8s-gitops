@@ -1,5 +1,5 @@
 # Self-contained overlay: all resources live in this dir so Kustomize
-# (run with build root infrastructure/overlays/home-dev) does not reference paths outside it.
+# (run with build root infrastructure/overlays/home) does not reference paths outside it.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 

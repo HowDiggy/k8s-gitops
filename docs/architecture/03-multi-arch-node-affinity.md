@@ -22,7 +22,7 @@ Base configurations should be overridden in the specific environment overlays.
 For the local cluster, we create an overlay values file that overrides the `nodeSelector` to target `amd64`.
 
 ```yaml
-# infrastructure/overlays/home-dev/cert-manager-values.yaml
+# infrastructure/overlays/home/cert-manager-values.yaml
 nodeSelector:
   kubernetes.io/arch: "amd64"
 
@@ -41,6 +41,6 @@ This overlay file is then appended to the `helm.valueFiles` list in the ArgoCD `
       helm:
         valueFiles:
           - $values/infrastructure/base/cert-manager/values.yaml
-          - $values/infrastructure/overlays/home-dev/cert-manager-values.yaml
+          - $values/infrastructure/overlays/home/cert-manager-values.yaml
 ```
 This ensures that the same base configuration can be adapted for any architecture simply by applying the correct overlay.

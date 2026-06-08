@@ -1,4 +1,4 @@
-# infrastructure/overlays/home-dev/mongodb-operator.yaml
+# infrastructure/overlays/home/mongodb-operator.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

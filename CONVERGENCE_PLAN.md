@@ -11,15 +11,15 @@ All applications across Development, Staging, and Production have been migrated 
 ## 3. Step-by-Step Implementation
 
 ### Step 1: Standardize the Development Apps Overlay [DONE]
-1.  **Create Registry:** Create `apps/overlays/development/kustomization.yaml`.
+1.  **Create Registry:** Create `apps/overlays/home/kustomization.yaml`.
 2.  **Relocate Manifests:** Move application registration manifests from `clusters/home-dev/` into the overlay:
-    *   `clusters/home-dev/app-mlflow.yaml` -> `apps/overlays/development/mlflow-app.yaml`
-3.  **Explicit Registration:** Add these manifests to the `resources` list in `apps/overlays/development/kustomization.yaml`.
-4.  **Include Legacy Apps:** Ensure the `paulojauregui-com` base deployment is explicitly included by creating an `Application` manifest for it (e.g., `apps/overlays/development/paulojauregui-com-app.yaml`) and adding it to the `kustomization.yaml`.
+    *   `clusters/home-dev/app-mlflow.yaml` -> `apps/overlays/home/mlflow-app.yaml`
+3.  **Explicit Registration:** Add these manifests to the `resources` list in `apps/overlays/home/kustomization.yaml`.
+4.  **Include Legacy Apps:** Ensure the `paulojauregui-com` base deployment is explicitly included by creating an `Application` manifest for it (e.g., `apps/overlays/home/paulojauregui-com-app.yaml`) and adding it to the `kustomization.yaml`.
 
 ### Step 2: Harmonize Naming Conventions & Fix Routing [DONE]
 1.  **Rename Root App:** Update the manifest for the apps root (currently in `clusters/home-dev/apps-root.yaml`) to change its name from `dev-app-paulojauregui-com` to `home-dev-apps-root`.
-2.  **Update Path:** Ensure this root app points explicitly to `apps/overlays/development`.
+2.  **Update Path:** Ensure this root app points explicitly to `apps/overlays/home`.
 3.  **Fix Target Namespace:** Update the destination of `home-dev-apps-root` to deploy into the `argocd` namespace on the Hub cluster (`https://kubernetes.default.svc`), as it is now deploying child `Application` CRDs, not raw workloads.
 
 ### Step 3: Standardize the Production Apps Overlay [DONE]

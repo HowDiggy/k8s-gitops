@@ -46,8 +46,8 @@ We will use Kustomize's Helm integration to template the Qdrant chart declarativ
 Apply environment-specific tweaks for the Spoke cluster (Talos/home-dev).
 
 1.  **Update Overlay Kustomization:**
-    *   Navigate to `infrastructure/overlays/home-dev/`.
-    *   Add `../../base/qdrant` to the `resources` list in `kustomization.yaml` (or create a dedicated `qdrant` overlay directory if structural patching is needed, e.g., `infrastructure/overlays/home-dev/qdrant`).
+    *   Navigate to `infrastructure/overlays/home/`.
+    *   Add `../../base/qdrant` to the `resources` list in `kustomization.yaml` (or create a dedicated `qdrant` overlay directory if structural patching is needed, e.g., `infrastructure/overlays/home/qdrant`).
 2.  *(Optional)* **Node Selectors/Tolerations:**
     *   If you want Qdrant to run on specific nodes (e.g., nodes with SSDs or specific ARM/AMD architecture), add a Kustomize patch to apply node selectors.
 
@@ -56,7 +56,7 @@ Apply environment-specific tweaks for the Spoke cluster (Talos/home-dev).
 Register the new infrastructure component with the GitOps controller.
 
 1.  **Update Root Application:**
-    *   If `qdrant` is added directly to `infrastructure/overlays/home-dev/kustomization.yaml`, ArgoCD will automatically detect and deploy it when the `infra-root` application syncs.
+    *   If `qdrant` is added directly to `infrastructure/overlays/home/kustomization.yaml`, ArgoCD will automatically detect and deploy it when the `infra-root` application syncs.
     *   Alternatively, if you manage it as a distinct App-of-Apps child, create an `Application` manifest (e.g., `infrastructure/apps/qdrant.yaml`) pointing to the `home-dev/qdrant` path and add it to the root Kustomization.
 
 ## Step 5: Deployment & Validation

@@ -30,7 +30,7 @@ This document outlines the technical plan for deploying SeaweedFS to the Talos K
 
 ## Step 3: Environment Overlay & ArgoCD Registration
 1.  **ArgoCD App Manifest:** Create the `seaweedfs` Application manifest in the `home-dev` overlay.
-2.  **Overlay Kustomization:** Append the new application to the `infrastructure/overlays/home-dev/kustomization.yaml` registry.
+2.  **Overlay Kustomization:** Append the new application to the `infrastructure/overlays/home/kustomization.yaml` registry.
 3.  **Deploy:** Commit, push, and sync via ArgoCD.
 
 ## Step 4: MLflow Migration & MinIO Decommissioning
