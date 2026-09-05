@@ -5,6 +5,8 @@ kind: Kustomization
 
 resources:
   - openebs.yaml
+  - external-secrets.yaml
+  - cluster-store-app.yaml
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
   # - nvidia-device-plugin.yaml # Laptop nodes do not have NVIDIA GPUs
