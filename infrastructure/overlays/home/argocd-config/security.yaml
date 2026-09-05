@@ -11,15 +11,24 @@ spec:
   target:
     name: argocd-secret
     creationPolicy: Merge
+    deletionPolicy: Retain
     template:
       engineVersion: v2
+      mergePolicy: Replace
       templateFrom:
         - literal: |
             accounts.{{ .ARGOCD_ADMIN_USER }}.password: {{ .ARGOCD_ADMIN_PASSWORD_HASH }}
+          target: Data
   data:
     - secretKey: ARGOCD_ADMIN_USER
       remoteRef:
         key: ARGOCD_ADMIN_USER
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
     - secretKey: ARGOCD_ADMIN_PASSWORD_HASH
       remoteRef:
         key: ARGOCD_ADMIN_PASSWORD_HASH
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
