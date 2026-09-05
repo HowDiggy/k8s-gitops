@@ -10,7 +10,7 @@ This document outlines the strategic hardware and workload distribution for our 
 
 ### Core Responsibilities
 Because this cluster has a permanent public IP and is always on, it acts as the gateway to the internet and the central management hub for all clusters.
-* **ArgoCD (The Brain):** The master GitOps controller. It monitors the GitHub repository and securely pushes configurations to *all* clusters (OCI, Talos, DGX) via secure tunnels (e.g., Tailscale, Cloudflare Tunnels).
+* **ArgoCD (Cloud & Local):** GitOps controllers manage their respective clusters from this unified repository. OCI manages its edge services, while the Home K3s cluster runs an autonomous in-cluster ArgoCD for local resilience and zero WAN dependency.
 * **Ingress & TLS:** `ingress-nginx`, `cert-manager`, and Cloudflare Tunnels handle all inbound internet traffic and SSL termination.
 * **Edge Applications:** Lightweight, highly available applications like the personal blog (`paulojauregui-com`).
 * **Secret Management:** Doppler + External Secrets Operator (ESO).
@@ -22,18 +22,28 @@ Because this cluster has a permanent public IP and is always on, it acts as the 
 
 ---
 
-## 2. Talos Home Lab (The "Data Center")
+## 2. K3s Home Lab (The "Compute Engine")
 
-**Environment:** Local On-Premise (Talos OS)
-**Hardware:** 3x Laptops (12 Cores, 80GB RAM total)
-**Role:** Heavy Compute, Data Engineering, Databases, and CI/CD.
+**Environment:** Local On-Premise (Ubuntu Server 26.04 LTS)
+**Hardware Architecture:**
+* **Control Plane (`tiny` - 192.168.1.57):** Fanless 2-core mini-PC running agentless K3s server with embedded SQLite. Zero application workloads run on this node.
+* **Worker 1 (`dito` - 192.168.1.58):** High-performance laptop worker node.
+* **Worker 2 (`beet` - 192.168.1.59):** High-performance laptop worker node.
+
+**Networking & CNI:**
+* **Cilium 1.20+ with eBPF:** Replaces `kube-proxy` entirely. High-performance service routing via eBPF maps and VXLAN overlay (`8472/udp`).
+* **Observability:** Built-in Hubble relay and Hubble UI.
+
+**Storage & Secret Management:**
+* **OpenEBS Dynamic LocalPV:** Dynamic hostpath provisioning for all stateful workloads.
+* **External Secrets Operator (ESO):** Reconciles application secrets directly from Doppler (`k8s-eso / dev`).
 
 ### Core Responsibilities
 This cluster provides massive, cost-free x86 compute and fast local NVMe storage. With zero ingress/egress costs, it is the primary engine for heavy lifting.
-* **Data Engineering Stack:** Apache Airflow for orchestration and multi-node PySpark clusters.
-* **Stateful Services:** PostgreSQL (CNPG), Redis, and object storage (e.g., MinIO).
-* **CI/CD Runners:** Self-hosted GitHub Actions or GitLab Runners. Building multi-arch Docker images is computationally heavy and belongs here.
-* **Heavy Monitoring:** The full `kube-prometheus-stack` with long-term retention and potentially Thanos to aggregate metrics from the Edge and AI clusters.
+* **Autonomous GitOps:** Runs its own in-cluster ArgoCD instance managing the `clusters/home` App-of-Apps tree.
+* **Data Engineering Stack:** Multi-node Apache Spark clusters and MLflow tracking server.
+* **Stateful Databases:** PostgreSQL (CloudNativePG), MongoDB 3-node replica sets, and Qdrant vector database.
+* **Heavy Monitoring:** Complete `kube-prometheus-stack` with Prometheus HA, Alertmanager, and Node Exporters across workers.
 
 ---
 
