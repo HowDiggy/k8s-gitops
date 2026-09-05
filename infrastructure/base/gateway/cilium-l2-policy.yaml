@@ -1,0 +1,14 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: homelab-l2-policy
+spec:
+  serviceSelector: {}
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/worker
+        operator: Exists
+  interfaces:
+    - ^en.*
+  externalIPs: true
+  loadBalancerIPs: true

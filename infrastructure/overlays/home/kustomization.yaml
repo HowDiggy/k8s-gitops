@@ -18,5 +18,6 @@ resources:
   - spark-operator.yaml
   - cert-manager.yaml
   - cluster-issuers-app.yaml
+  - gateway.yaml
   # - metrics-server.yaml        # K3s runs metrics-server built-in in kube-system
 

@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - cilium-l2-policy.yaml
+  - cilium-ip-pool.yaml
+  - gateway.yaml
+  - argocd-certificate.yaml
+  - argocd-routes.yaml
