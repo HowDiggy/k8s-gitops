@@ -15,3 +15,5 @@ spec:
       owner: mlflow_user
       secret:
         name: mlflow-db-credentials
+      postInitSQL:
+        - "CREATE DATABASE mlflow_auth OWNER mlflow_user;"
