@@ -30,8 +30,9 @@ Because this cluster has a permanent public IP and is always on, it acts as the 
 * **Worker 1 (`dito` - 192.168.1.58):** High-performance laptop worker node.
 * **Worker 2 (`beet` - 192.168.1.59):** High-performance laptop worker node.
 
-**Networking & CNI:**
+**Networking & Ingress:**
 * **Cilium 1.20+ with eBPF:** Replaces `kube-proxy` entirely. High-performance service routing via eBPF maps and VXLAN overlay (`8472/udp`).
+* **Kubernetes Gateway API & L2 Announcements:** Replaces legacy Ingress with Gateway API (`gateway.networking.k8s.io`). Cilium embedded Envoy handles TLS termination and L7 routing, with L2 ARP announcements broadcasting the floating LoadBalancer VIP (`192.168.1.60`) across worker nodes.
 * **Observability:** Built-in Hubble relay and Hubble UI.
 
 **Storage & Secret Management:**
