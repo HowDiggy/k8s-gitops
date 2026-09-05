@@ -7,8 +7,8 @@ resources:
   - openebs.yaml
   - cnpg-operator.yaml
   - kube-prometheus-stack.yaml
-  - nvidia-device-plugin.yaml
-  - cloudflare-talos.yaml
+  # - nvidia-device-plugin.yaml # Laptop nodes do not have NVIDIA GPUs
+  # - cloudflare-talos.yaml      # Cluster is local-only (no cloudflare tunnel needed)
   - mongodb-operator.yaml
   - mongodb-cluster-app.yaml
   - qdrant.yaml
@@ -16,5 +16,5 @@ resources:
   - spark-operator.yaml
   - cert-manager.yaml
   - cluster-issuers-app.yaml
-  - metrics-server.yaml
+  # - metrics-server.yaml        # K3s runs metrics-server built-in in kube-system
 
