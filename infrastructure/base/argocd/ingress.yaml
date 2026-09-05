@@ -1,4 +1,6 @@
 # infrastructure/base/argocd/ingress.yaml
+# NOTE: Used exclusively by the OCI overlay for public NGINX ingress (argo.paulojauregui.com).
+# The Home K3s cluster uses Cilium Gateway API in infrastructure/base/gateway/ instead.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

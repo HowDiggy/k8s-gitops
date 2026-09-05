@@ -19,5 +19,6 @@ resources:
   - cert-manager.yaml
   - cluster-issuers-app.yaml
   - gateway.yaml
+  - argocd-config-app.yaml
   # - metrics-server.yaml        # K3s runs metrics-server built-in in kube-system
 

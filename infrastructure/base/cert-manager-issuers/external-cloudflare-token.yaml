@@ -10,7 +10,12 @@ spec:
     kind: ClusterSecretStore
   target:
     name: cloudflare-api-token
+    creationPolicy: Owner
+    deletionPolicy: Retain
   data:
     - secretKey: api-token
       remoteRef:
         key: CLOUDFLARE_API_TOKEN
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None

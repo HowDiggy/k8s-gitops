@@ -1,0 +1,14 @@
+# Home cluster ArgoCD configuration.
+# TLS is terminated at the Cilium Gateway (Envoy) on the LoadBalancer VIP
+# (192.168.1.60), so argocd-server runs in insecure (plaintext HTTP) mode
+# behind the gateway to avoid double-encryption.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  server.insecure: "true"
