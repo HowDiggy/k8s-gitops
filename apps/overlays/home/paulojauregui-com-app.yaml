@@ -15,7 +15,7 @@ spec:
     targetRevision: main
     path: apps/overlays/home/paulojauregui-com
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: paulojauregui-com
   syncPolicy:
     automated:

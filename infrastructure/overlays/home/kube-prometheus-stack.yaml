@@ -24,7 +24,7 @@ spec:
       targetRevision: main
       path: infrastructure/base/monitoring
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: monitoring
   syncPolicy:
     automated:

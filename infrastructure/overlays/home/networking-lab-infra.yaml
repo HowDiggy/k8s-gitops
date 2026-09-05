@@ -13,7 +13,7 @@ spec:
     targetRevision: main
     path: infrastructure/base/networking-lab
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: networking-lab
   syncPolicy:
     automated:

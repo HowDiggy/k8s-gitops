@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     path: infrastructure/overlays/home/mongodb-cluster
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: mongodb
   syncPolicy:
     automated:

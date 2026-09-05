@@ -13,7 +13,7 @@ spec:
     targetRevision: main
     path: apps/overlays/home/mlflow
   destination:
-    server: https://talos-api.paulojauregui.com
+    server: https://kubernetes.default.svc
     namespace: mlflow
   syncPolicy:
     automated:
