@@ -39,6 +39,8 @@ spec:
               value: "false"
             - name: CLICKHOUSE_CLUSTER_ENABLED
               value: "false"
+            - name: CLICKHOUSE_MIGRATION_URL
+              value: "clickhouse://langfuse-clickhouse:9000"
             - name: CLICKHOUSE_URL
               value: "http://langfuse-clickhouse:8123"
             - name: CLICKHOUSE_USER
