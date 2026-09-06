@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - paulojauregui-com-app.yaml
   - mlflow-app.yaml
+  - mealie-app.yaml
+  - calibre-web-app.yaml

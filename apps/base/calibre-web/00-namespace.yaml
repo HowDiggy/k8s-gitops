@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: calibre-web
+  labels:
+    app.kubernetes.io/name: calibre-web
+    app.kubernetes.io/part-of: home-services

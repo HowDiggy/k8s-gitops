@@ -1,0 +1,20 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: mealie-db
+  namespace: mealie
+  labels:
+    app.kubernetes.io/name: mealie
+    app.kubernetes.io/component: database
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 5Gi
+    storageClass: openebs-hostpath
+  bootstrap:
+    initdb:
+      database: mealie
+      owner: mealie_user
+      secret:
+        name: mealie-db-credentials

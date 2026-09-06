@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - 00-namespace.yaml
+  - 01-external-secret.yaml
+  - 02-pvc.yaml
+  - 03-postgres-cluster.yaml
+  - 04-deployment.yaml
+  - 05-service.yaml
+  - 06-httproute.yaml

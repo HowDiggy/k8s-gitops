@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calibre-web
+  namespace: calibre-web
+  labels:
+    app.kubernetes.io/name: calibre-web
+    app.kubernetes.io/component: app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: calibre-web
+  template:
+    metadata:
+      labels:
+        app: calibre-web
+    spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        - name: init-calibre-db
+          image: curlimages/curl:8.10.1
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /books/metadata.db ]; then
+                echo "metadata.db not found. Fetching empty template from upstream..."
+                curl -fsSL -o /books/metadata.db https://github.com/janeczku/calibre-web/raw/master/library/metadata.db
+                chmod 664 /books/metadata.db
+              else
+                echo "metadata.db already exists. Skipping bootstrap."
+              fi
+          volumeMounts:
+            - name: books
+              mountPath: /books
+      containers:
+        - name: calibre-web
+          image: ghcr.io/linuxserver/calibre-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8083
+              protocol: TCP
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "UTC"
+            - name: DOCKER_MODS
+              value: "linuxserver/mods:universal-calibre"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - SETUID
+                - SETGID
+                - DAC_OVERRIDE
+                - FOWNER
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: 8083
+            initialDelaySeconds: 45
+            periodSeconds: 20
+            timeoutSeconds: 5
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: calibre-web-config-pvc
+        - name: books
+          persistentVolumeClaim:
+            claimName: calibre-web-books-pvc
