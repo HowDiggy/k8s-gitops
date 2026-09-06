@@ -18,3 +18,8 @@ root-app-staging.yaml
 
 # Learning and local documentation
 docs/learning/
+
+# Scratch and temporary manifests
+tmp_*
+*.tmp
+*.temp
