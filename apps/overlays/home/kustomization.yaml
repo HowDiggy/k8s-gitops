@@ -5,3 +5,5 @@ resources:
   - mlflow-app.yaml
   - mealie-app.yaml
   - calibre-web-app.yaml
+  - langfuse-app.yaml
+  - litellm-app.yaml
