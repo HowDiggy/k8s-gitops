@@ -8,10 +8,18 @@ metadata:
     app.kubernetes.io/part-of: infrastructure
 spec:
   project: default
-  source:
-    repoURL: https://github.com/HowDiggy/k8s-gitops.git
-    targetRevision: main
-    path: infrastructure/base/seaweedfs
+  sources:
+    - repoURL: https://seaweedfs.github.io/seaweedfs/helm
+      chart: seaweedfs
+      targetRevision: "4.22.0"
+      helm:
+        valueFiles:
+          - $values/infrastructure/base/seaweedfs/values.yaml
+          - $values/infrastructure/overlays/home/seaweedfs-values.yaml
+    - repoURL: https://github.com/HowDiggy/k8s-gitops.git
+      targetRevision: main
+      path: infrastructure/overlays/home/seaweedfs
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: seaweedfs

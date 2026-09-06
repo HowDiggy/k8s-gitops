@@ -1,0 +1,24 @@
+master:
+  data:
+    type: "persistentVolumeClaim"
+    size: "10Gi"
+    storageClass: "openebs-hostpath"
+
+volume:
+  dataDirs:
+    - name: data1
+      type: "persistentVolumeClaim"
+      size: "100Gi"
+      storageClass: "openebs-hostpath"
+
+filer:
+  data:
+    type: "persistentVolumeClaim"
+    size: "10Gi"
+    storageClass: "openebs-hostpath"
+
+s3:
+  enabled: true
+  replicas: 1
+  enableAuth: true
+  existingConfigSecret: "seaweedfs-s3-config"

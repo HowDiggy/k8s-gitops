@@ -67,6 +67,46 @@ spec:
                 secretKeyRef:
                   name: langfuse-secrets
                   key: ENCRYPTION_KEY
+            - name: LANGFUSE_S3_EVENT_UPLOAD_BUCKET
+              value: "langfuse"
+            - name: LANGFUSE_S3_EVENT_UPLOAD_REGION
+              value: "auto"
+            - name: LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT
+              value: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+            - name: LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE
+              value: "true"
+            - name: LANGFUSE_S3_EVENT_UPLOAD_PREFIX
+              value: "events/"
+            - name: LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: langfuse-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: langfuse-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_BUCKET
+              value: "langfuse"
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_REGION
+              value: "auto"
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT
+              value: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE
+              value: "true"
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_PREFIX
+              value: "media/"
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: langfuse-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: langfuse-secrets
+                  key: AWS_SECRET_ACCESS_KEY
           resources:
             requests:
               cpu: 200m
