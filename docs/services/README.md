@@ -54,6 +54,8 @@ The root application [`clusters/home/apps-root.yaml`](../../clusters/home/apps-r
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Mealie** | `mealie.homelab.local` | FastAPI + Vue 3 SPA (`v3.25.1`) | OpenEBS LocalPV (`/app/data`, 10Gi) | PostgreSQL (CloudNativePG `Cluster`, 5Gi) | [mealie.md](mealie.md) |
 | **Calibre-Web** | `calibre.homelab.local` | Python/Flask + S6 (`v0.6.27`) | OpenEBS LocalPV (`/config` 5Gi, `/books` 50Gi) | Dual SQLite (`app.db`, `metadata.db`) | [calibre-web.md](calibre-web.md) |
+| **Langfuse & LiteLLM** | `langfuse.homelab.local`<br>`litellm.homelab.local` | Next.js (`v4.30.0`) + LiteLLM (`v1.99.0`) | OpenEBS LocalPV (ClickHouse 15Gi) + SeaweedFS (100Gi) | PostgreSQL (CloudNativePG `Cluster`, 2x 5Gi) + ClickHouse 26.8 LTS | [langfuse-litellm.md](langfuse-litellm.md) |
+| **SeaweedFS S3** | Cluster-Internal | Distributed Object Store (`v4.22.0`) | OpenEBS LocalPV (100Gi volume, 20Gi metadata) | SeaweedFS Filer + Master | In-Cluster S3 on port 8333 |
 
 ---
 
