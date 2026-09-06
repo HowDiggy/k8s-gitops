@@ -65,6 +65,7 @@ For in-depth explanations of specific architectural implementations and troubles
 *   [Hub-and-Spoke GitOps Architecture (App of Apps)](docs/architecture/01-hub-and-spoke-gitops.md)
 *   [Spark Operator Webhook & Cert-Manager Integration](docs/architecture/02-cert-manager-spark-operator.md)
 *   [Multi-Architecture Node Affinity](docs/architecture/03-multi-arch-node-affinity.md)
+*   [Self-Hosted Services Operations & Maintenance](docs/services/README.md)
 *   [Architecture Decision Records (ADRs)](docs/adr/README.md)
 
 ---

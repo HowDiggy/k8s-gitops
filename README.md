@@ -58,4 +58,5 @@ k8s-gitops/
 4.  **Security:** External Secrets are automatically injected into the target namespaces by ESO upon synchronization.
 
 ---
+*For operational runbooks and maintenance guides for self-hosted applications, see the [docs/services/](docs/services/) directory.*  
 *For deep-dives into specific architectural decisions, see the [docs/architecture/](docs/architecture/) directory.*
