@@ -66,6 +66,7 @@ For in-depth explanations of specific architectural implementations and troubles
 *   [Spark Operator Webhook & Cert-Manager Integration](docs/architecture/02-cert-manager-spark-operator.md)
 *   [Multi-Architecture Node Affinity](docs/architecture/03-multi-arch-node-affinity.md)
 *   [Self-Hosted Services Operations & Maintenance](docs/services/README.md)
+*   [Backup & Disaster Recovery Strategy (3-2-1 Dual Synology)](docs/architecture/06-backup-and-disaster-recovery.md)
 *   [Architecture Decision Records (ADRs)](docs/adr/README.md)
 
 ---

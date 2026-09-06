@@ -65,3 +65,7 @@ Whenever updating configuration, changing storage classes, or bumping image tags
 2. **Review PVC Sizing:** Storage volume expansions in Kubernetes can be applied online if the CSI driver supports expansion, but capacity cannot be decreased.
 3. **Database Pre-flight:** Always take a manual backup or snapshot of the database layer prior to major application version bumps.
 4. **Inspect S6 / Entrypoint Logs:** For containers utilizing process supervisors (like LinuxServer's S6-overlay), monitor initialization logs directly after pod restarts to verify permission drops and mod injections.
+
+---
+
+*For the comprehensive cluster-wide backup and disaster recovery architecture, see [docs/architecture/06-backup-and-disaster-recovery.md](../architecture/06-backup-and-disaster-recovery.md).*
