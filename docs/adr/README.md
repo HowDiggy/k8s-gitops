@@ -14,6 +14,7 @@ Decisions are recorded using a structured format documenting the architectural c
 | [0002](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0002-gateway-api-crd-versioning.md) | Gateway API CRD Versioning & GVK Maturity in Cilium 1.20+ | 2026-09-05 | **Accepted** | Cluster Bootstrap & CRD Management |
 | [0003](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0003-tainted-control-plane-autonomous-bootstrap.md) | Transition to Tainted Control Plane with Local Agent for Autonomous CNI Bootstrapping | 2026-09-05 | **Accepted** | Bare-Metal Node Topology |
 | [0004](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0004-declarative-argocd-overlay-and-schema-defaults.md) | Declarative ArgoCD Configuration Overlays, Doppler ESO Sync, and Schema Defaulting | 2026-09-05 | **Accepted** | GitOps Operations & Security |
+| [0005](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0005-infrastructure-dependency-resolution-protocol.md) | Infrastructure Dependency Resolution & Pre-Flight Research Protocol | 2026-09-06 | **Accepted** | Engineering Standards & AI Directives |
 
 ---
 

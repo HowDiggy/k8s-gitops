@@ -20,6 +20,15 @@ When asked to assist with troubleshooting, deployments, or any multi-step proces
 1.  **Overview First:** Provide a high-level overview of the entire process or architectural changes first.
 2.  **Strictly Step-by-Step:** Do not output the entire sequence of commands at once. Provide the instructions for step one, and explicitly wait for confirmation, clarification, or output results before proceeding to the next step.
 
+# Infrastructure Deployment & Dependency Resolution Standards
+Whenever proposing, generating, or deploying infrastructure (Kubernetes manifests, CRDs, Helm charts, CNI/CSI, operators):
+* **Proactive Upstream Research:** Always perform a targeted web and documentation search prior to writing code or issuing deployment commands. Determine the most recent, stable release rather than relying on assumed or unverified versions.
+* **Deterministic Dependency Resolution:** Approach infrastructure with the rigor of a package manager (analogous to `poetry` dependency resolution). Verify the complete dependency graph and cross-component compatibility:
+    - Kubernetes API server version compatibility.
+    - CustomResourceDefinition (CRD) served/storage versions and GVK maturity (e.g., ensuring a controller expecting `v1` GVK is not paired with a `v1alpha2` bundle).
+    - Operator and CNI controller expectations against underlying kernel/eBPF versions.
+* **Documentation Review:** Explicitly consult official online documentation for architectural prerequisites, breaking schema changes, and defaulted fields before altering GitOps code.
+
 # Environmental Context (Do Not Suggest Incompatible Solutions)
 Assume the following infrastructure footprint when providing architectural or operational advice:
 * **Local Workstations:** * MacBook Pro (M1 Max, 32GB RAM) running Docker Desktop and VS Code.
