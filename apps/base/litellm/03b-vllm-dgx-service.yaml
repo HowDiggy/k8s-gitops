@@ -13,18 +13,18 @@ spec:
       targetPort: 8000
       protocol: TCP
 ---
-apiVersion: v1
-kind: Endpoints
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
 metadata:
-  name: vllm-dgx
+  name: vllm-dgx-1
   namespace: litellm
   labels:
-    app.kubernetes.io/name: vllm-dgx
-    app.kubernetes.io/component: inference
-subsets:
+    kubernetes.io/service-name: vllm-dgx
+addressType: IPv4
+ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+endpoints:
   - addresses:
-      - ip: 192.168.1.42
-    ports:
-      - name: http
-        port: 8000
-        protocol: TCP
+      - "192.168.1.42"
