@@ -171,3 +171,25 @@ LiteLLM exposes OpenMetrics format on `/metrics` with token authentication:
 kubectl exec -n litellm deployment/litellm -- curl -s http://localhost:4000/metrics | head -n 25
 ```
 Prometheus automatically discovers and scrapes this endpoint via the configured `ServiceMonitor/litellm` using `bearerTokenSecret: litellm-secrets/LITELLM_MASTER_KEY`.
+
+---
+
+## 5. Local Workstation vLLM Inference (DGX Spark)
+
+### 5.1 Architecture & Network Abstraction
+Local high-throughput inference runs outside the Kubernetes cluster on an **NVIDIA DGX Spark** workstation (`happy`, IP: `192.168.1.42`) hosting `vllm/vllm-openai` with the 120B parameter `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` model.
+
+To provide Kubernetes-native DNS routing without kubelet overhead, the service is abstracted via a native `spec.type: ExternalName` Service:
+* **Service:** `vllm-dgx.litellm.svc.cluster.local` -> CNAME `happy` (`192.168.1.42:8000`).
+* **Manifest:** [`apps/base/litellm/03b-vllm-dgx-service.yaml`](file:///Users/paulojauregui/projects/k8s-gitops/apps/base/litellm/03b-vllm-dgx-service.yaml).
+
+### 5.2 Model Mapping in LiteLLM
+Configured in [`apps/base/litellm/04-configmap.yaml`](file:///Users/paulojauregui/projects/k8s-gitops/apps/base/litellm/04-configmap.yaml):
+* `nemotron-3-super` -> `http://vllm-dgx:8000/v1`
+* `local-llm` (alias) -> `http://vllm-dgx:8000/v1`
+
+### 5.3 SeaweedFS S3 Sizing & Volume Configuration
+In Langfuse v4, raw ingestion event payloads are written directly to S3. To prevent volume allocation starvation (`free: 0`), SeaweedFS volume server is explicitly tuned:
+* **Storage Allocation:** 100Gi OpenEBS LocalPV.
+* **Volume Limits:** `maxVolumes: 100` configured in [`infrastructure/overlays/home/seaweedfs-values.yaml`](file:///Users/paulojauregui/projects/k8s-gitops/infrastructure/overlays/home/seaweedfs-values.yaml).
+
