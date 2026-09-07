@@ -32,7 +32,8 @@ data:
       success_callback: ["langfuse", "prometheus"]
       failure_callback: ["langfuse", "prometheus"]
       telemetry: false
-      cache:
+      cache: true
+      cache_params:
         type: "redis"
         host: "litellm-valkey"
         port: 6379
