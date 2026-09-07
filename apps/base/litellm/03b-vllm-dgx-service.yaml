@@ -7,24 +7,10 @@ metadata:
     app.kubernetes.io/name: vllm-dgx
     app.kubernetes.io/component: inference
 spec:
+  type: ExternalName
+  externalName: happy
   ports:
     - name: http
       port: 8000
       targetPort: 8000
       protocol: TCP
----
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
-metadata:
-  name: vllm-dgx-1
-  namespace: litellm
-  labels:
-    kubernetes.io/service-name: vllm-dgx
-addressType: IPv4
-ports:
-  - name: http
-    port: 8000
-    protocol: TCP
-endpoints:
-  - addresses:
-      - "192.168.1.42"
