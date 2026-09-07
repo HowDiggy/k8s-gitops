@@ -29,8 +29,8 @@ data:
           api_key: os.environ/ANTHROPIC_API_KEY
 
     litellm_settings:
-      success_callback: ["langfuse", "prometheus"]
-      failure_callback: ["langfuse", "prometheus"]
+      success_callback: ["langfuse_otel", "prometheus"]
+      failure_callback: ["langfuse_otel", "prometheus"]
       telemetry: false
       cache: true
       cache_params:
