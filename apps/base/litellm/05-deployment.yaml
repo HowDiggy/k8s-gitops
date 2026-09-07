@@ -36,8 +36,6 @@ spec:
           env:
             - name: PORT
               value: "4000"
-            - name: LITELLM_OTEL_V2
-              value: "true"
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
