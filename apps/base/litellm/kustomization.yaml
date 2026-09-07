@@ -6,6 +6,7 @@ resources:
   - 01-external-secret.yaml
   - 02-postgres-cluster.yaml
   - 03-valkey.yaml
+  - 03b-vllm-dgx-service.yaml
   - 04-configmap.yaml
   - 05-deployment.yaml
   - 06-service.yaml

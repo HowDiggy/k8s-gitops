@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-dgx
+  namespace: litellm
+  labels:
+    app.kubernetes.io/name: vllm-dgx
+    app.kubernetes.io/component: inference
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: vllm-dgx
+  namespace: litellm
+  labels:
+    app.kubernetes.io/name: vllm-dgx
+    app.kubernetes.io/component: inference
+subsets:
+  - addresses:
+      - ip: 192.168.1.42
+    ports:
+      - name: http
+        port: 8000
+        protocol: TCP

@@ -9,6 +9,16 @@ metadata:
 data:
   config.yaml: |
     model_list:
+      - model_name: nemotron-3-super
+        litellm_params:
+          model: openai/nemotron-3-super
+          api_base: http://vllm-dgx:8000/v1
+          api_key: "none"
+      - model_name: local-llm
+        litellm_params:
+          model: openai/nemotron-3-super
+          api_base: http://vllm-dgx:8000/v1
+          api_key: "none"
       - model_name: gpt-4o
         litellm_params:
           model: openai/gpt-4o
