@@ -12,7 +12,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.13.82
+    server: 192.168.13.81
     path: /volume1/Cloudy
   mountOptions:
     - hard
