@@ -7,3 +7,4 @@ resources:
   - calibre-web-app.yaml
   - langfuse-app.yaml
   - litellm-app.yaml
+  - immich-app.yaml
