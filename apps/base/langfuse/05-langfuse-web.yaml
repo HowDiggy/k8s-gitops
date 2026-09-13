@@ -34,7 +34,7 @@ spec:
             - name: PORT
               value: "3000"
             - name: NEXTAUTH_URL
-              value: "https://langfuse.homelab.local"
+              value: "https://langfuse.paulojauregui.com"
             - name: TELEMETRY_ENABLED
               value: "false"
             - name: LANGFUSE_MIGRATION_V4_WRITE_MODE

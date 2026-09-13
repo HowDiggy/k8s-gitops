@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   # External URL for the ArgoCD UI (used in SSO redirects, CLI login, notifications)
-  url: "https://argocd.homelab.local"
+  url: "https://argocd-home.paulojauregui.com"
 
   # User accounts (admin disabled; jaupau is the primary user)
   accounts.jaupau: login

@@ -13,7 +13,7 @@ spec:
       namespace: argocd
       sectionName: http
   hostnames:
-    - langfuse.homelab.local
+    - langfuse.paulojauregui.com
   rules:
     - matches:
         - path:
@@ -38,9 +38,9 @@ spec:
       kind: Gateway
       name: homelab-gateway
       namespace: argocd
-      sectionName: https
+      sectionName: https-public
   hostnames:
-    - langfuse.homelab.local
+    - langfuse.paulojauregui.com
   rules:
     - matches:
         - path:

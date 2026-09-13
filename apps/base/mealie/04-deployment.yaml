@@ -34,7 +34,7 @@ spec:
               protocol: TCP
           env:
             - name: BASE_URL
-              value: "https://mealie.homelab.local"
+              value: "https://mealie.paulojauregui.com"
             - name: DB_ENGINE
               value: "postgres"
             - name: POSTGRES_SERVER

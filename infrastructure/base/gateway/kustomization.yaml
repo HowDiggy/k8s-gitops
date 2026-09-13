@@ -5,6 +5,5 @@ resources:
   - cilium-l2-policy.yaml
   - cilium-ip-pool.yaml
   - gateway.yaml
-  - argocd-certificate.yaml
   - argocd-routes.yaml
   - wildcard-cert.yaml
