@@ -12,7 +12,7 @@ All services documented here adhere to strict cluster-wide conventions establish
 - **Gateway Resource:** `homelab-gateway` located in the `argocd` namespace.
 - **Gateway Class:** `cilium` utilizing Cilium eBPF L7 Envoy routing.
 - **L2 Floating VIP:** `192.168.1.60` announced via Cilium L2 Announcement Policy across worker nodes.
-- **Internal TLD:** `*.homelab.local` resolved via static DNS records on the UniFi Dream Machine Gateway.
+- **Internal TLD:** `*.paulojauregui.com` resolved via static DNS records on the UniFi Dream Machine Gateway.
 - **Routing Protocol:** Every service exposes two `HTTPRoute` resources:
   1. Port `80` listener (`http`): Enforces an automatic `301 Moved Permanently` redirect to `https`.
   2. Port `443` listener (`https`): Terminates TLS (or passes through) and proxies traffic to the ClusterIP Service.
@@ -52,9 +52,9 @@ The root application [`clusters/home/apps-root.yaml`](../../clusters/home/apps-r
 
 | Service | Subdomain | Primary Engine | Persistence Mechanism | Database Backend | Runbook |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Mealie** | `mealie.homelab.local` | FastAPI + Vue 3 SPA (`v3.25.1`) | OpenEBS LocalPV (`/app/data`, 10Gi) | PostgreSQL (CloudNativePG `Cluster`, 5Gi) | [mealie.md](mealie.md) |
-| **Calibre-Web** | `calibre.homelab.local` | Python/Flask + S6 (`v0.6.27`) | OpenEBS LocalPV (`/config` 5Gi, `/books` 50Gi) | Dual SQLite (`app.db`, `metadata.db`) | [calibre-web.md](calibre-web.md) |
-| **Langfuse & LiteLLM** | `langfuse.homelab.local`<br>`litellm.homelab.local` | Next.js (`v4.30.0`) + LiteLLM (`v1.99.0`) | OpenEBS LocalPV (ClickHouse 15Gi) + SeaweedFS (100Gi) | PostgreSQL (CloudNativePG `Cluster`, 2x 5Gi) + ClickHouse 26.8 LTS | [langfuse-litellm.md](langfuse-litellm.md) |
+| **Mealie** | `mealie.paulojauregui.com` | FastAPI + Vue 3 SPA (`v3.25.1`) | OpenEBS LocalPV (`/app/data`, 10Gi) | PostgreSQL (CloudNativePG `Cluster`, 5Gi) | [mealie.md](mealie.md) |
+| **Calibre-Web** | `calibre.paulojauregui.com` | Python/Flask + S6 (`v0.6.27`) | OpenEBS LocalPV (`/config` 5Gi, `/books` 50Gi) | Dual SQLite (`app.db`, `metadata.db`) | [calibre-web.md](calibre-web.md) |
+| **Langfuse & LiteLLM** | `langfuse.paulojauregui.com`<br>`litellm.paulojauregui.com` | Next.js (`v4.30.0`) + LiteLLM (`v1.99.0`) | OpenEBS LocalPV (ClickHouse 15Gi) + SeaweedFS (100Gi) | PostgreSQL (CloudNativePG `Cluster`, 2x 5Gi) + ClickHouse 26.8 LTS | [langfuse-litellm.md](langfuse-litellm.md) |
 | **SeaweedFS S3** | Cluster-Internal | Distributed Object Store (`v4.22.0`) | OpenEBS LocalPV (100Gi volume, 20Gi metadata) | SeaweedFS Filer + Master | In-Cluster S3 on port 8333 |
 
 ---

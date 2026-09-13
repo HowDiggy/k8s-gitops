@@ -16,7 +16,7 @@ graph LR
 
     subgraph Ingress ["Cilium Gateway API"]
         GW["homelab-gateway (argocd)"]
-        HTTPRoute["HTTPRoute (mealie.homelab.local)"]
+        HTTPRoute["HTTPRoute (mealie.paulojauregui.com)"]
     end
 
     subgraph MealiePod ["Mealie Workload (mealie ns)"]
@@ -57,7 +57,7 @@ graph LR
 | **Replicas & Strategy** | `1` / `Recreate` | Prevents multi-attach deadlocks on `openebs-hostpath`. |
 | **Execution User** | Non-root (`UID: 1000`, `GID: 1000`) | Enforced by pod `securityContext`. |
 | **Service Port** | `9000` (ClusterIP) | HTTP endpoint. |
-| **Routing Hostname** | `mealie.homelab.local` | Gateway API HTTPRoute on `homelab-gateway`. |
+| **Routing Hostname** | `mealie.paulojauregui.com` | Gateway API HTTPRoute on `homelab-gateway`. |
 
 ---
 

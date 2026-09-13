@@ -16,8 +16,8 @@ flowchart TD
 
     subgraph IngressTier["Ingress & Gateway (Cilium L7 Envoy)"]
         VIP["Cilium Floating VIP: 192.168.1.60"]
-        HR_LiteLLM["HTTPRoute: litellm.homelab.local"]
-        HR_Langfuse["HTTPRoute: langfuse.homelab.local"]
+        HR_LiteLLM["HTTPRoute: litellm.paulojauregui.com"]
+        HR_Langfuse["HTTPRoute: langfuse.paulojauregui.com"]
         VIP --> HR_LiteLLM
         VIP --> HR_Langfuse
     end
@@ -93,13 +93,13 @@ flowchart TD
 
 | Service | Subdomain | Internal Cluster Service | Exposed Ports | Ingress Controller |
 | :--- | :--- | :--- | :--- | :--- |
-| **LiteLLM** | `litellm.homelab.local` | `litellm.litellm.svc:4000` | `80` (Redirect), `443` (TLS) | Cilium Gateway API |
-| **Langfuse** | `langfuse.homelab.local` | `langfuse-web.langfuse.svc:3000` | `80` (Redirect), `443` (TLS) | Cilium Gateway API |
+| **LiteLLM** | `litellm.paulojauregui.com` | `litellm.litellm.svc:4000` | `80` (Redirect), `443` (TLS) | Cilium Gateway API |
+| **Langfuse** | `langfuse.paulojauregui.com` | `langfuse-web.langfuse.svc:3000` | `80` (Redirect), `443` (TLS) | Cilium Gateway API |
 | **vLLM (DGX)** | `vllm-dgx.litellm.svc` | `vllm-dgx.litellm.svc:8000` | `8000` (HTTP) | Kubernetes `ExternalName` |
 | **SeaweedFS S3** | In-Cluster Only | `seaweedfs-s3.seaweedfs.svc:8333` | `8333` (S3 API) | Internal CoreDNS |
 
 ### macOS Unicast DNS Resolution (.local Bypass)
-Because `.local` is reserved for Multicast DNS (RFC 6762), macOS queries mDNS responder by default and fails to resolve unicast LAN DNS. To route `*.homelab.local` to the cluster Gateway VIP (`192.168.1.60`) via local router DNS (`192.168.1.1`), maintain `/etc/resolver/homelab.local`:
+Because `.local` is reserved for Multicast DNS (RFC 6762), macOS queries mDNS responder by default and fails to resolve unicast LAN DNS. To route `*.paulojauregui.com` to the cluster Gateway VIP (`192.168.1.60`) via local router DNS (`192.168.1.1`), maintain `/etc/resolver/homelab.local`:
 
 ```bash
 sudo mkdir -p /etc/resolver
@@ -131,7 +131,7 @@ All sensitive credentials and database connection strings are stored in **Dopple
 | `SEAWEEDFS_S3_SECRET_KEY` | `langfuse-secrets` | SeaweedFS S3 IAM secret key |
 
 ### LiteLLM UI Authentication
-To log into the LiteLLM Admin Panel (`https://litellm.homelab.local/ui`):
+To log into the LiteLLM Admin Panel (`https://litellm.paulojauregui.com/ui`):
 * **Username:** `admin`
 * **Password:** Value of `LITELLM_MASTER_KEY` (`sk-homelab-7a3403442aa305002d68163692570ae6`).
 * *Custom Credentials (Optional):* Setting `UI_USERNAME` and `UI_PASSWORD` in Doppler allows logging in with human-friendly credentials rather than the master API key.
@@ -230,7 +230,7 @@ LiteLLM and Langfuse are backed by **Valkey 8.0** instances. Because Valkey impl
 ```bash
 export LITELLM_KEY=$(doppler secrets get LITELLM_MASTER_KEY --project k8s-eso --config dev --plain)
 
-curl -k -s https://litellm.homelab.local/v1/chat/completions \
+curl -k -s https://litellm.paulojauregui.com/v1/chat/completions \
   -H "Authorization: Bearer $LITELLM_KEY" \
   -H "Content-Type: application/json" \
   -d '{

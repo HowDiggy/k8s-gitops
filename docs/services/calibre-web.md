@@ -17,7 +17,7 @@ graph LR
 
     subgraph Ingress ["Cilium Gateway API"]
         GW["homelab-gateway (argocd)"]
-        HTTPRoute["HTTPRoute (calibre.homelab.local)"]
+        HTTPRoute["HTTPRoute (calibre.paulojauregui.com)"]
     end
 
     subgraph CalibrePod ["Calibre-Web Workload (calibre-web ns)"]
@@ -54,7 +54,7 @@ graph LR
 | **Replicas & Strategy** | `1` / `Recreate` | Mandatory for SQLite single-writer POSIX locking. |
 | **Process Supervisor** | `s6-overlay` | Drops privileges to `PUID: 1000` / `PGID: 1000`. |
 | **Service Port** | `8083` (ClusterIP) | HTTP endpoint. |
-| **Routing Hostname** | `calibre.homelab.local` | Gateway API HTTPRoute on `homelab-gateway`. |
+| **Routing Hostname** | `calibre.paulojauregui.com` | Gateway API HTTPRoute on `homelab-gateway`. |
 
 ---
 
@@ -134,7 +134,7 @@ In the Calibre-Web web interface, navigate to **Admin > Basic Configuration > Ex
 ### 5.2 Calibre Desktop Content Server Sync
 To sync directly from your desktop Calibre library to the homelab cluster:
 1. In Calibre-Web, go to **Admin > Basic Configuration > Server Configuration**.
-2. Note the OPDS feed URL: `https://calibre.homelab.local/opds`.
+2. Note the OPDS feed URL: `https://calibre.paulojauregui.com/opds`.
 3. In desktop Calibre or mobile reading apps (e.g., Apple Books, Moon+ Reader, FBReader, Kobo), configure the catalog feed with your credentials.
 
 ---
