@@ -15,7 +15,20 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https
+    - name: https-public
+      hostname: "*.paulojauregui.com"
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: paulojauregui-wildcard-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-local
       protocol: HTTPS
       port: 443
       tls:

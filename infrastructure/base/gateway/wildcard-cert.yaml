@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: paulojauregui-wildcard
+  namespace: argocd
+spec:
+  secretName: paulojauregui-wildcard-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - paulojauregui.com
+    - "*.paulojauregui.com"

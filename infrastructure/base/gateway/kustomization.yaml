@@ -7,3 +7,4 @@ resources:
   - gateway.yaml
   - argocd-certificate.yaml
   - argocd-routes.yaml
+  - wildcard-cert.yaml
