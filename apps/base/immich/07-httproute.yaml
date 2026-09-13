@@ -13,8 +13,8 @@ spec:
       namespace: argocd
       sectionName: http
   hostnames:
-    - immich.homelab.local
-    - photos.homelab.local
+    - immich.homelab.lan
+    - photos.homelab.lan
   rules:
     - matches:
         - path:
@@ -41,8 +41,8 @@ spec:
       namespace: argocd
       sectionName: https
   hostnames:
-    - immich.homelab.local
-    - photos.homelab.local
+    - immich.homelab.lan
+    - photos.homelab.lan
   rules:
     - matches:
         - path:
