@@ -16,6 +16,7 @@ Decisions are recorded using a structured format documenting the architectural c
 | [0004](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0004-declarative-argocd-overlay-and-schema-defaults.md) | Declarative ArgoCD Configuration Overlays, Doppler ESO Sync, and Schema Defaulting | 2026-09-05 | **Accepted** | GitOps Operations & Security |
 | [0005](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0005-infrastructure-dependency-resolution-protocol.md) | Infrastructure Dependency Resolution & Pre-Flight Research Protocol | 2026-09-06 | **Accepted** | Engineering Standards & AI Directives |
 | [0006](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0006-migrate-internal-services-to-public-domain.md) | Migrate Internal Services to Public Domain via Split-Horizon DNS | 2026-09-12 | **Accepted** | Home K3s Cluster Networking |
+| [0007](file:///Users/paulojauregui/projects/k8s-gitops/docs/adr/0007-media-stack-kubernetes-architecture-and-migration-strategy.md) | Media Streaming Stack (NZBDav, Rclone, Plex, Arrs) Kubernetes Migration Architecture | 2026-09-16 | **Proposed** | Workload Architecture & Storage |
 
 ---
 
